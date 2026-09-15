@@ -1,30 +1,106 @@
-<h6>version  0.0.1.</h6>
-<h1 align=center>t1ao3-forms-jaxon.html</h1>
-<h3><font color=green> proving that you can use: forms 2023</font></h3>><br>
-the following are all from elements (add to the) :<br>
-first name: <input type=text id="mytext01" vaalue="fred"><br>
-checkbox: ><br>
-beef:<input type=checkbox><br>
-veggy: <input type=checkbox><br>
-raido buttons: <br>
-95.4 <input type=raido name="myrad01" value=""><br>
-101 <input type=raido name="myrad01" value=""><br>
-hidden:<input type=hidden ><br>
-File:<input type=file><br>
-reset:<input type =reset><br>
-submit (advanced)<input type=submit><br>
-button: <input type=button value="click" onclick="{
-          document.getelementbyId('myareo01').value =  'cool'
-}"><br>
-textarea:<br>
-<textarea id="myarea01" cols=60 rows=5 > cool this works </textarea><br>
-select box:<BR>
-<select id="myselect01" size=2 onChange="{
-  document.getElementbyId('myarea01').value =
-  document.getElementById('myarea01').value
-  }">
-  <option value='myDog'>Dog
-  <option value='mycat'>cat
-  <option value='mymouse'>mouse
-</select>
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>t1ao3 Forms - Jaxon</title> <style> body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #dff6ff, #f5f5f5); margin: 0; padding: 40px 20px; color: #222; } .container { max-width: 700px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); } h1 { text-align: center; color: #1565c0; margin-bottom: 5px; } h3 { text-align: center; color: green; margin-top: 5px; } h6 { text-align: right; color: #777; margin: 0; } .intro { text-align: center; color: #555; margin-bottom: 25px; } .form-group { margin-bottom: 20px; } label { display: block; font-weight: bold; margin-bottom: 7px; } input[type="text"], input[type="file"], textarea, select { width: 100%; padding: 10px; border: 1px solid #bbb; border-radius: 8px; box-sizing: border-box; font-size: 15px; } input[type="text"]:focus, textarea:focus, select:focus { outline: none; border-color: #1565c0; box-shadow: 0 0 5px rgba(21, 101, 192, 0.3); } .checkbox-group, .radio-group { background: #f7f9fb; padding: 12px; border-radius: 8px; } .checkbox-group label, .radio-group label { display: block; font-weight: normal; margin: 8px 0; } .buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; } input[type="submit"], input[type="reset"], button { border: none; padding: 11px 20px; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; transition: 0.2s; } input[type="submit"] { background: #1565c0; color: white; } input[type="reset"] { background: #e53935; color: white; } button { background: #43a047; color: white; } input[type="submit"]:hover, input[type="reset"]:hover, button:hover { transform: translateY(-2px); opacity: 0.9; } .output { margin-top: 20px; padding: 15px; background: #e8f5e9; border-left: 5px solid #43a047; border-radius: 6px; } </style> </head> <body> <div class="container">
+<h6>Version 0.0.1</h6>
+
+<h1>t1ao3-forms-jaxon.html</h1>
+
+<h3>Proving That You Can Use Forms 2023</h3>
+
+<p class="intro">
+  The following examples demonstrate different HTML form elements.
+</p>
+
+<form>
+
+  <!-- Text -->
+  <div class="form-group">
+    <label for="mytext01">First Name:</label>
+    <input type="text" id="mytext01" value="Fred">
+  </div>
+
+  <!-- Checkboxes -->
+  <div class="form-group">
+    <label>Checkboxes:</label>
+
+    <div class="checkbox-group">
+      <label>
+        <input type="checkbox" name="food" value="beef">
+        Beef
+      </label>
+
+      <label>
+        <input type="checkbox" name="food" value="veggy">
+        Veggie
+      </label>
+    </div>
+  </div>
+
+  <!-- Radio Buttons -->
+  <div class="form-group">
+    <label>Radio Buttons:</label>
+
+    <div class="radio-group">
+      <label>
+        <input type="radio" name="station" value="95.4">
+        95.4
+      </label>
+
+      <label>
+        <input type="radio" name="station" value="101">
+        101
+      </label>
+    </div>
+  </div>
+
+  <!-- Hidden -->
+  <div class="form-group">
+    <label>Hidden Input:</label>
+    <input type="hidden" name="hiddenValue" value="secret">
+    <small>The hidden input exists but isn't visible.</small>
+  </div>
+
+  <!-- File -->
+  <div class="form-group">
+    <label for="myfile">Choose a File:</label>
+    <input type="file" id="myfile">
+  </div>
+
+  <!-- Textarea -->
+  <div class="form-group">
+    <label for="myarea01">Textarea:</label>
+
+    <textarea id="myarea01" cols="60" rows="5">Cool, this works!</textarea>
+  </div>
+
+  <!-- Select -->
+  <div class="form-group">
+    <label for="myselect01">Select Box:</label>
+
+    <select id="myselect01" size="3"
+      onchange="document.getElementById('myarea01').value = this.value">
+
+      <option value="I selected Dog!">Dog</option>
+      <option value="I selected Cat!">Cat</option>
+      <option value="I selected Mouse!">Mouse</option>
+
+    </select>
+  </div>
+
+  <!-- Buttons -->
+  <div class="buttons">
+
+    <input type="reset" value="Reset">
+
+    <input type="submit" value="Submit">
+
+    <button type="button" onclick="document.getElementById('myarea01').value = 'Cool!'">
+      Click Me
+    </button>
+
+  </div>
+
+  <!-- Output -->
+  <div class="output">
+    Try selecting an animal or clicking the green button!
+  </div>
+
 </form>
