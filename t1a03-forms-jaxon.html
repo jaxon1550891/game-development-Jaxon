@@ -1,106 +1,202 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>t1ao3 Forms - Jaxon</title> <style> body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #dff6ff, #f5f5f5); margin: 0; padding: 40px 20px; color: #222; } .container { max-width: 700px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); } h1 { text-align: center; color: #1565c0; margin-bottom: 5px; } h3 { text-align: center; color: green; margin-top: 5px; } h6 { text-align: right; color: #777; margin: 0; } .intro { text-align: center; color: #555; margin-bottom: 25px; } .form-group { margin-bottom: 20px; } label { display: block; font-weight: bold; margin-bottom: 7px; } input[type="text"], input[type="file"], textarea, select { width: 100%; padding: 10px; border: 1px solid #bbb; border-radius: 8px; box-sizing: border-box; font-size: 15px; } input[type="text"]:focus, textarea:focus, select:focus { outline: none; border-color: #1565c0; box-shadow: 0 0 5px rgba(21, 101, 192, 0.3); } .checkbox-group, .radio-group { background: #f7f9fb; padding: 12px; border-radius: 8px; } .checkbox-group label, .radio-group label { display: block; font-weight: normal; margin: 8px 0; } .buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; } input[type="submit"], input[type="reset"], button { border: none; padding: 11px 20px; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; transition: 0.2s; } input[type="submit"] { background: #1565c0; color: white; } input[type="reset"] { background: #e53935; color: white; } button { background: #43a047; color: white; } input[type="submit"]:hover, input[type="reset"]:hover, button:hover { transform: translateY(-2px); opacity: 0.9; } .output { margin-top: 20px; padding: 15px; background: #e8f5e9; border-left: 5px solid #43a047; border-radius: 6px; } </style> </head> <body> <div class="container">
-<h6>Version 0.0.1</h6>
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>t1ao3 Forms - Jaxon</title> <style> * { box-sizing: border-box; margin: 0; padding: 0; } body { min-height: 100vh; font-family: "Segoe UI", Arial, sans-serif; color: #ffffff; background: radial-gradient(circle at top left, #2563eb 0%, transparent 35%), radial-gradient(circle at bottom right, #7c3aed 0%, transparent 35%), linear-gradient(135deg, #0f172a, #111827 50%, #1e1b4b); padding: 40px 20px; } /* Main card */ .container { width: 100%; max-width: 800px; margin: auto; padding: 40px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 24px; background: rgba(15, 23, 42, 0.78); backdrop-filter: blur(18px); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08); } /* Header */ .version { text-align: right; color: #94a3b8; font-size: 13px; margin-bottom: 15px; letter-spacing: 1px; } h1 { text-align: center; font-size: clamp(28px, 5vw, 46px); font-weight: 800; letter-spacing: -1px; background: linear-gradient(90deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; } h3 { text-align: center; color: #4ade80; font-size: 17px; font-weight: 500; margin-bottom: 12px; } .intro { text-align: center; color: #94a3b8; line-height: 1.6; margin-bottom: 35px; } /* Section */ .form-section { margin-bottom: 25px; padding: 22px; border-radius: 16px; background: rgba(255, 255, 255, 0.045); border: 1px solid rgba(255, 255, 255, 0.08); transition: 0.25s ease; } .form-section:hover { border-color: rgba(96, 165, 250, 0.35); transform: translateY(-2px); } .form-section h2 { font-size: 17px; margin-bottom: 14px; color: #e2e8f0; } /* Labels */ label { display: block; color: #cbd5e1; font-weight: 600; margin-bottom: 8px; } /* Text input */ input[type="text"] { width: 100%; padding: 14px 16px; border: 2px solid #334155; border-radius: 10px; outline: none; background: #0f172a; color: white; font-size: 16px; transition: 0.2s; } input[type="text"]:focus, textarea:focus, select:focus { border-color: #60a5fa; box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.12); } /* Checkbox and radio groups */ .choice { display: flex; align-items: center; gap: 10px; padding: 12px; margin: 7px 0; border-radius: 10px; background: rgba(255, 255, 255, 0.04); cursor: pointer; transition: 0.2s; } .choice:hover { background: rgba(96, 165, 250, 0.12); } .choice label { margin: 0; cursor: pointer; font-weight: 500; } input[type="checkbox"], input[type="radio"] { width: 18px; height: 18px; accent-color: #6366f1; cursor: pointer; } /* File input */ input[type="file"] { width: 100%; padding: 12px; border: 2px dashed #475569; border-radius: 10px; background: #0f172a; color: #94a3b8; cursor: pointer; } input[type="file"]:hover { border-color: #60a5fa; } /* Textarea */ textarea { width: 100%; min-height: 130px; resize: vertical; padding: 15px; border: 2px solid #334155; border-radius: 10px; outline: none; background: #0f172a; color: white; font-family: inherit; font-size: 16px; line-height: 1.5; transition: 0.2s; } /* Select */ select { width: 100%; padding: 12px; border: 2px solid #334155; border-radius: 10px; background: #0f172a; color: white; font-size: 16px; outline: none; cursor: pointer; transition: 0.2s; } option { background: #0f172a; color: white; } /* Hidden input information */ .hidden-info { color: #64748b; font-size: 13px; font-style: italic; } /* Buttons */ .buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; } .buttons input, .buttons button { border: none; padding: 14px 18px; border-radius: 10px; color: white; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s ease; } .buttons input:hover, .buttons button:hover { transform: translateY(-3px); filter: brightness(1.12); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); } .submit { background: linear-gradient(135deg, #2563eb, #4f46e5); } .reset { background: linear-gradient(135deg, #dc2626, #e11d48); } .cool-button { background: linear-gradient(135deg, #059669, #14b8a6); } /* Bottom message */ .message { margin-top: 25px; padding: 18px; text-align: center; border-radius: 12px; background: linear-gradient( 135deg, rgba(59, 130, 246, 0.12), rgba(139, 92, 246, 0.12) ); border: 1px solid rgba(96, 165, 250, 0.18); color: #cbd5e1; } .message strong { color: #60a5fa; } /* Footer */ footer { text-align: center; margin-top: 30px; color: #64748b; font-size: 13px; } /* Mobile */ @media (max-width: 600px) { body { padding: 15px; } .container { padding: 25px 18px; border-radius: 18px; } .buttons { grid-template-columns: 1fr; } .form-section { padding: 17px; } } </style> </head> <body> <main class="container">
+<div class="version">
+  VERSION 0.0.1
+</div>
 
-<h1>t1ao3-forms-jaxon.html</h1>
+<h1>t1ao3 Forms</h1>
 
-<h3>Proving That You Can Use Forms 2023</h3>
+<h3>✦ Proving That You Can Use Forms 2023 ✦</h3>
 
 <p class="intro">
-  The following examples demonstrate different HTML form elements.
+  Welcome to my HTML forms demonstration.
+  Below are several different form elements and controls.
 </p>
 
-<form>
 
-  <!-- Text -->
-  <div class="form-group">
-    <label for="mytext01">First Name:</label>
-    <input type="text" id="mytext01" value="Fred">
-  </div>
+<form onsubmit="return false;">
+
+  <!-- First Name -->
+  <section class="form-section">
+
+    <h2>👤 Personal Information</h2>
+
+    <label for="mytext01">First Name</label>
+
+    <input
+      type="text"
+      id="mytext01"
+      value="Fred"
+      placeholder="Enter your first name"
+    >
+
+  </section>
+
 
   <!-- Checkboxes -->
-  <div class="form-group">
-    <label>Checkboxes:</label>
+  <section class="form-section">
 
-    <div class="checkbox-group">
-      <label>
-        <input type="checkbox" name="food" value="beef">
-        Beef
-      </label>
+    <h2>🥩 Food Preference</h2>
 
-      <label>
-        <input type="checkbox" name="food" value="veggy">
-        Veggie
-      </label>
+    <div class="choice">
+      <input type="checkbox" id="beef" name="food" value="beef">
+      <label for="beef">Beef</label>
     </div>
-  </div>
+
+    <div class="choice">
+      <input type="checkbox" id="veggy" name="food" value="veggy">
+      <label for="veggy">Veggie</label>
+    </div>
+
+  </section>
+
 
   <!-- Radio Buttons -->
-  <div class="form-group">
-    <label>Radio Buttons:</label>
+  <section class="form-section">
 
-    <div class="radio-group">
-      <label>
-        <input type="radio" name="station" value="95.4">
-        95.4
-      </label>
+    <h2>📻 Radio Buttons</h2>
 
-      <label>
-        <input type="radio" name="station" value="101">
-        101
-      </label>
+    <div class="choice">
+      <input
+        type="radio"
+        id="station954"
+        name="station"
+        value="95.4"
+      >
+      <label for="station954">95.4</label>
     </div>
-  </div>
+
+    <div class="choice">
+      <input
+        type="radio"
+        id="station101"
+        name="station"
+        value="101"
+      >
+      <label for="station101">101</label>
+    </div>
+
+  </section>
+
 
   <!-- Hidden -->
-  <div class="form-group">
-    <label>Hidden Input:</label>
-    <input type="hidden" name="hiddenValue" value="secret">
-    <small>The hidden input exists but isn't visible.</small>
-  </div>
+  <section class="form-section">
+
+    <h2>🔒 Hidden Input</h2>
+
+    <input
+      type="hidden"
+      name="hiddenValue"
+      value="secret"
+    >
+
+    <p class="hidden-info">
+      This input exists in the HTML but is hidden from the page.
+    </p>
+
+  </section>
+
 
   <!-- File -->
-  <div class="form-group">
-    <label for="myfile">Choose a File:</label>
-    <input type="file" id="myfile">
-  </div>
+  <section class="form-section">
+
+    <h2>📁 File Upload</h2>
+
+    <label for="myfile">Choose a file</label>
+
+    <input
+      type="file"
+      id="myfile"
+    >
+
+  </section>
+
 
   <!-- Textarea -->
-  <div class="form-group">
-    <label for="myarea01">Textarea:</label>
+  <section class="form-section">
 
-    <textarea id="myarea01" cols="60" rows="5">Cool, this works!</textarea>
-  </div>
+    <h2>📝 Textarea</h2>
+
+    <textarea
+      id="myarea01"
+      rows="5"
+      placeholder="Type something here..."
+    >Cool, this works!</textarea>
+
+  </section>
+
 
   <!-- Select -->
-  <div class="form-group">
-    <label for="myselect01">Select Box:</label>
+  <section class="form-section">
 
-    <select id="myselect01" size="3"
-      onchange="document.getElementById('myarea01').value = this.value">
+    <h2>🐾 Select Box</h2>
 
-      <option value="I selected Dog!">Dog</option>
-      <option value="I selected Cat!">Cat</option>
-      <option value="I selected Mouse!">Mouse</option>
+    <label for="myselect01">
+      Choose an animal
+    </label>
+
+    <select
+      id="myselect01"
+      size="3"
+      onchange="
+        document.getElementById('myarea01').value =
+        'You selected: ' + this.options[this.selectedIndex].text
+      "
+    >
+
+      <option value="dog">🐶 Dog</option>
+      <option value="cat">🐱 Cat</option>
+      <option value="mouse">🐭 Mouse</option>
 
     </select>
-  </div>
+
+  </section>
+
 
   <!-- Buttons -->
-  <div class="buttons">
+  <section class="form-section">
 
-    <input type="reset" value="Reset">
+    <h2>⚡ Form Controls</h2>
 
-    <input type="submit" value="Submit">
+    <div class="buttons">
 
-    <button type="button" onclick="document.getElementById('myarea01').value = 'Cool!'">
-      Click Me
-    </button>
+      <input
+        class="reset"
+        type="reset"
+        value="↻ Reset"
+      >
 
-  </div>
+      <input
+        class="submit"
+        type="submit"
+        value="✓ Submit"
+      >
 
-  <!-- Output -->
-  <div class="output">
-    Try selecting an animal or clicking the green button!
-  </div>
+      <button
+        class="cool-button"
+        type="button"
+        onclick="
+          document.getElementById('myarea01').value =
+          '😎 Cool! The button works!'
+        "
+      >
+        ✨ Click Me
+      </button>
+
+    </div>
+
+  </section>
 
 </form>
+
+
+<div class="message">
+  <strong>Tip:</strong>
+  Try the buttons, select an animal, check the boxes,
+  and type in the textarea!
+</div>
+
+<footer>
+  t1ao3-forms-jaxon.html • Version 0.0.1
+</footer>
+
+</main> </body> </html>
