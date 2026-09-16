@@ -1,0 +1,28 @@
+<body
+version 0.0.1</nr>
+<align=center>t1a04 CSS by jaxon 2023</h1>
+refrence link
+<a href="https://www.w3schools.com/cssref/default.asp">w3schools</a><br>
+cascading style sheets (CSS) is properly done with a .css file listing all css commands for your
+website<br>
+another way to ddo CSS is using the style tag at the top head part of a webpage<br>
+here is typical in document style
+<pre>
+b {
+  color: #00ff00;
+}
+</pre><br>
+i do CSS inline inside the tag. it overpowers all other methods<br><bbr>
+<i > this is italic</i><br>
+<i id="myb1 style="color:#00ff00; backround-color:blue; "> this is italic with CSS backround-color and main color</i>
+<input type=button value=change onclick="{
+document.getelementbyid('myb1').style.color = 'red'
+document.getelementbyid('myb1').style.backroundcolor = 'yellow'
+}"><br><br>
+<textarea style=" backround-image: url('myimgnew.jpg'); position:relative; left:0;
+top:0; width:200; heiht:50; ">
+advanced see if you move this textarea
+</textarea><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<imgsrc=myimage01.jpg"wdith=100 style=" border-radius:200px">
+</body>
