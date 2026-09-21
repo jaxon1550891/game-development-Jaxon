@@ -1,0 +1,70 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>t1ao5 Input Output - Jaxon</title> <style> body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; text-align: center; margin: 0; padding: 30px; } .container { max-width: 800px; margin: auto; background: rgba(0, 0, 0, 0.35); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); } h1 { color: #00ffcc; margin-bottom: 5px; } h2 { color: #ffffff; margin-top: 5px; } .input-area { margin: 25px 0; } input[type="number"] { width: 180px; padding: 12px; font-size: 20px; border-radius: 10px; border: none; text-align: center; } button { background: #00c896; color: white; border: none; padding: 12px 18px; margin: 6px; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.2s; } button:hover { background: #00a87a; transform: scale(1.05); } .danger { background: #e74c3c; } .danger:hover { background: #c0392b; } #myDiv01 { background: white; color: #222; padding: 20px; margin-top: 25px; border-radius: 15px; font-size: 22px; min-height: 30px; } .history { background: rgba(255,255,255,0.1); margin-top: 25px; padding: 15px; border-radius: 15px; } #historyList { text-align: left; max-height: 200px; overflow-y: auto; } .tip { color: #b8fff0; font-size: 14px; } </style> </head> <body> <div class="container">
+<h1>🧮 Jaxon's Input & Output Calculator</h1>
+
+<h2>t1ao5 - JavaScript Input Output</h2>
+
+<p class="tip">
+  Enter a number and try the different buttons!
+</p>
+
+<div class="input-area">
+
+  <input
+    id="mynum01"
+    type="number"
+    value="4"
+    placeholder="Enter a number"
+    onkeydown="checkEnter(event)"
+  >
+
+  <br><br>
+
+  <button onclick="squareNumber()">x² Square</button>
+
+  <button onclick="cubeNumber()">x³ Cube</button>
+
+  <button onclick="doubleNumber()">×2 Double</button>
+
+  <button onclick="halfNumber()">÷2 Half</button>
+
+  <button onclick="sqrtNumber()">√ Square Root</button>
+
+  <button onclick="powerNumber()">x⁵ Power</button>
+
+  <br>
+
+  <button onclick="evenOdd()">Even or Odd?</button>
+
+  <button onclick="positiveNegative()">Positive or Negative?</button>
+
+  <button onclick="randomNumber()">🎲 Random Number</button>
+
+  <button onclick="factorialNumber()">! Factorial</button>
+
+  <br>
+
+  <button class="danger" onclick="clearResult()">Clear Result</button>
+
+</div>
+
+<div id="myDiv01">
+  Your answer will appear here...
+</div>
+
+<div class="history">
+
+  <h2>📜 History</h2>
+
+  <div id="historyList">
+    No calculations yet.
+  </div>
+
+  <br>
+
+  <button class="danger" onclick="clearHistory()">
+    Clear History
+  </button>
+
+</div>
+
+</div> <script> // Get the number from the input box function getNumber() { let input = document.getElementById("mynum01"); let number = parseFloat(input.value); if (isNaN(number)) { document.getElementById("myDiv01").innerHTML = "⚠️ Please enter a valid number!"; return null; } return number; } // Display the answer function showAnswer(answer) { document.getElementById("myDiv01").innerHTML = answer; } // Add calculation to history function addHistory(calculation) { let history = document.getElementById("historyList"); if (history.innerHTML === "No calculations yet.") { history.innerHTML = ""; } history.innerHTML += "<div>➡️ " + calculation + "</div>"; } // Square function squareNumber() { let number = getNumber(); if (number === null) return; let answer = number * number; showAnswer( number + "² = " + answer ); addHistory( number + "² = " + answer ); } // Cube function cubeNumber() { let number = getNumber(); if (number === null) return; let answer = number * number * number; showAnswer( number + "³ = " + answer ); addHistory( number + "³ = " + answer ); } // Double function doubleNumber() { let number = getNumber(); if (number === null) return; let answer = number * 2; showAnswer( number + " × 2 = " + answer ); addHistory( number + " × 2 = " + answer ); } // Half function halfNumber() { let number = getNumber(); if (number === null) return; let answer = number / 2; showAnswer( number + " ÷ 2 = " + answer ); addHistory( number + " ÷ 2 = " + answer ); } // Square root function sqrtNumber() { let number = getNumber(); if (number === null) return; if (number < 0) { showAnswer( "❌ You cannot get a real square root of a negative number." ); return; } let answer = Math.sqrt(number); showAnswer( "√" + number + " = " + answer ); addHistory( "√" + number + " = " + answer ); } // Power of 5 function powerNumber() { let number = getNumber(); if (number === null) return; let answer = Math.pow(number, 5); showAnswer( number + "⁵ = " + answer ); addHistory( number + "⁵ = " + answer ); } // Even or odd function evenOdd() { let number = getNumber(); if (number === null) return; if (!Number.isInteger(number)) { showAnswer( "ℹ️ " + number + " is not a whole number." ); return; } let answer; if (number % 2 === 0) { answer = number + " is EVEN 🟢"; } else { answer = number + " is ODD 🔵"; } showAnswer(answer); addHistory(answer); } // Positive, negative, or zero function positiveNegative() { let number = getNumber(); if (number === null) return; let answer; if (number > 0) { answer = number + " is POSITIVE ➕"; } else if (number < 0) { answer = number + " is NEGATIVE ➖"; } else { answer = "The number is ZERO 0️⃣"; } showAnswer(answer); addHistory(answer); } // Random number function randomNumber() { let number = getNumber(); if (number === null) return; let random = Math.floor( Math.random() * (number + 1) ); showAnswer( "🎲 Random number from 0 to " + number + " = " + random ); addHistory( "Random 0-" + number + " = " + random ); } // Factorial function factorialNumber() { let number = getNumber(); if (number === null) return; if (!Number.isInteger(number) || number < 0) { showAnswer( "⚠️ Factorial requires a whole number 0 or greater." ); return; } if (number > 170) { showAnswer( "⚠️ Number is too large for this factorial calculator." ); return; } let answer = 1; for (let i = 1; i <= number; i++) { answer = answer * i; } showAnswer( number + "! = " + answer ); addHistory( number + "! = " + answer ); } // Clear the result function clearResult() { document.getElementById("myDiv01").innerHTML = "Your answer will appear here..."; } // Clear history function clearHistory() { document.getElementById("historyList").innerHTML = "No calculations yet."; } // Press Enter to calculate a square function checkEnter(event) { if (event.key === "Enter") { squareNumber(); } } </script> </body> </html>
