@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Proper Types and Variables - Jaxon</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            color: #00d9ff;
+        }
+
+        b {
+            color: #00ff88;
+        }
+
+        button {
+            background: #00d9ff;
+            color: black;
+            border: none;
+            padding: 12px 20px;
+            margin: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #00ff88;
+            transform: scale(1.05);
+        }
+
+        #mydiv01 {
+            margin-top: 20px;
+            padding: 20px;
+            background: #111;
+            border-radius: 10px;
+            min-height: 50px;
+        }
+
+        .box {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            margin: 5px;
+        }
+
+        #counter {
+            font-size: 40px;
+            color: #00ff88;
+            margin: 10px;
+        }
+    </style>
+
+    <script>
+        // =========================
+        // VARIABLES
+        // =========================
+
+        let myNum = 3;
+        let myString = "Hello";
+        let myFloat = 17.5;
+        let myBool = true;
+
+        // =========================
+        // ORIGINAL FUNCTION
+        // =========================
+
+        function sayHello() {
+
+            let myOut = document.getElementById("mydiv01");
+
+            myOut.innerHTML =
+                "Number: " + myNum +
+                "<br>String: " + myString +
+                "<br>Float: " + myFloat +
+                "<br>Boolean: " + myBool;
+
+            if (myBool) {
+                myOut.innerHTML += "<br><br>WOW! The boolean is TRUE!";
+            }
+        }
+
+        // =========================
+        // CHANGE VARIABLES
+        // =========================
+
+        function changeVariables() {
+
+            myNum += 5;
+            myFloat += 2.5;
+            myString = "Variables Changed!";
+            myBool = !myBool;
+
+            document.getElementById("mydiv01").innerHTML =
+                "Number: " + myNum +
+                "<br>String: " + myString +
+                "<br>Float: " + myFloat +
+                "<br>Boolean: " + myBool;
+        }
+
+        // =========================
+        // SIMPLE CALCULATOR
+        // =========================
+
+        function calculate() {
+
+            let num1 = Number(document.getElementById("num1").value);
+            let num2 = Number(document.getElementById("num2").value);
+
+            let answer = num1 + num2;
+
+            document.getElementById("calcResult").innerHTML =
+                "Answer: " + answer;
+        }
+
+        // =========================
+        // COUNTER
+        // =========================
+
+        let count = 0;
+
+        function increase() {
+            count++;
+            document.getElementById("counter").innerHTML = count;
+        }
+
+        function decrease() {
+            count--;
+            document.getElementById("counter").innerHTML = count;
+        }
+
+        function resetCounter() {
+            count = 0;
+            document.getElementById("counter").innerHTML = count;
+        }
+
+        // =========================
+        // NAME GREETING
+        // =========================
+
+        function greetUser() {
+
+            let name = document.getElementById("nameInput").value;
+
+            if (name === "") {
+                document.getElementById("greeting").innerHTML =
+                    "Please enter your name!";
+            } else {
+                document.getElementById("greeting").innerHTML =
+                    "Hello, " + name + "! 👋";
+            }
+        }
+
+        // =========================
+        // RANDOM NUMBER
+        // =========================
+
+        function randomNumber() {
+
+            let random = Math.floor(Math.random() * 100) + 1;
+
+            document.getElementById("randomResult").innerHTML =
+                "Your random number is: <b>" + random + "</b>";
+        }
+
+        // =========================
+        // BOOLEAN TEST
+        // =========================
+
+        function checkNumber() {
+
+            let number = Number(document.getElementById("numberInput").value);
+
+            if (number > 10) {
+                document.getElementById("numberResult").innerHTML =
+                    "The number is greater than 10! 🚀";
+            } else if (number === 10) {
+                document.getElementById("numberResult").innerHTML =
+                    "The number is exactly 10! 🎯";
+            } else {
+                document.getElementById("numberResult").innerHTML =
+                    "The number is less than 10. 👇";
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🚀 JavaScript Variables Lab</h1>
+
+        <p>
+            This is <b>bold</b> text and this page demonstrates
+            JavaScript variables and data types.
+        </p>
+
+        <!-- ORIGINAL -->
+        <div class="box">
+            <h2>1. Variables</h2>
+
+            <button onclick="sayHello()">
+                Show Variables
+            </button>
+
+            <button onclick="changeVariables()">
+                Change Variables
+            </button>
+
+            <div id="mydiv01">
+                Click a button to see the variables!
+            </div>
+        </div>
+
+        <!-- GREETING -->
+        <div class="box">
+            <h2>2. Say Hello</h2>
+
+            <input
+                type="text"
+                id="nameInput"
+                placeholder="Enter your name"
+            >
+
+            <button onclick="greetUser()">
+                Say Hello
+            </button>
+
+            <p id="greeting"></p>
+        </div>
+
+        <!-- CALCULATOR -->
+        <div class="box">
+            <h2>3. Mini Calculator</h2>
+
+            <input
+                type="number"
+                id="num1"
+                placeholder="Number 1"
+            >
+
+            <input
+                type="number"
+                id="num2"
+                placeholder="Number 2"
+            >
+
+            <br>
+
+            <button onclick="calculate()">
+                Add Numbers
+            </button>
+
+            <p id="calcResult">Answer will appear here.</p>
+        </div>
+
+        <!-- COUNTER -->
+        <div class="box">
+            <h2>4. Counter</h2>
+
+            <div id="counter">0</div>
+
+            <button onclick="decrease()">
+                ➖ Decrease
+            </button>
+
+            <button onclick="resetCounter()">
+                🔄 Reset
+            </button>
+
+            <button onclick="increase()">
+                ➕ Increase
+            </button>
+        </div>
+
+        <!-- RANDOM NUMBER -->
+        <div class="box">
+            <h2>5. Random Number Generator</h2>
+
+            <button onclick="randomNumber()">
+                🎲 Generate Number
+            </button>
+
+            <p id="randomResult">
+                Your number will appear here.
+            </p>
+        </div>
+
+        <!-- IF STATEMENTS -->
+        <div class="box">
+            <h2>6. Number Checker</h2>
+
+            <input
+                type="number"
+                id="numberInput"
+                placeholder="Enter a number"
+            >
+
+            <button onclick="checkNumber()">
+                Check Number
+            </button>
+
+            <p id="numberResult"></p>
+        </div>
+
+    </div>
+
+</body>
+</html>
