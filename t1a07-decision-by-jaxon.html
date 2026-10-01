@@ -1,17 +1,82 @@
-version 0.0.1
-<h2 align=center>t1a07-decisions-by-jaxon.html</h2>
-<a href="https://www.w3schools.com/js/js_if_else.asp">good refrence to decisions if
-... else statements
-java script innerHTML value by jaxon</a><br>
-note: ! = not,  && = AND,  || = OR
-<h4> Example input output code</h4>
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>t1a07 - Decisions by Jaxon</title> <style> body { font-family: Arial, sans-serif; background-color: #f4f7fb; color: #222; max-width: 900px; margin: 30px auto; padding: 20px; line-height: 1.6; } h1, h2, h3 { color: #174a7e; } .card { background: white; padding: 20px; margin: 20px 0; border-radius: 12px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); } input[type="number"] { width: 100px; padding: 8px; font-size: 16px; } button { padding: 10px 15px; margin: 5px; border: none; border-radius: 6px; background-color: #174a7e; color: white; cursor: pointer; font-size: 15px; } button:hover { background-color: #0e3154; } #myOutput { margin-top: 15px; padding: 12px; background-color: #e8f2ff; border-left: 5px solid #174a7e; min-height: 24px; } pre { background-color: #222; color: #f8f8f2; padding: 15px; border-radius: 8px; overflow-x: auto; } .note { background-color: #fff4cc; padding: 12px; border-left: 5px solid #e6b800; } </style> </head> <body> <h2>t1a07-decisions-by-jaxon.html</h2> <div class="card"> <p> <a href="https://www.w3schools.com/js/js_if_else.asp" target="_blank" rel="noopener noreferrer" > JavaScript if...else reference </a> </p>
+<p>
+  This page demonstrates JavaScript decision making using
+  <strong>if</strong>, <strong>else if</strong>, and <strong>else</strong>.
+</p>
+
+<div class="note">
+  <strong>Operators:</strong><br>
+  <code>!</code> = NOT<br>
+  <code>&&</code> = AND<br>
+  <code>||</code> = OR
+</div>
+
+</div> <div class="card"> <h3>Example input/output code</h3>
 <pre>
-let myhour = 20
-if (myhour < 18 { 
-let mygreeting = 'good day';
-}
-</pre>
-<h4> example working code</h4>
-<input id="mynum01" type=number value="4" ><br>
-<input type=button value="simple if statement for decision making" onclick="{
-let myIn1 = parsefloat
+
+let myHour = 20;
+
+if (myHour < 18) {
+let myGreeting = "Good day";
+console.log(myGreeting);
+}</pre>
+
+</div> <div class="card"> <h3>Example: Simple IF statement</h3>
+<label for="myNum01">Enter a number:</label>
+<input id="myNum01" type="number" value="4">
+
+<br><br>
+
+<button onclick="simpleIf()">Run IF Statement</button>
+
+<div id="myOutput"></div>
+
+</div> <div class="card"> <h3>Example: IF / ELSE statement</h3>
+<label for="myNum02">Enter a number:</label>
+<input id="myNum02" type="number" value="10">
+
+<br><br>
+
+<button onclick="ifElseDecision()">Check Number</button>
+
+<div id="myOutput02"></div>
+
+</div> <div class="card"> <h3>Example: IF / ELSE IF / ELSE</h3>
+<label for="myNum03">Enter your age:</label>
+<input id="myNum03" type="number" value="18" min="0">
+
+<br><br>
+
+<button onclick="ageDecision()">Check Age</button>
+
+<div id="myOutput03"></div>
+
+</div> <div class="card"> <h3>Example: AND (&&)</h3>
+<p>
+  Both conditions must be true.
+</p>
+
+<label for="myNum04">Enter a number from 1 to 100:</label>
+<input id="myNum04" type="number" value="50" min="1" max="100">
+
+<br><br>
+
+<button onclick="andDecision()">Check Number</button>
+
+<div id="myOutput04"></div>
+
+</div> <div class="card"> <h3>Example: OR (||)</h3>
+<p>
+  At least one condition must be true.
+</p>
+
+<label for="myNum05">Enter a number:</label>
+<input id="myNum05" type="number" value="5">
+
+<br><br>
+
+<button onclick="orDecision()">Check Number</button>
+
+<div id="myOutput05"></div>
+
+</div> <script> // Version 0.0.1 // Decisions by Jaxon function simpleIf() { const myIn1 = parseFloat(document.getElementById("myNum01").value); const output = document.getElementById("myOutput"); if (myIn1 > 5) { output.innerHTML = "Your number is greater than 5."; } } function ifElseDecision() { const myIn2 = parseFloat(document.getElementById("myNum02").value); const output = document.getElementById("myOutput02"); if (myIn2 >= 10) { output.innerHTML = "Your number is 10 or greater."; } else { output.innerHTML = "Your number is less than 10."; } } function ageDecision() { const age = parseFloat(document.getElementById("myNum03").value); const output = document.getElementById("myOutput03"); if (Number.isNaN(age) || age < 0) { output.innerHTML = "Please enter a valid age."; } else if (age < 13) { output.innerHTML = "You are a child."; } else if (age < 18) { output.innerHTML = "You are a teenager."; } else { output.innerHTML = "You are an adult."; } } function andDecision() { const number = parseFloat(document.getElementById("myNum04").value); const output = document.getElementById("myOutput04"); if (number >= 1 && number <= 100) { output.innerHTML = "Your number is between 1 and 100."; } else { output.innerHTML = "Your number is outside the range."; } } function orDecision() { const number = parseFloat(document.getElementById("myNum05").value); const output = document.getElementById("myOutput05"); if (number === 5 || number === 10) { output.innerHTML = "Your number is either 5 or 10."; } else { output.innerHTML = "Your number is not 5 or 10."; } } </script> </body> </html>
