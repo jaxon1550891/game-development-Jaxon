@@ -1,0 +1,92 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>JavaScript Functions - Jaxon</title> <style> body { font-family: Arial, sans-serif; text-align: center; background: linear-gradient(135deg, #74ebd5, #9face6); padding: 30px; } .container { max-width: 700px; margin: auto; background-color: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); } h1 { color: #333; } h2 { color: #555; } input { padding: 10px; margin: 5px; width: 120px; font-size: 16px; border: 2px solid #ccc; border-radius: 5px; } button { padding: 10px 15px; margin: 5px; font-size: 15px; border: none; border-radius: 6px; background-color: #007bff; color: white; cursor: pointer; } button:hover { background-color: #0056b3; } #mydiv01 { margin-top: 20px; padding: 15px; background-color: #f1f1f1; border-radius: 8px; font-size: 20px; font-weight: bold; min-height: 30px; } .section { margin-top: 25px; padding: 15px; border-top: 2px solid #ddd; } </style> </head> <body> <div class="container">
+<h1>JavaScript Functions</h1>
+
+<h2>t1a09-functions-by-jaxon.html</h2>
+
+<p>
+  Functions are used to organize code into reusable sections.
+  Click the buttons below to try different functions!
+</p>
+
+<p>
+  <a href="https://www.w3schools.com/js/js_functions.asp" target="_blank">
+    JavaScript Functions Reference
+  </a>
+</p>
+
+<!-- NUMBER CALCULATOR -->
+<div class="section">
+
+  <h2>🧮 Calculator Functions</h2>
+
+  <input type="number" id="number1" value="10">
+  <input type="number" id="number2" value="5">
+
+  <br>
+
+  <button onclick="addNumbers()">➕ Add</button>
+  <button onclick="subtractNumbers()">➖ Subtract</button>
+  <button onclick="multiplyNumbers()">✖️ Multiply</button>
+  <button onclick="divideNumbers()">➗ Divide</button>
+
+</div>
+
+
+<!-- SQUARE NUMBER -->
+<div class="section">
+
+  <h2>² Square a Number</h2>
+
+  <input type="number" id="squareNumber" value="4">
+
+  <button onclick="squareNumberFunction()">
+    Square Number
+  </button>
+
+</div>
+
+
+<!-- GREETING -->
+<div class="section">
+
+  <h2>👋 Greeting Function</h2>
+
+  <input type="text" id="nameInput" value="Jaxon">
+
+  <button onclick="sayHello()">
+    Say Hello
+  </button>
+
+</div>
+
+
+<!-- RANDOM NUMBER -->
+<div class="section">
+
+  <h2>🎲 Random Number Function</h2>
+
+  <button onclick="randomNumber()">
+    Generate Random Number
+  </button>
+
+</div>
+
+
+<!-- ALL CALCULATIONS -->
+<div class="section">
+
+  <h2>🚀 Do Everything</h2>
+
+  <button onclick="doAllCalculations()">
+    Run All Calculations
+  </button>
+
+</div>
+
+
+<!-- RESULT -->
+<div id="mydiv01">
+  Your result will appear here...
+</div>
+
+</div> <script> // ADD TWO NUMBERS function addNumbers() { let num1 = Number(document.getElementById("number1").value); let num2 = Number(document.getElementById("number2").value); let answer = num1 + num2; document.getElementById("mydiv01").innerHTML = num1 + " + " + num2 + " = " + answer; } // SUBTRACT TWO NUMBERS function subtractNumbers() { let num1 = Number(document.getElementById("number1").value); let num2 = Number(document.getElementById("number2").value); let answer = num1 - num2; document.getElementById("mydiv01").innerHTML = num1 + " - " + num2 + " = " + answer; } // MULTIPLY TWO NUMBERS function multiplyNumbers() { let num1 = Number(document.getElementById("number1").value); let num2 = Number(document.getElementById("number2").value); let answer = num1 * num2; document.getElementById("mydiv01").innerHTML = num1 + " × " + num2 + " = " + answer; } // DIVIDE TWO NUMBERS function divideNumbers() { let num1 = Number(document.getElementById("number1").value); let num2 = Number(document.getElementById("number2").value); if (num2 === 0) { document.getElementById("mydiv01").innerHTML = "❌ You cannot divide by zero!"; } else { let answer = num1 / num2; document.getElementById("mydiv01").innerHTML = num1 + " ÷ " + num2 + " = " + answer; } } // SQUARE A NUMBER function squareNumberFunction() { let number = Number( document.getElementById("squareNumber").value ); let answer = number * number; document.getElementById("mydiv01").innerHTML = number + "² = " + answer; } // GREETING FUNCTION function sayHello() { let name = document.getElementById("nameInput").value; document.getElementById("mydiv01").innerHTML = "👋 Hello, " + name + "! Welcome to my JavaScript page!"; } // RANDOM NUMBER FUNCTION function randomNumber() { let number = Math.floor(Math.random() * 100) + 1; document.getElementById("mydiv01").innerHTML = "🎲 Your random number is: " + number; } // RUN ALL CALCULATIONS function doAllCalculations() { let num1 = Number(document.getElementById("number1").value); let num2 = Number(document.getElementById("number2").value); let addition = num1 + num2; let subtraction = num1 - num2; let multiplication = num1 * num2; let division; if (num2 === 0) { division = "Cannot divide by zero"; } else { division = num1 / num2; } document.getElementById("mydiv01").innerHTML = "➕ " + num1 + " + " + num2 + " = " + addition + "<br>" + "➖ " + num1 + " - " + num2 + " = " + subtraction + "<br>" + "✖️ " + num1 + " × " + num2 + " = " + multiplication + "<br>" + "➗ " + num1 + " ÷ " + num2 + " = " + division; } </script> </body> </html>
