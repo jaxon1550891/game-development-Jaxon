@@ -1,0 +1,195 @@
+:::writing{variant="document" id="58321" title="t1a10-evens-by-jaxon.html"} <!DOCTYPE html> <html> <head> <title>t1a10 - HTML Events by Jaxon</title>
+
+<style> body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #101820, #203a43, #2c5364); color: white; text-align: center; margin: 0; padding: 20px; }
+
+h1 { color: #00ffcc; text-shadow: 0 0 10px #00ffcc; }
+
+.box { background: rgba(255,255,255,0.1); border: 2px solid #00ffcc; border-radius: 15px; padding: 20px; margin: 20px auto; max-width: 800px; box-shadow: 0 0 20px rgba(0,255,204,0.3); }
+
+button, input, select { padding: 10px; margin: 6px; border-radius: 8px; border: 2px solid #00ffcc; font-size: 16px; }
+
+button { background: #00ffcc; color: #102020; cursor: pointer; font-weight: bold; }
+
+button:hover { background: #00ccaa; transform: scale(1.05); }
+
+#mydiv01, #eventLog { background: #111; color: #00ffcc; padding: 15px; margin: 15px; border-radius: 10px; min-height: 25px; }
+
+#myBO2 { display: inline-block; background: #ff4d6d; padding: 20px; border-radius: 12px; font-size: 20px; transition: 0.2s; }
+
+#mouseBox { width: 300px; height: 150px; background: #7928ca; margin: 20px auto; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+
+#dragBox { width: 120px; height: 70px; background: orange; color: black; display: flex; align-items: center; justify-content: center; margin: 20px auto; border-radius: 12px; cursor: grab; font-weight: bold; }
+
+#touchBox { width: 300px; height: 100px; background: #e91e63; margin: 20px auto; border-radius: 15px; display: flex; align-items: center; justify-content: center; touch-action: none; }
+
+#counter { font-size: 30px; color: yellow; }
+
+.small { color: #aaa; } </style> </head>
+
+<body>
+
+<h1>t1a10-evens-by-jaxon.html</h1>
+
+<p> <a href="https://way2tutorial.com/html/htm15eventshandlerlist.php" target="blank" style="color:#00ffcc;"> Good Reference: HTML Events </a> </p>
+
+<div class="box"> <h2>HTML Events</h2>
+
+<p> Events are actions that happen in HTML, such as clicking, typing, moving the mouse, focusing an input, or touching a screen. JavaScript can react to these events. </p>
+
+<p class="small"> This page demonstrates many different HTML/JavaScript events. </p> </div>
+
+<!-- ONCLICK --> <div class="box"> <h2>1. onclick</h2>
+
+<input id="mytext01" type="text" placeholder="Type something here">
+
+<br>
+
+<input type="button" value="Click Me" onclick="{ document.getElementById('mydiv01').innerHTML = document.getElementById('mytext01').value }">
+
+<div id="mydiv01">Your text will appear here...</div> </div>
+
+<!-- ONDBLCLICK --> <div class="box"> <h2>2. ondblclick</h2>
+
+<button ondblclick="{ document.getElementById('doubleResult').innerHTML = 'WOW! You double-clicked the button!' }"> Double Click Me </button>
+
+<div id="doubleResult">Try double-clicking the button.</div> </div>
+
+<!-- ONCHANGE --> <div class="box"> <h2>3. onchange</h2>
+
+<select onchange="{ document.getElementById('changeResult').innerHTML = 'You selected: ' + this.value }"> <option>Select a colour</option> <option>Red</option> <option>Blue</option> <option>Green</option> <option>Purple</option> <option>Orange</option> </select>
+
+<div id="changeResult">Choose something.</div> </div>
+
+<!-- ONFOCUS AND ONBLUR --> <div class="box"> <h2>4. onfocus + onblur</h2>
+
+<input type="text" placeholder="Click inside me" onfocus="{ this.style.backgroundColor = '#ccffcc'; document.getElementById('focusResult').innerHTML = 'The input has focus!' }"
+
+onblur="{ this.style.backgroundColor = 'white'; document.getElementById('focusResult').innerHTML = 'The input lost focus.' }">
+
+<div id="focusResult">Click the input.</div> </div>
+
+<!-- MOUSEOVER AND MOUSEOUT --> <div class="box"> <h2>5. onmouseover + onmouseout</h2>
+
+<b id="myBO2"
+
+onmouseout="{ document.getElementById('myBO2').innerHTML = 'This is nice!' document.getElementById('myBO2').style.backgroundColor = '#ff4d6d' }"
+
+onmouseover="{ document.getElementById('myBO2').innerHTML = 'THIS IS COOL!' document.getElementById('myBO2').style.backgroundColor = '#00ccff' }">
+
+This is bold </b> </div>
+
+<!-- ONMOUSEMOVE --> <div class="box"> <h2>6. onmousemove</h2>
+
+<div id="mouseBox"
+
+onmousemove="{ document.getElementById('mouseResult').innerHTML = 'Mouse position: X = ' + event.offsetX + ', Y = ' + event.offsetY }">
+
+Move your mouse around! </div>
+
+<div id="mouseResult">Move your mouse inside the box.</div> </div>
+
+<!-- ONKEYDOWN --> <div class="box"> <h2>7. onkeydown</h2>
+
+<input type="text" placeholder="Press a key" onkeydown="{ document.getElementById('keyResult').innerHTML = 'You pressed: ' + event.key }">
+
+<div id="keyResult">Press a key...</div> </div>
+
+<!-- ONKEYPRESS --> <div class="box"> <h2>8. onkeypress</h2>
+
+<input type="text" placeholder="Type here" onkeypress="{ document.getElementById('keypressResult').innerHTML = 'A key was pressed!' }">
+
+<div id="keypressResult">Waiting for a key...</div> </div>
+
+<!-- ONKEYUP --> <div class="box"> <h2>9. onkeyup</h2>
+
+<input type="text" placeholder="Release a key" onkeyup="{ document.getElementById('keyupResult').innerHTML = 'You released: ' + event.key }">
+
+<div id="keyupResult">Waiting...</div> </div>
+
+<!-- ONCLICK COUNTER --> <div class="box"> <h2>10. Click Counter</h2>
+
+<div id="counter">0</div>
+
+<button onclick="{ let number = parseInt( document.getElementById('counter').innerHTML );
+
+number++;
+
+document.getElementById('counter').innerHTML = number; }"> Add 1 </button>
+
+<button onclick="{ document.getElementById('counter').innerHTML = 0; }"> Reset </button> </div>
+
+<!-- DRAGSTART --> <div class="box"> <h2>11. ondragstart</h2>
+
+<div id="dragBox" draggable="true"
+
+ondragstart="{ document.getElementById('dragResult').innerHTML = 'You started dragging the box!' }">
+
+DRAG ME </div>
+
+<div id="dragResult">Try dragging the orange box.</div> </div>
+
+<!-- TOUCH EVENTS --> <div class="box"> <h2>12. Touch Events</h2>
+
+<div id="touchBox"
+
+ontouchstart="{ document.getElementById('touchResult').innerHTML = 'Touch START detected!' this.style.backgroundColor = '#00cc88' }"
+
+ontouchmove="{ document.getElementById('touchResult').innerHTML = 'Touch MOVE detected!' this.style.backgroundColor = '#00aaff' }"
+
+ontouchend="{ document.getElementById('touchResult').innerHTML = 'Touch END detected!' this.style.backgroundColor = '#e91e63' }">
+
+TOUCH ME </div>
+
+<div id="touchResult"> Use your finger on a touchscreen. </div> </div>
+
+<!-- EXTRA EVENT --> <div class="box"> <h2>13. oncontextmenu</h2>
+
+<button oncontextmenu="{ event.preventDefault();
+
+document.getElementById('rightClickResult').innerHTML = 'Right-click detected!';
+
+return false; }">
+
+Right Click Me </button>
+
+<div id="rightClickResult"> Try right-clicking the button. </div> </div>
+
+<!-- EXTRA EVENT --> <div class="box"> <h2>14. onmousedown + onmouseup</h2>
+
+<button onmousedown="{ document.getElementById('mouseButtonResult').innerHTML = 'Mouse button is DOWN!'; }"
+
+onmouseup="{ document.getElementById('mouseButtonResult').innerHTML = 'Mouse button is UP!'; }">
+
+Hold Me Down </button>
+
+<div id="mouseButtonResult"> Press the button. </div> </div>
+
+<!-- EVENT LOG --> <div class="box"> <h2>Event Log</h2>
+
+<div id="eventLog"> Interact with the page to see events! </div>
+
+<button onclick="{ document.getElementById('eventLog').innerHTML = 'Event log cleared!'; }"> Clear Log </button> </div>
+
+<script>
+
+/* Extra JavaScript event demonstration.
+
+addEventListener() is another way to connect JavaScript to HTML events. */
+
+const log = document.getElementById("eventLog");
+
+document.addEventListener("click", function(event) {
+
+log.innerHTML = "Last event: <b>" + event.type + "</b> — You clicked the page!"; });
+
+document.addEventListener("keydown", function(event) {
+
+if (event.key === "Enter") {
+
+log.innerHTML = "You pressed the ENTER key!"; }
+
+});
+
+</script>
+
+</body> </html> :::
