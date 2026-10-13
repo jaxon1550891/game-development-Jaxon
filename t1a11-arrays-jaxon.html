@@ -1,22 +1,187 @@
-<h2 align=center>t1a11-arrays-jaxon.html</h2>
-<a href="">good reference to javascript arrays</a><br>
-<h4> example working array code</h4>
-max array entry: <input type=number
-  id="mytext01" value="3"><br>
-  <input type=button value="Example onclick" onclick="{
-let mytemp = document.getEelementbyId('mytext01').value let mysum = ''
-    document.getElementById('mydiv01').innerHTML = ''
-    myarray = new Array()
-    myArray[0] = 'fred'
-    myArray[1] = 'mary'
-    myArray[2] = 'Lizzy'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>t1a11 - Arrays by Jaxon</title>
 
-    for (let myloop=0; myloop < mytemp; myloop++){
-      mysum += 'loop #: ' + myloop + ' array entry: ' + myArray[myloop] +'<br>'
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #f2f6fc;
+      color: #222;
     }
-    document.getElementById('mydiv01').innerHTML = mySum
-    }">
-    <div id="mydiv01">...</div>
 
-    <br>
-    you do more arrays that do diffrent things, hopefully some with numbers.<br>
+    h2, h4 {
+      color: #18558a;
+    }
+
+    input {
+      padding: 8px;
+      margin: 6px 0;
+      font-size: 15px;
+    }
+
+    input[type="button"] {
+      background-color: #1769aa;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    input[type="button"]:hover {
+      background-color: #104b7b;
+    }
+
+    #mydiv01 {
+      background: white;
+      border: 1px solid #ccd6e0;
+      border-radius: 6px;
+      padding: 15px;
+      margin-top: 15px;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2 style="text-align: center;">t1a11-arrays-jaxon.html</h2>
+
+  <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Arrays"
+     target="_blank" rel="noopener noreferrer">
+    Good reference to JavaScript arrays
+  </a>
+
+  <h4>Example working array code</h4>
+
+  <label for="mytext01">Maximum array entries (1–5):</label>
+  <input type="number" id="mytext01" value="3" min="1" max="5">
+  <br>
+
+  <input type="button" value="1. Display names" onclick="showNames()">
+  <input type="button" value="2. Add numbers" onclick="addNumbers()">
+  <input type="button" value="3. Find average" onclick="findAverage()">
+  <input type="button" value="4. Find largest" onclick="findLargest()">
+  <input type="button" value="5. Reverse array" onclick="reverseArray()">
+
+  <div id="mydiv01" aria-live="polite">Click a button to try an array.</div>
+
+  <script>
+    // Example 1: An array containing names
+    function showNames() {
+      let myArray = ['Fred', 'Mary', 'Lizzy', 'Jaxon', 'Alex'];
+      let mytemp = '';
+      let mymax = getMax();
+
+      if (mymax === null) return;
+
+      for (let myloop = 0; myloop < mymax; myloop++) {
+        mytemp += 'Loop #: ' + myloop +
+          ' | Array entry: ' + myArray[myloop] + '<br>';
+      }
+
+      document.getElementById('mydiv01').innerHTML = mytemp;
+    }
+
+    // Example 2: Add numbers in an array
+    function addNumbers() {
+      let myArray = [10, 20, 30, 40, 50];
+      let mysum = 0;
+      let mymax = getMax();
+
+      if (mymax === null) return;
+
+      for (let myloop = 0; myloop < mymax; myloop++) {
+        mysum += myArray[myloop];
+      }
+
+      document.getElementById('mydiv01').innerHTML =
+        'Numbers used: ' + myArray.slice(0, mymax).join(', ') +
+        '<br>Total sum: ' + mysum;
+    }
+
+    // Example 3: Calculate the average
+    function findAverage() {
+      let myArray = [10, 20, 30, 40, 50];
+      let mysum = 0;
+      let mymax = getMax();
+
+      if (mymax === null) return;
+
+      for (let myloop = 0; myloop < mymax; myloop++) {
+        mysum += myArray[myloop];
+      }
+
+      let myaverage = mysum / mymax;
+
+      document.getElementById('mydiv01').innerHTML =
+        'Numbers used: ' + myArray.slice(0, mymax).join(', ') +
+        '<br>Sum: ' + mysum +
+        '<br>Average: ' + myaverage;
+    }
+
+    // Example 4: Find the largest number
+    function findLargest() {
+      let myArray = [10, 20, 30, 40, 50];
+      let mymax = getMax();
+
+      if (mymax === null) return;
+
+      let largest = myArray[0];
+
+      for (let myloop = 1; myloop < mymax; myloop++) {
+        if (myArray[myloop] > largest) {
+          largest = myArray[myloop];
+        }
+      }
+
+      document.getElementById('mydiv01').innerHTML =
+        'Numbers used: ' + myArray.slice(0, mymax).join(', ') +
+        '<br>Largest number: ' + largest;
+    }
+
+    // Example 5: Reverse the order of an array
+    function reverseArray() {
+      let myArray = ['Fred', 'Mary', 'Lizzy', 'Jaxon', 'Alex'];
+      let mymax = getMax();
+
+      if (mymax === null) return;
+
+      let mytemp = myArray.slice(0, mymax).reverse();
+
+      document.getElementById('mydiv01').innerHTML =
+        'Original array: ' + myArray.slice(0, mymax).join(', ') +
+        '<br>Reversed array: ' + mytemp.join(', ');
+    }
+
+    // Check that the input is valid
+    function getMax() {
+      let mymax = Number(document.getElementById('mytext01').value);
+
+      if (!Number.isInteger(mymax) || mymax < 1 || mymax > 5) {
+        document.getElementById('mydiv01').textContent =
+          'Please enter a whole number from 1 to 5.';
+        return null;
+      }
+
+      return mymax;
+    }
+  </script>
+
+  <h4>You do: More array ideas</h4>
+  Try adding your own arrays that:
+  <ul>
+    <li>Store your favourite games.</li>
+    <li>Find the smallest number in an array.</li>
+    <li>Count how many numbers are even.</li>
+    <li>Search for a name in an array.</li>
+    <li>Sort numbers from smallest to largest.</li>
+  </ul>
+
+</body>
+</html>
