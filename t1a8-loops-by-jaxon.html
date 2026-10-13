@@ -1,22 +1,156 @@
-<h2 align=center>t1a8-loops-by-jaxon.html</h2>
-<a href="">good reference to javascript loops</a><br>
-<h4> example input output code</h4>
-<pre>
-  for (let myloop = 0; myloop < mymax; myloop++ ){
-                                // your code here
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>t1a8 - JavaScript Loops</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 750px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #f4f7fb;
+      color: #222;
     }
-</pre>
-<h4> example working code</h4>
-max loops: <input id="mynum01" type=number value="4" ><br>
-weird number: <input id="myweird" type=number value="2 ><br>
-  <input type=button value="basic for loop with decisions" onclick="{
-  document.getelementbyid('mydiv01').innerHTML = ''
-  let mytemp = ''
-  let mymax = parseint(document.getelementbyid('mynum01').value)
-  for (let myloop = 0; myloop < mymax; myloop++ ){
-            if (myloop * 2 > mymax){
+
+    h2, h4 {
+      color: #174a7e;
+    }
+
+    input {
+      margin: 6px 0;
+      padding: 8px;
+      font-size: 16px;
+    }
+
+    input[type="number"] {
+      width: 100px;
+    }
+
+    input[type="button"] {
+      background: #1769aa;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 10px 15px;
+    }
+
+    input[type="button"]:hover {
+      background: #104b7b;
+    }
+
+    #mydiv01 {
+      margin-top: 15px;
+      padding: 15px;
+      background: white;
+      border: 1px solid #ccd6e0;
+      border-radius: 6px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .weird {
+      color: #c0392b;
+      font-weight: bold;
+    }
+
+    .greater {
+      color: #1769aa;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2 style="text-align: center;">
+    t1a8 - Loops by Jaxon
+  </h2>
+
+  <p>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration"
+       target="_blank" rel="noopener noreferrer">
+      Good reference to JavaScript loops
+    </a>
+  </p>
+
+  <h4>Example input/output code</h4>
+
+  <pre><code>for (let myloop = 0; myloop < mymax; myloop++) {
+    // Your code here
+}</code></pre>
+
+  <h4>Example working code</h4>
+
+  <label for="mynum01">Maximum loops:</label>
+  <input id="mynum01" type="number" value="4" min="0" max="1000">
+  <br>
+
+  <label for="myweird">Weird number:</label>
+  <input id="myweird" type="number" value="2" min="1" max="1000">
+  <br>
+
+  <input
+    type="button"
+    value="Basic for loop with decisions"
+    onclick="runLoop()"
+  >
+
+  <div id="mydiv01" aria-live="polite">
+    Click the button to run the loop.
+  </div>
+
+  <script>
+    function runLoop() {
+      const output = document.getElementById('mydiv01');
+      const mymax = Number(document.getElementById('mynum01').value);
+      const myweird = Number(document.getElementById('myweird').value);
+
+      // Validate the input
+      if (
+        !Number.isInteger(mymax) ||
+        mymax < 0 ||
+        mymax > 1000
+      ) {
+        output.textContent =
+          'Please enter a whole number from 0 to 1000 for maximum loops.';
+        return;
+      }
+
+      if (
+        !Number.isInteger(myweird) ||
+        myweird < 1 ||
+        myweird > 1000
+      ) {
+        output.textContent =
+          'Please enter a whole number from 1 to 1000 for the weird number.';
+        return;
+      }
+
+      let mytemp = '';
+
+      for (let myloop = 0; myloop < mymax; myloop++) {
+        let message = 'Loop number: ' + myloop;
+
+        // Decision 1: Is the loop number divisible by the weird number?
+        if (myloop % myweird === 0) {
+          message += ' - divisible by ' + myweird;
         }
-      mytemp+= 'loop number: ' + my loop + '<br>'
+
+        // Decision 2: Is the loop number greater than half the maximum?
+        if (myloop * 2 > mymax) {
+          message += ' - greater than half the maximum';
+        }
+
+        mytemp += message + '<br>';
+      }
+
+      output.innerHTML = mytemp || 'The loop ran zero times.';
     }
-    document.getelementbyid('mydiv01').innerHTML = mytemp
-    }">
+  </script>
+
+</body>
+</html>
