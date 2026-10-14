@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array & Loop Challenge</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            padding: 30px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px #00000015;
+        }
+
+        h2 {
+            text-align: center;
+            color: #3157a4;
+        }
+
+        .student-info {
+            line-height: 2;
+            margin-bottom: 20px;
+        }
+
+        .instructions {
+            background: #f4f4f4;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-left: 5px solid #3157a4;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            width: 100px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #3157a4;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #233f7c;
+        }
+
+        #mydiv01 {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8faff;
+            border: 1px solid #ccd7ed;
+            border-radius: 6px;
+            line-height: 1.8;
+        }
+
+        .game-item {
+            padding: 6px;
+            margin: 5px 0;
+            background: #e5edff;
+            border-radius: 4px;
+        }
+    </style>
+
+    <script>
+        // ALL FUNCTIONS GO HERE
+        function myfunctions() {
+            const inputValue = Number(
+                document.getElementById("mynum01").value
+            );
+
+            const games = [
+                "Minecraft",
+                "Roblox",
+                "Fortnite",
+                "Mario Kart",
+                "Pokémon",
+                "Rocket League"
+            ];
+
+            let resultstring = "";
+
+            if (document.getElementById("mynum01").value === "") {
+                document.getElementById("mydiv01").innerHTML =
+                    "Please enter a number.";
+                return;
+            }
+
+            if (inputValue < 0 || !Number.isInteger(inputValue)) {
+                document.getElementById("mydiv01").innerHTML =
+                    "Please enter a whole number of 0 or greater.";
+                return;
+            }
+
+            // Limit the loop to the number of games available.
+            const count = Math.min(inputValue, games.length);
+
+            // Loop through the array.
+            for (let i = 0; i < count; i++) {
+                resultstring +=
+                    '<div class="game-item">' +
+                    (i + 1) + ". " + games[i] +
+                    "</div>";
+            }
+
+            if (count === 0) {
+                resultstring = "No games to display.";
+            }
+
+            document.getElementById("mydiv01").innerHTML =
+                "The original input was: <strong>" + inputValue +
+                "</strong><br><br>" +
+                "Games displayed: " + count +
+                "<br><br>" + resultstring;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Array & Loop Challenge</h2>
+
+        <div class="student-info">
+            <strong>Student Name:</strong> <u>____________</u><br>
+            <strong>Date:</strong> <u>10/14/2026</u><br>
+            <strong>Assignment Title:</strong>
+            <u>Array & Loop Challenge</u>
+        </div>
+
+        <div class="instructions">
+            <strong>Assignment Instructions:</strong>
+            <p>Write JavaScript code that:</p>
+            <ol>
+                <li>Creates an array of at least 4 game items.</li>
+                <li>Uses a <code>for</code> loop to go through the array
+                    up to the number entered in the input box.</li>
+                <li>Displays each item in the output area along with
+                    the original input value.</li>
+            </ol>
+        </div>
+
+        <label for="mynum01">
+            <strong>How many games do you want to display?</strong>
+        </label>
+        <br><br>
+
+        <input id="mynum01" type="number" min="0" step="1" value="4">
+
+        <br><br>
+
+        <button type="button" onclick="myfunctions()">
+            Do Assignment
+        </button>
+
+        <div id="mydiv01">
+            Your results will appear here...
+        </div>
+    </div>
+</body>
+</html>
