@@ -1,3 +1,187 @@
-<h2>t1a01-tables-by-jaxon<h2>
- <img width="200" src="https://th.bing.com/th/id/OIP.Ja5ptQjYHsJ8xKFiSZFa3gHaHa?w=177&h=180&c=7&r=0&o=7&pid=1.7&rm=3" <br><br>
-<a class="website-link" href="https://www.happywhale.com" target="_blank">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tables by Jaxon 🐋</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #b3e5fc, #e1f5fe);
+            color: #123047;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #003b5c, #0077b6, #00b4d8);
+            color: white;
+            padding: 45px 20px;
+            box-shadow: 0 5px 15px #003b5c40;
+        }
+
+        header h1 {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            margin: 0 0 12px;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            margin: 0;
+            color: #d9f6ff;
+        }
+
+        main {
+            padding: 40px 20px;
+        }
+
+        .card {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 35px 25px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 12px 35px #003b5c20;
+        }
+
+        .whale-image {
+            width: 200px;
+            max-width: 100%;
+            border-radius: 50%;
+            border: 6px solid #d9f6ff;
+            box-shadow: 0 6px 18px #0077b640;
+            transition: transform 0.3s ease;
+        }
+
+        .whale-image:hover {
+            transform: scale(1.08) rotate(-3deg);
+        }
+
+        h2 {
+            color: #006994;
+            font-size: 1.8rem;
+            margin: 25px 0 12px;
+        }
+
+        .description {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #456577;
+        }
+
+        .website-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 28px;
+            background: linear-gradient(135deg, #0077b6, #00a6d6);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px #0077b640;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .website-link:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 9px 22px #0077b655;
+        }
+
+        .facts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .fact {
+            padding: 20px 12px;
+            background: #eafaff;
+            border-radius: 16px;
+        }
+
+        .fact span {
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .fact strong {
+            color: #006994;
+        }
+
+        footer {
+            padding: 25px 15px;
+            color: #456577;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🐋 Tables by Jaxon</h1>
+        <p>Explore the amazing world beneath the waves!</p>
+    </header>
+
+    <main>
+        <section class="card">
+            <img
+                class="whale-image"
+                src="https://th.bing.com/th/id/OIP.Ja5ptQjYHsJ8xKFiSZFa3gHaHa?w=177&h=180&c=7&r=0&o=7&pid=1.7&rm=3"
+                alt="Whale illustration"
+            >
+
+            <h2>Discover Happywhale</h2>
+
+            <p class="description">
+                Dive into the fascinating world of whales! Discover how
+                people identify whales, share sightings, and help scientists
+                learn more about these incredible ocean giants.
+            </p>
+
+            <a
+                class="website-link"
+                href="https://www.happywhale.com"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                🌊 Explore Happywhale →
+            </a>
+
+            <div class="facts">
+                <div class="fact">
+                    <span>🐋</span>
+                    <strong>Ocean Giants</strong>
+                    <p>Meet amazing whales.</p>
+                </div>
+
+                <div class="fact">
+                    <span>🔎</span>
+                    <strong>Discover</strong>
+                    <p>Learn about whale sightings.</p>
+                </div>
+
+                <div class="fact">
+                    <span>🌎</span>
+                    <strong>Protect</strong>
+                    <p>Help us understand our oceans.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        Made with 💙 by Jaxon | Protect our oceans! 🌊
+    </footer>
+
+</body>
+</html>
