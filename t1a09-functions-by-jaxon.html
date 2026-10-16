@@ -1,121 +1,276 @@
-<div class="extra-game">
-  <h2>🎲 Dice Roller</h2>
-  <p>Choose how many dice you want to roll!</p>
+<div class="extra-game calculator-game">
+  <h2>🧮 Math Class Calculator</h2>
+  <p>Practice your math with this easy-to-use calculator!</p>
 
-  <select id="diceCount">
-    <option value="1">1 Die</option>
-    <option value="2" selected>2 Dice</option>
-    <option value="3">3 Dice</option>
-    <option value="4">4 Dice</option>
-    <option value="5">5 Dice</option>
-    <option value="6">6 Dice</option>
-  </select>
+  <div class="calculator">
+    <div id="calcDisplay" class="calc-display"
+         role="status" aria-live="polite">0</div>
 
-  <br>
+    <div class="calc-buttons">
+      <button class="calc-clear" onclick="clearCalc()">C</button>
+      <button class="calc-delete" onclick="deleteCalc()">⌫</button>
+      <button onclick="calcOperator('%')">%</button>
+      <button class="calc-operator" onclick="calcOperator('/')">÷</button>
 
-  <button onclick="rollDice()">🎲 Roll Dice!</button>
+      <button onclick="calcDigit('7')">7</button>
+      <button onclick="calcDigit('8')">8</button>
+      <button onclick="calcDigit('9')">9</button>
+      <button class="calc-operator" onclick="calcOperator('*')">×</button>
 
-  <div id="diceResult" class="game-result">
-    Your dice will appear here!
+      <button onclick="calcDigit('4')">4</button>
+      <button onclick="calcDigit('5')">5</button>
+      <button onclick="calcDigit('6')">6</button>
+      <button class="calc-operator" onclick="calcOperator('-')">−</button>
+
+      <button onclick="calcDigit('1')">1</button>
+      <button onclick="calcDigit('2')">2</button>
+      <button onclick="calcDigit('3')">3</button>
+      <button class="calc-operator" onclick="calcOperator('+')">+</button>
+
+      <button onclick="calcDigit('0')">0</button>
+      <button onclick="calcDecimal()">.</button>
+      <button class="calc-equals" onclick="calculateResult()">=</button>
+    </div>
   </div>
 </div>
+2. Calculator CSS
+Add this to the bottom of your existing <style> section. It matches your dark background and turquoise headings.
 
-<!-- COIN FLIP -->
-<div class="extra-game">
-  <h2>🪙 Coin Flip</h2>
-  <p>Click the button to flip a coin!</p>
 
-  <button onclick="flipCoin()">🪙 Flip Coin!</button>
+css
 
-  <div id="coinResult" class="game-result">
-    Ready to flip!
-  </div>
-</div>
+.calculator-game {
+  box-sizing: border-box;
+}
 
-<style>
-  .extra-game {
-    max-width: 800px;
-    margin: 25px auto;
-    padding: 25px;
-    border-radius: 20px;
-    background: rgba(0, 0, 0, 0.35);
-    color: white;
-    text-align: center;
-  }
+.calculator {
+  width: 100%;
+  max-width: 340px;
+  margin: 20px auto 0;
+  padding: 15px;
+  box-sizing: border-box;
+  background: #172033;
+  border: 2px solid #00ffcc;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px #0004;
+}
 
-  .extra-game h2 {
-    color: #00ffcc;
-  }
+.calc-display {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 75px;
+  margin-bottom: 12px;
+  padding: 18px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  background: #ffffff;
+  color: #172033;
+  border-radius: 10px;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: right;
+}
 
-  .extra-game select {
+.calc-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.calc-buttons button {
+  min-width: 0;
+  min-height: 58px;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  background: #e8edf5;
+  color: #172033;
+  font-size: 23px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.1s, filter 0.1s;
+}
+
+.calc-buttons button:hover {
+  filter: brightness(0.9);
+}
+
+.calc-buttons button:active {
+  transform: scale(0.95);
+}
+
+.calc-buttons button:focus-visible {
+  outline: 3px solid #00ffcc;
+  outline-offset: 2px;
+}
+
+.calc-buttons .calc-operator {
+  background: #00bfa5;
+  color: #10212b;
+}
+
+.calc-buttons .calc-clear {
+  background: #ff6b6b;
+  color: white;
+}
+
+.calc-buttons .calc-delete {
+  background: #ffd166;
+  color: #222;
+}
+
+.calc-buttons .calc-equals {
+  grid-column: span 2;
+  background: #00ffcc;
+  color: #10212b;
+}
+
+@media (max-width: 400px) {
+  .calculator {
     padding: 10px;
-    margin: 10px;
-    border-radius: 8px;
-    font-size: 16px;
   }
 
-  .game-result {
-    margin-top: 20px;
-    padding: 15px;
-    min-height: 70px;
-    border-radius: 12px;
-    background: white;
-    color: #222;
-    font-size: 22px;
-    font-weight: bold;
-    overflow-wrap: anywhere;
+  .calc-buttons {
+    gap: 6px;
   }
 
-  .dice {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 55px;
-    height: 55px;
-    margin: 5px;
-    border-radius: 10px;
-    background: #ffffff;
-    color: #1e3c72;
-    font-size: 35px;
-    box-shadow: 0 3px 8px #0003;
+  .calc-buttons button {
+    min-height: 50px;
+    font-size: 20px;
   }
 
-  .coin {
-    font-size: 65px;
-    display: block;
-    margin: 10px;
+  .calc-display {
+    font-size: 25px;
   }
-</style>
+}
+3. Calculator JavaScript
+Add this to the bottom of your existing <script> section, before the closing </script> tag.
 
-<script>
-  // DICE ROLLER
-  function rollDice() {
-    const count = Number(document.getElementById("diceCount").value);
-    const result = document.getElementById("diceResult");
 
-    const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
-    let total = 0;
-    let diceHTML = "";
+javascript
 
-    for (let i = 0; i < count; i++) {
-      const roll = Math.floor(Math.random() * 6) + 1;
-      total += roll;
+let calcCurrent = "0";
+let calcPrevious = null;
+let calcOperation = null;
+let calcReset = false;
 
-      diceHTML += `<span class="dice" aria-label="${roll}">${diceFaces[roll - 1]}</span>`;
-    }
+function updateCalc() {
+  document.getElementById("calcDisplay").textContent =
+    calcCurrent;
+}
 
-    result.innerHTML =
-      diceHTML +
-      `<p>Total: ${total}</p>`;
+function calcDigit(digit) {
+  if (calcReset || calcCurrent === "Error") {
+    calcCurrent = digit;
+    calcReset = false;
+  } else if (calcCurrent === "0") {
+    calcCurrent = digit;
+  } else if (calcCurrent.replace("-", "").length < 15) {
+    calcCurrent += digit;
   }
 
-  // COIN FLIP
-  function flipCoin() {
-    const result = document.getElementById("coinResult");
-    const heads = Math.random() < 0.5;
+  updateCalc();
+}
 
-    result.innerHTML = heads
-      ? '<span class="coin">🪙</span> HEADS!'
-      : '<span class="coin">🪙</span> TAILS!';
+function calcDecimal() {
+  if (calcReset || calcCurrent === "Error") {
+    calcCurrent = "0.";
+    calcReset = false;
+  } else if (!calcCurrent.includes(".")) {
+    calcCurrent += ".";
   }
-</script>
+
+  updateCalc();
+}
+
+function calcOperator(operator) {
+  if (calcCurrent === "Error") clearCalc();
+
+  if (operator === "%") {
+    calcCurrent = String(Number(calcCurrent) / 100);
+    calcReset = true;
+    updateCalc();
+    return;
+  }
+
+  if (calcOperation && !calcReset) {
+    calculateResult();
+  }
+
+  calcPrevious = Number(calcCurrent);
+  calcOperation = operator;
+  calcReset = true;
+}
+
+function calculateResult() {
+  if (calcOperation === null || calcPrevious === null) {
+    return;
+  }
+
+  const a = calcPrevious;
+  const b = Number(calcCurrent);
+  let answer;
+
+  switch (calcOperation) {
+    case "+":
+      answer = a + b;
+      break;
+    case "-":
+      answer = a - b;
+      break;
+    case "*":
+      answer = a * b;
+      break;
+    case "/":
+      if (b === 0) {
+        calcCurrent = "Error";
+        calcPrevious = null;
+        calcOperation = null;
+        calcReset = true;
+        updateCalc();
+        return;
+      }
+      answer = a / b;
+      break;
+  }
+
+  if (!Number.isFinite(answer)) {
+    calcCurrent = "Error";
+  } else {
+    // Keep results readable and avoid floating-point noise.
+    calcCurrent = String(
+      Number(answer.toPrecision(12))
+    );
+  }
+
+  calcPrevious = null;
+  calcOperation = null;
+  calcReset = true;
+  updateCalc();
+}
+
+function deleteCalc() {
+  if (calcReset || calcCurrent === "Error") {
+    calcCurrent = "0";
+    calcReset = false;
+  } else {
+    calcCurrent = calcCurrent.length > 1
+      ? calcCurrent.slice(0, -1)
+      : "0";
+
+    if (calcCurrent === "-") calcCurrent = "0";
+  }
+
+  updateCalc();
+}
+
+function clearCalc() {
+  calcCurrent = "0";
+  calcPrevious = null;
+  calcOperation = null;
+  calcReset = false;
+  updateCalc();
+}
