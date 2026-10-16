@@ -1,352 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JavaScript Functions - Jaxon</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jaxon's Calculator</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: linear-gradient(135deg, #74ebd5, #9face6);
-      padding: 20px;
-      margin: 0;
-      min-height: 100vh;
-    }
+body {
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #74ebd5, #9face6);
+}
 
-    .container {
-      max-width: 700px;
-      margin: 20px auto;
-      background-color: white;
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-    }
+.calculator {
+  width: 320px;
+  max-width: 100%;
+  padding: 20px;
+  background: #292d36;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px #0005;
+}
 
-    h1 {
-      color: #333;
-    }
+h1 {
+  color: white;
+  text-align: center;
+  font-size: 22px;
+}
 
-    h2 {
-      color: #555;
-    }
+#display {
+  width: 100%;
+  height: 75px;
+  margin-bottom: 15px;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #e8f5e9;
+  color: #17251a;
+  font-size: 32px;
+  text-align: right;
+}
 
-    input {
-      padding: 10px;
-      margin: 5px;
-      width: 140px;
-      max-width: 100%;
-      font-size: 16px;
-      border: 2px solid #ccc;
-      border-radius: 5px;
-    }
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 9px;
+}
 
-    button {
-      padding: 10px 15px;
-      margin: 5px;
-      font-size: 15px;
-      border: none;
-      border-radius: 6px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
+button {
+  min-width: 0;
+  height: 55px;
+  border: none;
+  border-radius: 10px;
+  background: #454b58;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #1b1e25;
+}
 
-    button:hover {
-      background-color: #0056b3;
-    }
+button:hover {
+  filter: brightness(1.2);
+}
 
-    button:focus-visible,
-    input:focus-visible {
-      outline: 3px solid #333;
-      outline-offset: 2px;
-    }
+button:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
 
-    .section {
-      margin-top: 25px;
-      padding: 15px;
-      border-top: 2px solid #ddd;
-    }
+.operator {
+  background: #ff9f43;
+  color: #222;
+}
 
-    #mydiv01 {
-      margin-top: 25px;
-      padding: 20px;
-      background-color: #f1f1f1;
-      border-radius: 8px;
-      font-size: 18px;
-      font-weight: bold;
-      line-height: 1.8;
-      overflow-wrap: anywhere;
-      min-height: 60px;
-    }
+.clear {
+  background: #e74c3c;
+}
 
-    @media (max-width: 480px) {
-      body {
-        padding: 10px;
-      }
+.equals {
+  background: #2ecc71;
+  color: #17251a;
+}
 
-      .container {
-        padding: 15px;
-      }
+.zero {
+  grid-column: span 2;
+}
 
-      input {
-        width: 100%;
-        margin: 6px 0;
-      }
-
-      button {
-        margin: 5px 2px;
-      }
-    }
-  </style>
+</style>
 </head>
 
 <body>
-  <div class="container">
 
-    <h1>JavaScript Functions</h1>
-    <h2>t1a09-functions-by-jaxon.html</h2>
+<div class="calculator">
+  <h1>Jaxon's Calculator</h1>
 
-    <p>
-      Functions organize code into reusable sections.
-      Click ONE button at a time to try each function!
-    </p>
+  <input id="display" value="0" readonly aria-label="Calculator display">
 
-    <p>
-      <a href="https://www.w3schools.com/js/js_functions.asp"
-         target="_blank" rel="noopener noreferrer">
-        JavaScript Functions Reference
-      </a>
-    </p>
+  <div class="buttons">
+    <button class="clear" onclick="clearCalculator()">AC</button>
+    <button onclick="deleteDigit()">DEL</button>
+    <button class="operator" onclick="chooseOperator('%')">%</button>
+    <button class="operator" onclick="chooseOperator('/')">÷</button>
 
-    <!-- CALCULATOR -->
-    <div class="section">
-      <h2>🧮 Calculator Functions</h2>
+    <button onclick="pressDigit('7')">7</button>
+    <button onclick="pressDigit('8')">8</button>
+    <button onclick="pressDigit('9')">9</button>
+    <button class="operator" onclick="chooseOperator('*')">×</button>
 
-      <input
-        type="number"
-        id="number1"
-        value="10"
-        step="any"
-        placeholder="First number"
-        aria-label="First number"
-      >
+    <button onclick="pressDigit('4')">4</button>
+    <button onclick="pressDigit('5')">5</button>
+    <button onclick="pressDigit('6')">6</button>
+    <button class="operator" onclick="chooseOperator('-')">−</button>
 
-      <input
-        type="number"
-        id="number2"
-        value="5"
-        step="any"
-        placeholder="Second number"
-        aria-label="Second number"
-      >
+    <button onclick="pressDigit('1')">1</button>
+    <button onclick="pressDigit('2')">2</button>
+    <button onclick="pressDigit('3')">3</button>
+    <button class="operator" onclick="chooseOperator('+')">+</button>
 
-      <br>
-
-      <button type="button" onclick="addNumbers()">➕ Add</button>
-      <button type="button" onclick="subtractNumbers()">➖ Subtract</button>
-      <button type="button" onclick="multiplyNumbers()">✖️ Multiply</button>
-      <button type="button" onclick="divideNumbers()">➗ Divide</button>
-    </div>
-
-    <!-- SQUARE -->
-    <div class="section">
-      <h2>² Square a Number</h2>
-
-      <input
-        type="number"
-        id="squareNumber"
-        value="4"
-        step="any"
-        placeholder="Enter a number"
-        aria-label="Number to square"
-      >
-
-      <br>
-
-      <button type="button" onclick="squareNumberFunction()">
-        Square Number
-      </button>
-    </div>
-
-    <!-- GREETING -->
-    <div class="section">
-      <h2>👋 Greeting Function</h2>
-
-      <input
-        type="text"
-        id="nameInput"
-        value="Jaxon"
-        placeholder="Enter your name"
-        aria-label="Your name"
-      >
-
-      <br>
-
-      <button type="button" onclick="sayHello()">Say Hello</button>
-    </div>
-
-    <!-- RANDOM NUMBER -->
-    <div class="section">
-      <h2>🎲 Random Number Function</h2>
-
-      <button type="button" onclick="randomNumber()">
-        Generate Random Number
-      </button>
-    </div>
-
-    <!-- CLEAR RESULT -->
-    <div class="section">
-      <h2>🧹 Clear Result</h2>
-
-      <button type="button" onclick="clearResult()">
-        Clear Result
-      </button>
-    </div>
-
-    <!-- RESULT -->
-    <div id="mydiv01" role="status" aria-live="polite">
-      Your result will appear here...
-    </div>
-
+    <button onclick="pressDigit('0')" class="zero">0</button>
+    <button onclick="pressDecimal()">.</button>
+    <button class="equals" onclick="calculate()">=</button>
   </div>
+</div>
 
-  <script>
-    // DISPLAY ONE RESULT AT A TIME
-    function showResult(message) {
-      const result = document.getElementById("mydiv01");
+<script>
+const display = document.getElementById("display");
 
-      result.textContent = message;
-      result.style.whiteSpace = "normal";
-    }
+let currentInput = "0";
+let storedNumber = null;
+let operator = null;
+let startNewNumber = false;
+let finishedCalculation = false;
 
-    // GET AND VALIDATE BOTH NUMBERS
-    function getNumbers() {
-      const input1 = document.getElementById("number1").value.trim();
-      const input2 = document.getElementById("number2").value.trim();
+function updateDisplay() {
+  display.value = currentInput;
+}
 
-      if (input1 === "" || input2 === "") {
-        showResult("❌ Please enter both numbers.");
-        return null;
-      }
+function pressDigit(digit) {
+  if (currentInput === "Error") clearCalculator();
 
-      const num1 = Number(input1);
-      const num2 = Number(input2);
+  if (startNewNumber || finishedCalculation) {
+    currentInput = digit;
+    startNewNumber = false;
+    finishedCalculation = false;
+  } else if (currentInput === "0") {
+    currentInput = digit;
+  } else if (currentInput.length < 15) {
+    currentInput += digit;
+  }
 
-      if (!Number.isFinite(num1) || !Number.isFinite(num2)) {
-        showResult("❌ Please enter valid numbers.");
-        return null;
-      }
+  updateDisplay();
+}
 
-      return { num1, num2 };
-    }
+function pressDecimal() {
+  if (currentInput === "Error") clearCalculator();
 
-    // ADD: ONLY RUNS WHEN ADD IS CLICKED
-    function addNumbers() {
-      const numbers = getNumbers();
-      if (!numbers) return;
+  if (startNewNumber || finishedCalculation) {
+    currentInput = "0.";
+    startNewNumber = false;
+    finishedCalculation = false;
+  } else if (!currentInput.includes(".")) {
+    currentInput += ".";
+  }
 
-      const { num1, num2 } = numbers;
-      const answer = num1 + num2;
+  updateDisplay();
+}
 
-      showResult(`${num1} + ${num2} = ${answer}`);
-    }
+function chooseOperator(nextOperator) {
+  if (currentInput === "Error") return;
 
-    // SUBTRACT: ONLY RUNS WHEN SUBTRACT IS CLICKED
-    function subtractNumbers() {
-      const numbers = getNumbers();
-      if (!numbers) return;
+  if (operator !== null && !startNewNumber) {
+    calculate(false);
+    if (currentInput === "Error") return;
+  }
 
-      const { num1, num2 } = numbers;
-      const answer = num1 - num2;
+  storedNumber = Number(currentInput);
+  operator = nextOperator;
+  startNewNumber = true;
+  finishedCalculation = false;
+}
 
-      showResult(`${num1} - ${num2} = ${answer}`);
-    }
+function calculate(finish = true) {
+  if (operator === null || storedNumber === null) return;
+  if (startNewNumber) return;
 
-    // MULTIPLY: ONLY RUNS WHEN MULTIPLY IS CLICKED
-    function multiplyNumbers() {
-      const numbers = getNumbers();
-      if (!numbers) return;
+  const secondNumber = Number(currentInput);
+  let answer;
 
-      const { num1, num2 } = numbers;
-      const answer = num1 * num2;
-
-      showResult(`${num1} × ${num2} = ${answer}`);
-    }
-
-    // DIVIDE: ONLY RUNS WHEN DIVIDE IS CLICKED
-    function divideNumbers() {
-      const numbers = getNumbers();
-      if (!numbers) return;
-
-      const { num1, num2 } = numbers;
-
-      if (num2 === 0) {
-        showResult("❌ You cannot divide by zero!");
+  switch (operator) {
+    case "+":
+      answer = storedNumber + secondNumber;
+      break;
+    case "-":
+      answer = storedNumber - secondNumber;
+      break;
+    case "*":
+      answer = storedNumber * secondNumber;
+      break;
+    case "/":
+      if (secondNumber === 0) {
+        currentInput = "Error";
+        updateDisplay();
+        operator = null;
+        storedNumber = null;
+        startNewNumber = true;
+        finishedCalculation = true;
         return;
       }
+      answer = storedNumber / secondNumber;
+      break;
+    case "%":
+      answer = storedNumber % secondNumber;
+      break;
+    default:
+      return;
+  }
 
-      const answer = num1 / num2;
-      showResult(`${num1} ÷ ${num2} = ${answer}`);
-    }
+  if (!Number.isFinite(answer)) {
+    currentInput = "Error";
+  } else {
+    currentInput = String(Number(answer.toPrecision(12)));
+  }
 
-    // SQUARE ONE NUMBER
-    function squareNumberFunction() {
-      const input = document.getElementById("squareNumber").value.trim();
+  updateDisplay();
 
-      if (input === "") {
-        showResult("❌ Please enter a number to square.");
-        return;
-      }
+  storedNumber = null;
+  operator = null;
+  startNewNumber = true;
+  finishedCalculation = finish;
+}
 
-      const number = Number(input);
+function deleteDigit() {
+  if (currentInput === "Error" || finishedCalculation) {
+    clearCalculator();
+    return;
+  }
 
-      if (!Number.isFinite(number)) {
-        showResult("❌ Please enter a valid number.");
-        return;
-      }
+  if (startNewNumber) return;
 
-      const answer = number * number;
+  currentInput = currentInput.length > 1
+    ? currentInput.slice(0, -1)
+    : "0";
 
-      if (!Number.isFinite(answer)) {
-        showResult("❌ The result is too large.");
-        return;
-      }
+  if (currentInput === "-") currentInput = "0";
 
-      showResult(`${number}² = ${answer}`);
-    }
+  updateDisplay();
+}
 
-    // GREETING
-    function sayHello() {
-      const name = document.getElementById("nameInput").value.trim();
+function clearCalculator() {
+  currentInput = "0";
+  storedNumber = null;
+  operator = null;
+  startNewNumber = false;
+  finishedCalculation = false;
+  updateDisplay();
+}
+</script>
 
-      if (name === "") {
-        showResult("❌ Please enter your name first.");
-        return;
-      }
-
-      showResult(
-        `👋 Hello, ${name}! Welcome to my JavaScript page!`
-      );
-    }
-
-    // RANDOM NUMBER FROM 1 TO 100
-    function randomNumber() {
-      const number = Math.floor(Math.random() * 100) + 1;
-
-      showResult(`🎲 Your random number is: ${number}`);
-    }
-
-    // CLEAR THE CURRENT RESULT
-    function clearResult() {
-      showResult("Your result will appear here...");
-    }
-  </script>
 </body>
 </html>
