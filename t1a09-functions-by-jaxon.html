@@ -1,269 +1,121 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jaxon's Calculator</title>
+<div class="extra-game">
+  <h2>🎲 Dice Roller</h2>
+  <p>Choose how many dice you want to roll!</p>
 
-<style>
-* {
-  box-sizing: border-box;
-}
+  <select id="diceCount">
+    <option value="1">1 Die</option>
+    <option value="2" selected>2 Dice</option>
+    <option value="3">3 Dice</option>
+    <option value="4">4 Dice</option>
+    <option value="5">5 Dice</option>
+    <option value="6">6 Dice</option>
+  </select>
 
-body {
-  margin: 0;
-  padding: 20px;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #74ebd5, #9face6);
-}
+  <br>
 
-.calculator {
-  width: 320px;
-  max-width: 100%;
-  padding: 20px;
-  background: #292d36;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px #0005;
-}
+  <button onclick="rollDice()">🎲 Roll Dice!</button>
 
-h1 {
-  color: white;
-  text-align: center;
-  font-size: 22px;
-}
-
-#display {
-  width: 100%;
-  height: 75px;
-  margin-bottom: 15px;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: #e8f5e9;
-  color: #17251a;
-  font-size: 32px;
-  text-align: right;
-}
-
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 9px;
-}
-
-button {
-  min-width: 0;
-  height: 55px;
-  border: none;
-  border-radius: 10px;
-  background: #454b58;
-  color: white;
-  font-size: 22px;
-  cursor: pointer;
-  box-shadow: 0 3px 0 #1b1e25;
-}
-
-button:hover {
-  filter: brightness(1.2);
-}
-
-button:active {
-  transform: translateY(2px);
-  box-shadow: none;
-}
-
-.operator {
-  background: #ff9f43;
-  color: #222;
-}
-
-.clear {
-  background: #e74c3c;
-}
-
-.equals {
-  background: #2ecc71;
-  color: #17251a;
-}
-
-.zero {
-  grid-column: span 2;
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="calculator">
-  <h1>Jaxon's Calculator</h1>
-
-  <input id="display" value="0" readonly aria-label="Calculator display">
-
-  <div class="buttons">
-    <button class="clear" onclick="clearCalculator()">AC</button>
-    <button onclick="deleteDigit()">DEL</button>
-    <button class="operator" onclick="chooseOperator('%')">%</button>
-    <button class="operator" onclick="chooseOperator('/')">÷</button>
-
-    <button onclick="pressDigit('7')">7</button>
-    <button onclick="pressDigit('8')">8</button>
-    <button onclick="pressDigit('9')">9</button>
-    <button class="operator" onclick="chooseOperator('*')">×</button>
-
-    <button onclick="pressDigit('4')">4</button>
-    <button onclick="pressDigit('5')">5</button>
-    <button onclick="pressDigit('6')">6</button>
-    <button class="operator" onclick="chooseOperator('-')">−</button>
-
-    <button onclick="pressDigit('1')">1</button>
-    <button onclick="pressDigit('2')">2</button>
-    <button onclick="pressDigit('3')">3</button>
-    <button class="operator" onclick="chooseOperator('+')">+</button>
-
-    <button onclick="pressDigit('0')" class="zero">0</button>
-    <button onclick="pressDecimal()">.</button>
-    <button class="equals" onclick="calculate()">=</button>
+  <div id="diceResult" class="game-result">
+    Your dice will appear here!
   </div>
 </div>
 
+<!-- COIN FLIP -->
+<div class="extra-game">
+  <h2>🪙 Coin Flip</h2>
+  <p>Click the button to flip a coin!</p>
+
+  <button onclick="flipCoin()">🪙 Flip Coin!</button>
+
+  <div id="coinResult" class="game-result">
+    Ready to flip!
+  </div>
+</div>
+
+<style>
+  .extra-game {
+    max-width: 800px;
+    margin: 25px auto;
+    padding: 25px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.35);
+    color: white;
+    text-align: center;
+  }
+
+  .extra-game h2 {
+    color: #00ffcc;
+  }
+
+  .extra-game select {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+
+  .game-result {
+    margin-top: 20px;
+    padding: 15px;
+    min-height: 70px;
+    border-radius: 12px;
+    background: white;
+    color: #222;
+    font-size: 22px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+  }
+
+  .dice {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 55px;
+    height: 55px;
+    margin: 5px;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #1e3c72;
+    font-size: 35px;
+    box-shadow: 0 3px 8px #0003;
+  }
+
+  .coin {
+    font-size: 65px;
+    display: block;
+    margin: 10px;
+  }
+</style>
+
 <script>
-const display = document.getElementById("display");
+  // DICE ROLLER
+  function rollDice() {
+    const count = Number(document.getElementById("diceCount").value);
+    const result = document.getElementById("diceResult");
 
-let currentInput = "0";
-let storedNumber = null;
-let operator = null;
-let startNewNumber = false;
-let finishedCalculation = false;
+    const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+    let total = 0;
+    let diceHTML = "";
 
-function updateDisplay() {
-  display.value = currentInput;
-}
+    for (let i = 0; i < count; i++) {
+      const roll = Math.floor(Math.random() * 6) + 1;
+      total += roll;
 
-function pressDigit(digit) {
-  if (currentInput === "Error") clearCalculator();
+      diceHTML += `<span class="dice" aria-label="${roll}">${diceFaces[roll - 1]}</span>`;
+    }
 
-  if (startNewNumber || finishedCalculation) {
-    currentInput = digit;
-    startNewNumber = false;
-    finishedCalculation = false;
-  } else if (currentInput === "0") {
-    currentInput = digit;
-  } else if (currentInput.length < 15) {
-    currentInput += digit;
+    result.innerHTML =
+      diceHTML +
+      `<p>Total: ${total}</p>`;
   }
 
-  updateDisplay();
-}
+  // COIN FLIP
+  function flipCoin() {
+    const result = document.getElementById("coinResult");
+    const heads = Math.random() < 0.5;
 
-function pressDecimal() {
-  if (currentInput === "Error") clearCalculator();
-
-  if (startNewNumber || finishedCalculation) {
-    currentInput = "0.";
-    startNewNumber = false;
-    finishedCalculation = false;
-  } else if (!currentInput.includes(".")) {
-    currentInput += ".";
+    result.innerHTML = heads
+      ? '<span class="coin">🪙</span> HEADS!'
+      : '<span class="coin">🪙</span> TAILS!';
   }
-
-  updateDisplay();
-}
-
-function chooseOperator(nextOperator) {
-  if (currentInput === "Error") return;
-
-  if (operator !== null && !startNewNumber) {
-    calculate(false);
-    if (currentInput === "Error") return;
-  }
-
-  storedNumber = Number(currentInput);
-  operator = nextOperator;
-  startNewNumber = true;
-  finishedCalculation = false;
-}
-
-function calculate(finish = true) {
-  if (operator === null || storedNumber === null) return;
-  if (startNewNumber) return;
-
-  const secondNumber = Number(currentInput);
-  let answer;
-
-  switch (operator) {
-    case "+":
-      answer = storedNumber + secondNumber;
-      break;
-    case "-":
-      answer = storedNumber - secondNumber;
-      break;
-    case "*":
-      answer = storedNumber * secondNumber;
-      break;
-    case "/":
-      if (secondNumber === 0) {
-        currentInput = "Error";
-        updateDisplay();
-        operator = null;
-        storedNumber = null;
-        startNewNumber = true;
-        finishedCalculation = true;
-        return;
-      }
-      answer = storedNumber / secondNumber;
-      break;
-    case "%":
-      answer = storedNumber % secondNumber;
-      break;
-    default:
-      return;
-  }
-
-  if (!Number.isFinite(answer)) {
-    currentInput = "Error";
-  } else {
-    currentInput = String(Number(answer.toPrecision(12)));
-  }
-
-  updateDisplay();
-
-  storedNumber = null;
-  operator = null;
-  startNewNumber = true;
-  finishedCalculation = finish;
-}
-
-function deleteDigit() {
-  if (currentInput === "Error" || finishedCalculation) {
-    clearCalculator();
-    return;
-  }
-
-  if (startNewNumber) return;
-
-  currentInput = currentInput.length > 1
-    ? currentInput.slice(0, -1)
-    : "0";
-
-  if (currentInput === "-") currentInput = "0";
-
-  updateDisplay();
-}
-
-function clearCalculator() {
-  currentInput = "0";
-  storedNumber = null;
-  operator = null;
-  startNewNumber = false;
-  finishedCalculation = false;
-  updateDisplay();
-}
 </script>
-
-</body>
-</html>
