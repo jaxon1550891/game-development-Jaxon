@@ -76,6 +76,18 @@
       outline-offset: 3px;
     }
 
+    /* NEW EQUALS BUTTON */
+    .equals {
+      background: #ff9800;
+      font-size: 24px;
+      font-weight: bold;
+      min-width: 100px;
+    }
+
+    .equals:hover {
+      background: #e68900;
+    }
+
     .danger {
       background: #e74c3c;
     }
@@ -149,6 +161,7 @@
 
     <p class="tip">
       Enter a number and try the different buttons!
+      Press = or Enter to calculate the square.
     </p>
 
     <div class="input-area">
@@ -162,6 +175,13 @@
         aria-label="Enter a number"
         onkeydown="checkEnter(event)"
       >
+
+      <br><br>
+
+      <!-- NEW EQUALS BUTTON -->
+      <button type="button" class="equals" onclick="squareNumber()">
+        = Calculate
+      </button>
 
       <br><br>
 
@@ -252,16 +272,24 @@
       history.scrollTop = history.scrollHeight;
     }
 
-    // SQUARE
+    // DISPLAY AND SAVE A NUMERIC RESULT
+    function calculateResult(calculation, answer) {
+      if (!Number.isFinite(answer)) {
+        showAnswer("⚠️ The result is too large to calculate.");
+        return;
+      }
+
+      const result = `${calculation} = ${answer}`;
+      showAnswer(result);
+      addHistory(result);
+    }
+
+    // SQUARE — ALSO USED BY THE NEW = BUTTON
     function squareNumber() {
       const number = getNumber();
       if (number === null) return;
 
-      const answer = number ** 2;
-      const result = `${number}² = ${answer}`;
-
-      showAnswer(result);
-      addHistory(result);
+      calculateResult(`${number}²`, number ** 2);
     }
 
     // CUBE
@@ -269,11 +297,7 @@
       const number = getNumber();
       if (number === null) return;
 
-      const answer = number ** 3;
-      const result = `${number}³ = ${answer}`;
-
-      showAnswer(result);
-      addHistory(result);
+      calculateResult(`${number}³`, number ** 3);
     }
 
     // DOUBLE
@@ -281,11 +305,7 @@
       const number = getNumber();
       if (number === null) return;
 
-      const answer = number * 2;
-      const result = `${number} × 2 = ${answer}`;
-
-      showAnswer(result);
-      addHistory(result);
+      calculateResult(`${number} × 2`, number * 2);
     }
 
     // HALF
@@ -293,11 +313,7 @@
       const number = getNumber();
       if (number === null) return;
 
-      const answer = number / 2;
-      const result = `${number} ÷ 2 = ${answer}`;
-
-      showAnswer(result);
-      addHistory(result);
+      calculateResult(`${number} ÷ 2`, number / 2);
     }
 
     // SQUARE ROOT
@@ -310,11 +326,7 @@
         return;
       }
 
-      const answer = Math.sqrt(number);
-      const result = `√${number} = ${answer}`;
-
-      showAnswer(result);
-      addHistory(result);
+      calculateResult(`√${number}`, Math.sqrt(number));
     }
 
     // POWER OF FIVE
@@ -322,11 +334,7 @@
       const number = getNumber();
       if (number === null) return;
 
-      const answer = number ** 5;
-      const result = `${number}⁵ = ${answer}`;
-
-      showAnswer(result);
-      addHistory(result);
+      calculateResult(`${number}⁵`, number ** 5);
     }
 
     // EVEN OR ODD
@@ -377,6 +385,12 @@
       }
 
       const max = Math.floor(number);
+
+      if (!Number.isSafeInteger(max)) {
+        showAnswer("⚠️ Please enter a smaller number.");
+        return;
+      }
+
       const random = Math.floor(Math.random() * (max + 1));
       const result = `🎲 Random number from 0 to ${max} = ${random}`;
 
@@ -405,10 +419,7 @@
         answer *= i;
       }
 
-      const result = `${number}! = ${answer}`;
-
-      showAnswer(result);
-      addHistory(result);
+      calculateResult(`${number}!`, answer);
     }
 
     // CLEAR ONLY THE CURRENT RESULT
@@ -424,7 +435,7 @@
       history.dataset.hasItems = "false";
     }
 
-    // PRESS ENTER TO CALCULATE THE SQUARE
+    // PRESS ENTER TO CALCULATE
     function checkEnter(event) {
       if (event.key === "Enter") {
         event.preventDefault();
