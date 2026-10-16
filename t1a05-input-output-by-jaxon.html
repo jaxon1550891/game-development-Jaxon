@@ -21,133 +21,107 @@
     }
 
     .container {
-      max-width: 800px;
-      margin: auto;
+      max-width: 420px;
+      margin: 20px auto;
       background: rgba(0, 0, 0, 0.35);
-      padding: 30px;
+      padding: 25px;
       border-radius: 20px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
     h1 {
       color: #00ffcc;
-      margin-bottom: 5px;
+      font-size: 25px;
     }
 
     h2 {
-      color: white;
-      margin-top: 5px;
+      font-size: 16px;
+      font-weight: normal;
     }
 
-    .input-area {
-      margin: 25px 0;
-    }
-
-    input[type="number"] {
-      width: 180px;
-      max-width: 100%;
-      padding: 12px;
-      font-size: 20px;
-      border-radius: 10px;
+    #display {
+      width: 100%;
+      height: 80px;
+      padding: 15px;
+      margin: 15px 0;
       border: none;
-      text-align: center;
+      border-radius: 10px;
+      background: #eaf5ed;
+      color: #222;
+      font-size: 34px;
+      text-align: right;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 9px;
     }
 
     button {
+      min-width: 0;
+      height: 58px;
+      border: none;
+      border-radius: 10px;
       background: #00a879;
       color: white;
-      border: none;
-      padding: 12px 18px;
-      margin: 6px;
-      border-radius: 10px;
-      font-size: 16px;
+      font-size: 22px;
       cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 3px 0 #075b49;
     }
 
     button:hover {
-      background: #008f68;
-      transform: scale(1.03);
+      filter: brightness(1.15);
     }
 
-    button:focus-visible,
-    input:focus-visible {
+    button:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+
+    button:focus-visible {
       outline: 3px solid #00ffcc;
-      outline-offset: 3px;
+      outline-offset: 2px;
     }
 
-    /* NEW EQUALS BUTTON */
-    .equals {
+    .operator {
       background: #ff9800;
-      font-size: 24px;
-      font-weight: bold;
-      min-width: 100px;
-    }
-
-    .equals:hover {
-      background: #e68900;
-    }
-
-    .danger {
-      background: #e74c3c;
-    }
-
-    .danger:hover {
-      background: #c0392b;
-    }
-
-    #myDiv01 {
-      background: white;
       color: #222;
-      padding: 20px;
-      margin-top: 25px;
-      border-radius: 15px;
-      font-size: 22px;
-      min-height: 65px;
-      overflow-wrap: anywhere;
-      line-height: 1.5;
+      box-shadow: 0 3px 0 #a85b00;
     }
 
-    .history {
-      background: rgba(255, 255, 255, 0.1);
-      margin-top: 25px;
-      padding: 15px;
-      border-radius: 15px;
+    .clear {
+      background: #e74c3c;
+      box-shadow: 0 3px 0 #922b21;
     }
 
-    #historyList {
-      text-align: left;
-      max-height: 250px;
-      overflow-y: auto;
-      overflow-wrap: anywhere;
+    .equals {
+      background: #00ffcc;
+      color: #123;
+      box-shadow: 0 3px 0 #00a889;
     }
 
-    .history-item {
-      padding: 8px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    .zero {
+      grid-column: span 2;
     }
 
     .tip {
       color: #b8fff0;
       font-size: 14px;
+      margin-top: 20px;
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: 450px) {
       body {
         padding: 10px;
       }
 
       .container {
-        padding: 15px;
-      }
-
-      input[type="number"] {
-        width: 100%;
+        padding: 18px;
       }
 
       button {
-        padding: 10px 12px;
-        font-size: 14px;
+        height: 54px;
       }
     }
   </style>
@@ -156,291 +130,209 @@
 <body>
   <div class="container">
 
-    <h1>🧮 Jaxon's Input &amp; Output Calculator</h1>
+    <h1>🧮 Jaxon's Calculator</h1>
     <h2>t1a05 - JavaScript Input Output</h2>
 
+    <input
+      id="display"
+      type="text"
+      value="0"
+      readonly
+      aria-label="Calculator display"
+    >
+
+    <div class="buttons">
+      <button class="clear" onclick="clearCalculator()">AC</button>
+      <button onclick="deleteDigit()">DEL</button>
+      <button class="operator" onclick="percentage()">%</button>
+      <button class="operator" onclick="chooseOperator('/')">÷</button>
+
+      <button onclick="pressNumber('7')">7</button>
+      <button onclick="pressNumber('8')">8</button>
+      <button onclick="pressNumber('9')">9</button>
+      <button class="operator" onclick="chooseOperator('*')">×</button>
+
+      <button onclick="pressNumber('4')">4</button>
+      <button onclick="pressNumber('5')">5</button>
+      <button onclick="pressNumber('6')">6</button>
+      <button class="operator" onclick="chooseOperator('-')">−</button>
+
+      <button onclick="pressNumber('1')">1</button>
+      <button onclick="pressNumber('2')">2</button>
+      <button onclick="pressNumber('3')">3</button>
+      <button class="operator" onclick="chooseOperator('+')">+</button>
+
+      <button onclick="changeSign()">+/−</button>
+      <button class="zero" onclick="pressNumber('0')">0</button>
+      <button onclick="pressDecimal()">.</button>
+
+      <button class="equals" onclick="calculate()" style="grid-column: span 4">=</button>
+    </div>
+
     <p class="tip">
-      Enter a number and try the different buttons!
-      Press = or Enter to calculate the square.
+      Click the numbers and operations, then press = for your answer.
     </p>
-
-    <div class="input-area">
-
-      <input
-        id="mynum01"
-        type="number"
-        value="4"
-        step="any"
-        placeholder="Enter a number"
-        aria-label="Enter a number"
-        onkeydown="checkEnter(event)"
-      >
-
-      <br><br>
-
-      <!-- NEW EQUALS BUTTON -->
-      <button type="button" class="equals" onclick="squareNumber()">
-        = Calculate
-      </button>
-
-      <br><br>
-
-      <button type="button" onclick="squareNumber()">x² Square</button>
-      <button type="button" onclick="cubeNumber()">x³ Cube</button>
-      <button type="button" onclick="doubleNumber()">×2 Double</button>
-      <button type="button" onclick="halfNumber()">÷2 Half</button>
-      <button type="button" onclick="sqrtNumber()">√ Square Root</button>
-      <button type="button" onclick="powerNumber()">x⁵ Power</button>
-
-      <br>
-
-      <button type="button" onclick="evenOdd()">Even or Odd?</button>
-      <button type="button" onclick="positiveNegative()">Positive or Negative?</button>
-      <button type="button" onclick="randomNumber()">🎲 Random Number</button>
-      <button type="button" onclick="factorialNumber()">! Factorial</button>
-
-      <br>
-
-      <button type="button" class="danger" onclick="clearResult()">
-        Clear Result
-      </button>
-
-    </div>
-
-    <div id="myDiv01" role="status" aria-live="polite">
-      Your answer will appear here...
-    </div>
-
-    <div class="history">
-      <h2>📜 History</h2>
-
-      <div id="historyList" aria-live="polite">
-        No calculations yet.
-      </div>
-
-      <br>
-
-      <button type="button" class="danger" onclick="clearHistory()">
-        Clear History
-      </button>
-    </div>
 
   </div>
 
   <script>
-    // GET AND VALIDATE THE INPUT NUMBER
-    function getNumber() {
-      const input = document.getElementById("mynum01");
-      const value = input.value.trim();
+    const display = document.getElementById("display");
 
-      if (value === "") {
-        showAnswer("⚠️ Please enter a number!");
-        input.focus();
-        return null;
-      }
+    let current = "0";
+    let stored = null;
+    let operation = null;
+    let startNew = false;
+    let finished = false;
 
-      const number = Number(value);
-
-      if (!Number.isFinite(number)) {
-        showAnswer("⚠️ Please enter a valid, finite number!");
-        input.focus();
-        return null;
-      }
-
-      return number;
+    function updateDisplay() {
+      display.value = current;
     }
 
-    // DISPLAY AN ANSWER
-    function showAnswer(answer) {
-      document.getElementById("myDiv01").textContent = answer;
-    }
+    // CLICK NUMBER BUTTONS
+    function pressNumber(number) {
+      if (current === "Error") clearCalculator();
 
-    // ADD A CALCULATION TO HISTORY
-    function addHistory(calculation) {
-      const history = document.getElementById("historyList");
-
-      if (history.dataset.hasItems !== "true") {
-        history.textContent = "";
-        history.dataset.hasItems = "true";
+      if (startNew || finished) {
+        current = number;
+        startNew = false;
+        finished = false;
+      } else if (current === "0") {
+        current = number;
+      } else if (current.replace("-", "").length < 15) {
+        current += number;
       }
 
-      const item = document.createElement("div");
-      item.className = "history-item";
-      item.textContent = "➡️ " + calculation;
-
-      history.appendChild(item);
-      history.scrollTop = history.scrollHeight;
+      updateDisplay();
     }
 
-    // DISPLAY AND SAVE A NUMERIC RESULT
-    function calculateResult(calculation, answer) {
+    // DECIMAL BUTTON
+    function pressDecimal() {
+      if (current === "Error") clearCalculator();
+
+      if (startNew || finished) {
+        current = "0.";
+        startNew = false;
+        finished = false;
+      } else if (!current.includes(".")) {
+        current += ".";
+      }
+
+      updateDisplay();
+    }
+
+    // SELECT +, -, × OR ÷
+    function chooseOperator(nextOperation) {
+      if (current === "Error") return;
+
+      if (operation !== null && !startNew) {
+        calculate(false);
+        if (current === "Error") return;
+      }
+
+      stored = Number(current);
+      operation = nextOperation;
+      startNew = true;
+      finished = false;
+    }
+
+    // CALCULATE THE ANSWER
+    function calculate(finalAnswer = true) {
+      if (operation === null || stored === null || startNew) return;
+
+      const second = Number(current);
+      let answer;
+
+      switch (operation) {
+        case "+":
+          answer = stored + second;
+          break;
+
+        case "-":
+          answer = stored - second;
+          break;
+
+        case "*":
+          answer = stored * second;
+          break;
+
+        case "/":
+          if (second === 0) {
+            current = "Error";
+            stored = null;
+            operation = null;
+            startNew = true;
+            finished = true;
+            updateDisplay();
+            return;
+          }
+          answer = stored / second;
+          break;
+      }
+
       if (!Number.isFinite(answer)) {
-        showAnswer("⚠️ The result is too large to calculate.");
-        return;
-      }
-
-      const result = `${calculation} = ${answer}`;
-      showAnswer(result);
-      addHistory(result);
-    }
-
-    // SQUARE — ALSO USED BY THE NEW = BUTTON
-    function squareNumber() {
-      const number = getNumber();
-      if (number === null) return;
-
-      calculateResult(`${number}²`, number ** 2);
-    }
-
-    // CUBE
-    function cubeNumber() {
-      const number = getNumber();
-      if (number === null) return;
-
-      calculateResult(`${number}³`, number ** 3);
-    }
-
-    // DOUBLE
-    function doubleNumber() {
-      const number = getNumber();
-      if (number === null) return;
-
-      calculateResult(`${number} × 2`, number * 2);
-    }
-
-    // HALF
-    function halfNumber() {
-      const number = getNumber();
-      if (number === null) return;
-
-      calculateResult(`${number} ÷ 2`, number / 2);
-    }
-
-    // SQUARE ROOT
-    function sqrtNumber() {
-      const number = getNumber();
-      if (number === null) return;
-
-      if (number < 0) {
-        showAnswer("❌ A negative number has no real square root.");
-        return;
-      }
-
-      calculateResult(`√${number}`, Math.sqrt(number));
-    }
-
-    // POWER OF FIVE
-    function powerNumber() {
-      const number = getNumber();
-      if (number === null) return;
-
-      calculateResult(`${number}⁵`, number ** 5);
-    }
-
-    // EVEN OR ODD
-    function evenOdd() {
-      const number = getNumber();
-      if (number === null) return;
-
-      if (!Number.isInteger(number)) {
-        showAnswer("ℹ️ Even or odd only works with whole numbers.");
-        return;
-      }
-
-      const result = number % 2 === 0
-        ? `${number} is EVEN 🟢`
-        : `${number} is ODD 🔵`;
-
-      showAnswer(result);
-      addHistory(result);
-    }
-
-    // POSITIVE, NEGATIVE, OR ZERO
-    function positiveNegative() {
-      const number = getNumber();
-      if (number === null) return;
-
-      let result;
-
-      if (number > 0) {
-        result = `${number} is POSITIVE ➕`;
-      } else if (number < 0) {
-        result = `${number} is NEGATIVE ➖`;
+        current = "Error";
       } else {
-        result = "The number is ZERO 0️⃣";
+        current = String(Number(answer.toPrecision(12)));
       }
 
-      showAnswer(result);
-      addHistory(result);
+      stored = null;
+      operation = null;
+      startNew = true;
+      finished = finalAnswer;
+      updateDisplay();
     }
 
-    // RANDOM WHOLE NUMBER FROM ZERO TO THE INPUT
-    function randomNumber() {
-      const number = getNumber();
-      if (number === null) return;
+    // CLEAR EVERYTHING
+    function clearCalculator() {
+      current = "0";
+      stored = null;
+      operation = null;
+      startNew = false;
+      finished = false;
+      updateDisplay();
+    }
 
-      if (number < 0) {
-        showAnswer("⚠️ Enter zero or a positive number for the random limit.");
+    // DELETE LAST DIGIT
+    function deleteDigit() {
+      if (current === "Error" || finished) {
+        clearCalculator();
         return;
       }
 
-      const max = Math.floor(number);
+      if (startNew) return;
 
-      if (!Number.isSafeInteger(max)) {
-        showAnswer("⚠️ Please enter a smaller number.");
-        return;
-      }
+      current = current.length > 1
+        ? current.slice(0, -1)
+        : "0";
 
-      const random = Math.floor(Math.random() * (max + 1));
-      const result = `🎲 Random number from 0 to ${max} = ${random}`;
+      if (current === "-") current = "0";
 
-      showAnswer(result);
-      addHistory(result);
+      updateDisplay();
     }
 
-    // FACTORIAL
-    function factorialNumber() {
-      const number = getNumber();
-      if (number === null) return;
+    // CHANGE POSITIVE TO NEGATIVE OR VICE VERSA
+    function changeSign() {
+      if (current === "Error") return;
 
-      if (!Number.isInteger(number) || number < 0) {
-        showAnswer("⚠️ Factorial requires a whole number 0 or greater.");
-        return;
+      if (Number(current) !== 0) {
+        current = current.startsWith("-")
+          ? current.slice(1)
+          : "-" + current;
       }
 
-      if (number > 170) {
-        showAnswer("⚠️ Please use a number from 0 to 170.");
-        return;
-      }
-
-      let answer = 1;
-
-      for (let i = 1; i <= number; i++) {
-        answer *= i;
-      }
-
-      calculateResult(`${number}!`, answer);
+      startNew = false;
+      finished = false;
+      updateDisplay();
     }
 
-    // CLEAR ONLY THE CURRENT RESULT
-    function clearResult() {
-      showAnswer("Your answer will appear here...");
-    }
+    // CONVERT THE DISPLAYED NUMBER TO A PERCENTAGE
+    function percentage() {
+      if (current === "Error") return;
 
-    // CLEAR ALL HISTORY
-    function clearHistory() {
-      const history = document.getElementById("historyList");
-
-      history.textContent = "No calculations yet.";
-      history.dataset.hasItems = "false";
-    }
-
-    // PRESS ENTER TO CALCULATE
-    function checkEnter(event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        squareNumber();
-      }
+      current = String(Number(current) / 100);
+      startNew = false;
+      finished = false;
+      updateDisplay();
     }
   </script>
 </body>
