@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Objects - Jaxon</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 25px;
+            line-height: 1.6;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #mydiv01 {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #f0f0f0;
+            border-radius: 6px;
+        }
+    </style>
+
+    <script>
+        // Declare the object here so all functions can use it.
+        const myperson = {
+            firstname: "John",
+            lastname: "Doe",
+            age: 50,
+            eyecolor: "blue"
+        };
+
+        // This function displays all the object's properties.
+        function showPerson() {
+            document.getElementById("mydiv01").innerHTML =
+                "<strong>My person object has these properties:</strong><br>" +
+                "First name: " + myperson.firstname + "<br>" +
+                "Last name: " + myperson.lastname + "<br>" +
+                "Age: " + myperson.age + "<br>" +
+                "Eye color: " + myperson.eyecolor;
+        }
+    </script>
+</head>
+
+<body>
+    <h2>t1a12-objects-jaxon.html</h2>
+
+    <p>
+        JavaScript objects store related information as
+        named properties, each with a value.
+    </p>
+
+    <p>
+        Good reference:
+        <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Object_basics"
+           target="_blank" rel="noopener noreferrer">
+            MDN JavaScript Object Basics
+        </a>
+    </p>
+
+    <h4>Example: Working with Objects</h4>
+
+    <label for="mytext01">Example text input:</label>
+    <input type="text" id="mytext01"
+           value="Click the button to display the object">
+
+    <br>
+
+    <button type="button" onclick="showPerson()">
+        Example: Set and Show Object
+    </button>
+
+    <div id="mydiv01" aria-live="polite">
+        Click the button to see the person object's properties.
+    </div>
+
+    <h4>Local and Global Variables</h4>
+
+    <p>
+        The myperson object is declared outside the function,
+        so it can be accessed by functions throughout this script.
+        If we declared it inside showPerson(), it would only be
+        available inside that function.
+    </p>
+</body>
+</html>
