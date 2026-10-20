@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Classes by Jaxon</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 850px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #f1f5f9;
+      color: #1e293b;
+      line-height: 1.6;
+    }
+
+    header {
+      text-align: center;
+      background: #1d4ed8;
+      color: white;
+      padding: 25px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      padding: 22px;
+      margin: 18px 0;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px #00000010;
+    }
+
+    code {
+      background: #e2e8f0;
+      padding: 3px 6px;
+      border-radius: 4px;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 6px 5px 6px 0;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    input {
+      width: 100%;
+      max-width: 350px;
+      padding: 10px;
+      margin: 6px 0 12px;
+      border: 1px solid #94a3b8;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    #mydiv01 {
+      background: #eff6ff;
+      border-left: 5px solid #2563eb;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 6px;
+      min-height: 55px;
+    }
+
+    .highlight {
+      color: #1d4ed8;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      color: #64748b;
+      padding: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>JavaScript Classes</h1>
+    <p>t1a13-classes-by-jaxon.html</p>
+    <p>Learn how objects store data and use methods!</p>
+  </header>
+
+  <section class="card">
+    <h2>What is a JavaScript class?</h2>
+
+    <p>
+      A JavaScript class is a template for creating objects.
+      Objects can store variables called <strong>properties</strong>
+      and functions called <strong>methods</strong>.
+    </p>
+
+    <ul>
+      <li><strong>Class:</strong> The blueprint for an object.</li>
+      <li><strong>Constructor:</strong> Sets up a new object's properties.</li>
+      <li><strong>Properties:</strong> Store information, such as a name or age.</li>
+      <li><strong>Methods:</strong> Functions that perform actions.</li>
+      <li><strong>this:</strong> Refers to the current object instance.</li>
+    </ul>
+
+    <p>
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes"
+         target="_blank" rel="noopener noreferrer">
+        Read the MDN JavaScript Classes reference
+      </a>
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Try it: Create an animal</h2>
+    <p>Enter an animal's name and age, then click the button.</p>
+
+    <label for="animalName">Animal's name:</label><br>
+    <input id="animalName" type="text" value="Snickers"
+           maxlength="40" placeholder="Enter a name">
+
+    <br>
+
+    <label for="animalAge">Animal's age:</label><br>
+    <input id="animalAge" type="number" value="5"
+           min="0" max="200" step="1">
+
+    <br>
+
+    <button id="createAnimal">Create and show animal</button>
+    <button id="showAnimal">Show animal again</button>
+
+    <div id="mydiv01" aria-live="polite">
+      Your animal will appear here!
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Example working class code</h2>
+
+    <p>This is the class used by the interactive example:</p>
+
+    <pre><code>class MyAnimal {
+  constructor(passName, passAge) {
+    this.myName = passName;
+    this.myAge = passAge;
+  }
+
+  myShow() {
+    return `Hello ${this.myName}! You are
+${this.myAge} years old.`;
+  }
+}
+
+const myDog = new MyAnimal("Snickers", 5);
+
+console.log(myDog.myShow());</code></pre>
+
+    <p>
+      <strong>Notice:</strong> <code>MyAnimal</code> is the class,
+      <code>myDog</code> is an object, <code>myName</code> and
+      <code>myAge</code> are properties, and <code>myShow()</code>
+      is a method.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Why use classes?</h2>
+    <p>
+      Classes make it easy to create many objects with the same
+      structure but different information.
+    </p>
+
+    <button id="showExamples">Show two more animals</button>
+    <div id="mydiv02" aria-live="polite"></div>
+  </section>
+
+  <footer>
+    JavaScript Classes Project — By Jaxon
+  </footer>
+
+  <script>
+    // Define a class called MyAnimal.
+    class MyAnimal {
+      constructor(passName, passAge) {
+        this.myName = passName;
+        this.myAge = passAge;
+      }
+
+      // A method that returns a description of the animal.
+      myShow() {
+        return `Hello ${this.myName}! You are ${this.myAge} years old.`;
+      }
+    }
+
+    // Store the most recently created animal.
+    let myDog = null;
+
+    // Create an animal from the input fields.
+    document.getElementById("createAnimal").addEventListener("click", () => {
+      const nameInput = document.getElementById("animalName");
+      const ageInput = document.getElementById("animalAge");
+      const output = document.getElementById("mydiv01");
+
+      const name = nameInput.value.trim();
+      const age = ageInput.valueAsNumber;
+
+      if (!name) {
+        output.textContent = "Please enter an animal's name.";
+        nameInput.focus();
+        return;
+      }
+
+      if (
+        ageInput.value.trim() === "" ||
+        !Number.isInteger(age) ||
+        age < 0 ||
+        age > 200
+      ) {
+        output.textContent =
+          "Please enter a whole-number age between 0 and 200.";
+        ageInput.focus();
+        return;
+      }
+
+      // Create a new instance of the MyAnimal class.
+      myDog = new MyAnimal(name, age);
+
+      // Display the result safely.
+      output.textContent = myDog.myShow();
+    });
+
+    // Call the method on the existing object again.
+    document.getElementById("showAnimal").addEventListener("click", () => {
+      const output = document.getElementById("mydiv01");
+
+      if (myDog) {
+        output.textContent = myDog.myShow();
+      } else {
+        output.textContent =
+          "Create an animal first by clicking the blue button.";
+      }
+    });
+
+    // Demonstrate that one class can create multiple objects.
+    document.getElementById("showExamples").addEventListener("click", () => {
+      const myCat = new MyAnimal("Whiskers", 3);
+      const myRabbit = new MyAnimal("Clover", 2);
+      const output = document.getElementById("mydiv02");
+
+      const catParagraph = document.createElement("p");
+      catParagraph.textContent = myCat.myShow();
+
+      const rabbitParagraph = document.createElement("p");
+      rabbitParagraph.textContent = myRabbit.myShow();
+
+      output.replaceChildren(catParagraph, rabbitParagraph);
+    });
+  </script>
+
+</body>
+</html>
