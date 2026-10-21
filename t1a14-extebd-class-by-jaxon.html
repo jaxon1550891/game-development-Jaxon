@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T1A14 - Extend Class</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f2fe, #f0fdf4);
+            color: #1e293b;
+            max-width: 850px;
+            margin: 30px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h2 {
+            text-align: center;
+            color: #0369a1;
+        }
+
+        .panel {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px #00000012;
+        }
+
+        button {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            margin: 6px 4px 6px 0;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #0369a1;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: min(90%, 300px);
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+        }
+
+        #myDiv01 {
+            background: #f8fafc;
+            border-left: 5px solid #0284c7;
+            padding: 18px;
+            margin-top: 20px;
+            border-radius: 6px;
+            min-height: 45px;
+            overflow-wrap: anywhere;
+        }
+
+        .note {
+            color: #475569;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>T1A14 - Extend Class by Jaxon</h2>
+
+    <p>
+        This page demonstrates JavaScript classes, objects,
+        methods, and inheritance using animals.
+    </p>
+
+    <div class="panel">
+        <h3>Example 1: Create an Animal</h3>
+        <p class="note">
+            The animal class stores an animal's name and age.
+        </p>
+
+        <button onclick="showDog()">
+            Create Dog and Show Animal
+        </button>
+    </div>
+
+    <div class="panel">
+        <h3>Example 2: Extend the Animal Class</h3>
+        <p>
+            Enter a cat's name and age. The mycat class
+            inherits properties from the animal class and
+            overrides its myshow() method.
+        </p>
+
+        <label for="mytext01">Cat's name:</label><br>
+        <input type="text" id="mytext01" value="Fluffy"
+               placeholder="Enter a cat's name">
+
+        <br><br>
+
+        <label for="myage01">Cat's age:</label><br>
+        <input type="number" id="myage01" value="14"
+               min="0" max="200">
+
+        <br>
+
+        <button onclick="showCat()">
+            Extend Animal and Show Cat
+        </button>
+    </div>
+
+    <div class="panel">
+        <h3>Output</h3>
+        <div id="myDiv01" aria-live="polite">
+            Click a button to see the result!
+        </div>
+    </div>
+
+    <script>
+        // Parent class: Animal
+        class animal {
+            constructor(passname, passage) {
+                this.myname = passname;
+                this.age = passage;
+            }
+
+            myshow() {
+                document.getElementById("myDiv01").innerHTML =
+                    "Hello! My name is " + this.myname +
+                    ". I am " + this.age + " years old.";
+            }
+        }
+
+        // Child class: mycat extends animal
+        class mycat extends animal {
+            constructor(passname, passage) {
+                super(passname, passage);
+            }
+
+            // Override the parent's myshow() method
+            myshow() {
+                document.getElementById("myDiv01").innerHTML =
+                    this.myname + " is a great cat! " +
+                    "My age is " + this.age + " years.";
+            }
+        }
+
+        // Example 1: Create an animal object
+        function showDog() {
+            let myDog = new animal("Snickers", 5);
+            myDog.myshow();
+        }
+
+        // Example 2: Create a cat object using inheritance
+        function showCat() {
+            let catName =
+                document.getElementById("mytext01").value.trim();
+
+            let catAge =
+                document.getElementById("myage01").value;
+
+            if (catName === "") {
+                document.getElementById("myDiv01").textContent =
+                    "Please enter a name for your cat.";
+                return;
+            }
+
+            if (catAge === "" || Number(catAge) < 0 ||
+                !Number.isFinite(Number(catAge))) {
+                document.getElementById("myDiv01").textContent =
+                    "Please enter a valid age.";
+                return;
+            }
+
+            let mypet = new mycat(catName, Number(catAge));
+            mypet.myshow();
+        }
+    </script>
+
+</body>
+</html>
