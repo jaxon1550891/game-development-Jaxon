@@ -3,153 +3,338 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>t1a16-powerup-jaxon.html</title>
+
+  <title>Stateful Hero Energy Tracker</title>
 
   <style>
     body {
+      margin: 0;
+      padding: 30px 15px;
       font-family: Arial, sans-serif;
+      color: #f8fafc;
       text-align: center;
-      background: linear-gradient(135deg, #141e30, #243b55);
-      color: white;
-      padding: 30px;
+      background: linear-gradient(135deg, #10172a, #263b65);
     }
 
-    h2 {
-      color: #ffd700;
+    h1 {
+      color: #facc15;
+      margin-bottom: 8px;
     }
 
-    .hero-card {
-      max-width: 500px;
-      margin: 25px auto;
-      padding: 25px;
-      background: #ffffff15;
-      border: 2px solid #ffd700;
-      border-radius: 18px;
-      box-shadow: 0 8px 25px #0005;
-    }
-
-    button {
-      background: #ffd700;
-      color: #222;
-      padding: 12px 22px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      margin: 8px;
-    }
-
-    button:hover {
-      background: #ffec80;
-      transform: scale(1.04);
-    }
-
-    .power-bar {
-      width: 100%;
-      height: 22px;
-      background: #333;
-      border-radius: 12px;
-      overflow: hidden;
-      margin: 15px 0;
-    }
-
-    #powerFill {
-      height: 100%;
-      width: 100%;
-      background: #39e75f;
-      transition: width 0.3s, background 0.3s;
-    }
-
-    #mydiv01 {
-      margin-top: 20px;
-      line-height: 1.7;
+    .subtitle {
+      color: #cbd5e1;
     }
 
     .student-info {
-      color: #ddd;
+      margin: 20px auto;
+      line-height: 2;
+    }
+
+    .hero-card {
+      max-width: 600px;
+      margin: 25px auto;
+      padding: 25px;
+      border: 2px solid #facc15;
+      border-radius: 18px;
+      background: #ffffff0d;
+      box-shadow: 0 12px 35px #0005;
+    }
+
+    .hero-icon {
+      font-size: 60px;
+      margin: 10px;
+    }
+
+    .hero-name {
+      color: #facc15;
+      font-size: 28px;
+    }
+
+    .power-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 25px;
+      font-weight: bold;
+    }
+
+    .power-bar {
+      height: 24px;
+      margin: 12px 0 20px;
+      overflow: hidden;
+      border-radius: 20px;
+      background: #334155;
+      border: 1px solid #64748b;
+    }
+
+    #powerFill {
+      width: 100%;
+      height: 100%;
+      background: #22c55e;
+      transition: width 0.35s, background 0.35s;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .stat {
+      flex: 1;
+      min-width: 110px;
+      padding: 15px 8px;
+      border-radius: 12px;
+      background: #ffffff12;
+    }
+
+    .stat strong {
+      display: block;
+      color: #facc15;
+      font-size: 24px;
+      margin-top: 8px;
+    }
+
+    button {
+      margin: 8px;
+      padding: 13px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    .train-button {
+      color: #172033;
+      background: #facc15;
+    }
+
+    .train-button:hover {
+      background: #fde047;
+    }
+
+    .reset-button {
+      color: white;
+      background: #475569;
+    }
+
+    .reset-button:hover {
+      background: #64748b;
+    }
+
+    #myDiv01 {
+      margin-top: 25px;
+      padding: 18px;
+      border-radius: 12px;
+      background: #02061770;
+      line-height: 1.9;
+      overflow-wrap: anywhere;
+    }
+
+    .assignment {
+      max-width: 750px;
+      margin: 25px auto;
+      padding: 20px;
+      color: #1e293b;
+      text-align: left;
+      background: #f1f5f9;
+      border-radius: 12px;
+      line-height: 1.8;
+    }
+
+    .assignment h3 {
+      color: #1d4ed8;
+    }
+
+    code {
+      background: #dbeafe;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    footer {
+      color: #cbd5e1;
+      margin-top: 25px;
+      font-size: 13px;
     }
   </style>
 
   <script>
-    // STEP 1: Create a global stateful hero object
-    const myHero = {
-      name: "Jaxon",
+    // STEP 1: Define a global stateful object
+    let myHero = {
+      name: "Captain Code",
       power: 100,
-      comment: "Ready to become stronger!"
+      comment: "Ready for training!"
     };
 
+    let trainingCount = 0;
+    let totalPowerUsed = 0;
+
     // STEP 2: Train the hero
-    function trainhero() {
-      if (myHero.power > 0) {
-        myHero.power = Math.max(0, myHero.power - 10);
-        myHero.comment = myHero.power > 0
-          ? "Training complete! Keep going!"
-          : "Your hero is exhausted! Restore their power.";
+    function trainHero() {
+      // Subtract 10 power
+      myHero.power -= 10;
+      trainingCount++;
+      totalPowerUsed += 10;
+
+      // Check power and update the comment
+      if (myHero.power <= 0) {
+        alert(
+          myHero.name +
+          " has run out of energy! Power will be restored to 100."
+        );
+
+        myHero.comment =
+          "⚡ Fainted from exhaustion! Power has been restored.";
+
+        myHero.power = 100;
+      } else if (myHero.power > 60) {
+        myHero.comment =
+          "🔥 High power! Your hero is strong and ready!";
+      } else if (myHero.power > 30) {
+        myHero.comment =
+          "💪 Medium power! Keep training carefully.";
       } else {
-        myHero.comment = "No power left! Restore your hero first.";
+        myHero.comment =
+          "⚠️ Low power! Your hero needs a break soon.";
       }
 
-      updateHero();
+      // STEP 3: Display the updated object
+      updateDisplay();
     }
 
-    // STEP 3: Restore hero power
-    function restoreHero() {
-      myHero.power = 100;
-      myHero.comment = "Power restored! Ready for another workout!";
-      updateHero();
-    }
-
-    // STEP 4: Display the current object state
-    function updateHero() {
+    // STEP 4: Update the screen using the object state
+    function updateDisplay() {
       document.getElementById("heroName").textContent = myHero.name;
+
       document.getElementById("powerText").textContent =
         myHero.power + " / 100";
 
-      document.getElementById("powerFill").style.width =
-        myHero.power + "%";
+      document.getElementById("trainingCount").textContent =
+        trainingCount;
 
-      document.getElementById("powerFill").style.background =
-        myHero.power > 50 ? "#39e75f" :
-        myHero.power > 20 ? "#ffb020" : "#ff4545";
+      document.getElementById("powerUsed").textContent =
+        totalPowerUsed;
 
-      document.getElementById("mydiv01").innerHTML =
-        "<strong>" + myHero.comment + "</strong><br>" +
-        "Current power: " + myHero.power + "<br>" +
-        "Power used: " + (100 - myHero.power);
+      // Update the power bar
+      const fill = document.getElementById("powerFill");
+      fill.style.width = myHero.power + "%";
+
+      if (myHero.power > 60) {
+        fill.style.background = "#22c55e";
+      } else if (myHero.power > 30) {
+        fill.style.background = "#facc15";
+      } else {
+        fill.style.background = "#ef4444";
+      }
+
+      // Display the current object properties
+      document.getElementById("myDiv01").innerHTML =
+        "<strong>Hero Name:</strong> " + myHero.name + "<br>" +
+        "<strong>Remaining Power:</strong> " + myHero.power + "<br>" +
+        "<strong>Coach's Comment:</strong> " + myHero.comment;
     }
+
+    // Optional reset button
+    function resetHero() {
+      myHero.power = 100;
+      myHero.comment = "Fresh energy! Ready for training!";
+      trainingCount = 0;
+      totalPowerUsed = 0;
+
+      updateDisplay();
+    }
+
+    // Initialize the display when the page loads
+    window.onload = updateDisplay;
   </script>
 </head>
 
-<body onload="updateHero()">
+<body>
 
-  <h2>t1a16-powerup-jaxon.html</h2>
+  <h1>⚡ Stateful Hero Energy Tracker ⚡</h1>
+  <p class="subtitle">Train your hero. Track their energy. Become legendary!</p>
 
-  <p class="student-info">
-    Student name: ____________<br>
-    Date: ____________<br>
-    Assignment title: Stateful Object
-  </p>
+  <div class="student-info">
+    Student Name: ___________________<br>
+    Date: ___________________<br>
+    Assignment Title: Stateful Object Assignment
+  </div>
 
   <div class="hero-card">
-    <h1>⚡ Hero Training ⚡</h1>
-    <h2 id="heroName">Jaxon</h2>
+    <div class="hero-icon">🦸</div>
+    <div class="hero-name" id="heroName">Captain Code</div>
 
-    <p>Hero Power: <strong id="powerText">100 / 100</strong></p>
+    <div class="power-label">
+      <span>⚡ Hero Energy</span>
+      <span id="powerText">100 / 100</span>
+    </div>
 
     <div class="power-bar">
       <div id="powerFill"></div>
     </div>
 
-    <button onclick="trainhero()">💪 Train Hero (-10 power)</button>
+    <div class="stats">
+      <div class="stat">
+        Training Sessions
+        <strong id="trainingCount">0</strong>
+      </div>
 
-    <button onclick="restoreHero()">🔋 Restore Power</button>
+      <div class="stat">
+        Power Used
+        <strong id="powerUsed">0</strong>
+      </div>
+    </div>
 
-    <div id="mydiv01">
-      Click the button above to begin training!
-      Initial power: 100
+    <button class="train-button" onclick="trainHero()">
+      💪 Train Hero (-10 Power)
+    </button>
+
+    <button class="reset-button" onclick="resetHero()">
+      🔄 Reset Hero
+    </button>
+
+    <div id="myDiv01">
+      <strong>Hero Name:</strong> Captain Code<br>
+      <strong>Remaining Power:</strong> 100<br>
+      <strong>Coach's Comment:</strong> Ready for training!
     </div>
   </div>
+
+  <div class="assignment">
+    <h3>📘 Assignment Requirements</h3>
+
+    <p><strong>1.</strong> Create a global object named
+      <code>myHero</code> with a name, power, and comment.</p>
+
+    <p><strong>2.</strong> Use <code>trainHero()</code> to subtract
+      10 power each time the training button is clicked.</p>
+
+    <p><strong>3.</strong> Use <code>if / else if / else</code>
+      statements to display different comments for high, medium,
+      and low power.</p>
+
+    <p><strong>4.</strong> When power reaches zero, display an
+      <code>alert()</code>, update the comment, and restore power to 100.</p>
+
+    <p><strong>5.</strong> Display the hero's name, remaining power,
+      and coach's comment inside <code>myDiv01</code>.</p>
+
+    <p><strong>6.</strong> Observe how the object's properties change
+      when you interact with the buttons.</p>
+  </div>
+
+  <footer>
+    Stateful Object Assignment · Keep coding, keep powering up!
+  </footer>
 
 </body>
 </html>
