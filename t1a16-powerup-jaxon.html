@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>t1a16-powerup-jaxon.html</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #141e30, #243b55);
+      color: white;
+      padding: 30px;
+    }
+
+    h2 {
+      color: #ffd700;
+    }
+
+    .hero-card {
+      max-width: 500px;
+      margin: 25px auto;
+      padding: 25px;
+      background: #ffffff15;
+      border: 2px solid #ffd700;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px #0005;
+    }
+
+    button {
+      background: #ffd700;
+      color: #222;
+      padding: 12px 22px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 8px;
+    }
+
+    button:hover {
+      background: #ffec80;
+      transform: scale(1.04);
+    }
+
+    .power-bar {
+      width: 100%;
+      height: 22px;
+      background: #333;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 15px 0;
+    }
+
+    #powerFill {
+      height: 100%;
+      width: 100%;
+      background: #39e75f;
+      transition: width 0.3s, background 0.3s;
+    }
+
+    #mydiv01 {
+      margin-top: 20px;
+      line-height: 1.7;
+    }
+
+    .student-info {
+      color: #ddd;
+    }
+  </style>
+
+  <script>
+    // STEP 1: Create a global stateful hero object
+    const myHero = {
+      name: "Jaxon",
+      power: 100,
+      comment: "Ready to become stronger!"
+    };
+
+    // STEP 2: Train the hero
+    function trainhero() {
+      if (myHero.power > 0) {
+        myHero.power = Math.max(0, myHero.power - 10);
+        myHero.comment = myHero.power > 0
+          ? "Training complete! Keep going!"
+          : "Your hero is exhausted! Restore their power.";
+      } else {
+        myHero.comment = "No power left! Restore your hero first.";
+      }
+
+      updateHero();
+    }
+
+    // STEP 3: Restore hero power
+    function restoreHero() {
+      myHero.power = 100;
+      myHero.comment = "Power restored! Ready for another workout!";
+      updateHero();
+    }
+
+    // STEP 4: Display the current object state
+    function updateHero() {
+      document.getElementById("heroName").textContent = myHero.name;
+      document.getElementById("powerText").textContent =
+        myHero.power + " / 100";
+
+      document.getElementById("powerFill").style.width =
+        myHero.power + "%";
+
+      document.getElementById("powerFill").style.background =
+        myHero.power > 50 ? "#39e75f" :
+        myHero.power > 20 ? "#ffb020" : "#ff4545";
+
+      document.getElementById("mydiv01").innerHTML =
+        "<strong>" + myHero.comment + "</strong><br>" +
+        "Current power: " + myHero.power + "<br>" +
+        "Power used: " + (100 - myHero.power);
+    }
+  </script>
+</head>
+
+<body onload="updateHero()">
+
+  <h2>t1a16-powerup-jaxon.html</h2>
+
+  <p class="student-info">
+    Student name: ____________<br>
+    Date: ____________<br>
+    Assignment title: Stateful Object
+  </p>
+
+  <div class="hero-card">
+    <h1>⚡ Hero Training ⚡</h1>
+    <h2 id="heroName">Jaxon</h2>
+
+    <p>Hero Power: <strong id="powerText">100 / 100</strong></p>
+
+    <div class="power-bar">
+      <div id="powerFill"></div>
+    </div>
+
+    <button onclick="trainhero()">💪 Train Hero (-10 power)</button>
+
+    <button onclick="restoreHero()">🔋 Restore Power</button>
+
+    <div id="mydiv01">
+      Click the button above to begin training!
+      Initial power: 100
+    </div>
+  </div>
+
+</body>
+</html>
