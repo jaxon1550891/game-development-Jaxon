@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browser Hack — Object Explorer</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:#81F7F3;
+  color:#102d38;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+header{
+  background:linear-gradient(120deg,#071c2d,#123e59,#087f8c);
+  color:#00ffe1;
+  padding:24px;
+  text-align:center;
+  border-bottom:4px solid #00e6cf;
+}
+
+header h1{
+  margin:0;
+  font-size:clamp(25px,5vw,42px);
+  letter-spacing:3px;
+  text-shadow:0 0 15px #00ffe1;
+}
+
+header p{color:#c4faff;margin:10px 0 0}
+
+.container{
+  width:min(1200px,95%);
+  margin:25px auto;
+}
+
+.panel{
+  background:#eaffff;
+  border:2px solid #087f8c;
+  border-radius:14px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 6px 20px #004b5525;
+}
+
+h2{
+  color:#07546a;
+  margin-top:0;
+  border-bottom:1px solid #8ccfd1;
+  padding-bottom:10px;
+}
+
+.instructions{
+  line-height:1.7;
+  background:#d0ffff;
+  padding:14px;
+  border-left:5px solid #00a6a6;
+  border-radius:5px;
+}
+
+.buttons{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(175px,1fr));
+  gap:10px;
+}
+
+button{
+  padding:12px;
+  background:#07546a;
+  color:white;
+  border:1px solid #00c9c1;
+  border-radius:7px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:.2s;
+}
+
+button:hover{
+  background:#00a6a6;
+  color:#001b24;
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px #008e9c55;
+}
+
+button:active{transform:scale(.97)}
+
+button.secondary{
+  background:#344b60;
+}
+
+button.danger{
+  background:#9b3348;
+}
+
+textarea,input{
+  width:100%;
+  padding:12px;
+  border:2px solid #7cbec5;
+  border-radius:7px;
+  background:#f7ffff;
+  color:#102d38;
+  font-family:Consolas,monospace;
+  font-size:13px;
+}
+
+textarea{
+  min-height:270px;
+  resize:vertical;
+  line-height:1.5;
+}
+
+#myEditor{min-height:120px}
+
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:12px 0;
+}
+
+.controls button{flex:1}
+
+.status{
+  padding:12px;
+  background:#092b3a;
+  color:#00ffe1;
+  border-radius:7px;
+  font-family:Consolas,monospace;
+  margin:12px 0;
+  overflow-wrap:anywhere;
+}
+
+.object-display{
+  background:#061b29;
+  color:#00ffae;
+  border-radius:8px;
+  padding:15px;
+  min-height:90px;
+  font-family:Consolas,monospace;
+  overflow-wrap:anywhere;
+}
+
+.object-display strong{color:#00e5ff}
+
+.object-display .method{color:#e9aaff}
+.object-display .property{color:#baffcf}
+.object-display .error{color:#ff9b9b}
+
+.sample-stage{
+  height:180px;
+  display:grid;
+  place-items:center;
+  background:radial-gradient(ellipse,#164f65,#071c2b);
+  border-radius:10px;
+  overflow:hidden;
+}
+
+#myOrb{
+  width:85px;
+  height:85px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 25%,#fff,#00ffe1 20%,#0875bb 60%,#10133b);
+  box-shadow:0 0 30px #00ffe1,0 0 70px #007cff;
+  animation:float 3s ease-in-out infinite alternate;
+}
+
+@keyframes float{
+  from{transform:translateY(-20px) rotate(0deg)}
+  to{transform:translateY(20px) rotate(180deg)}
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#07546a;
+}
+
+small{color:#487b82}
+
+@media(max-width:600px){
+  .panel{padding:13px}
+  .controls button{min-width:100%}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>⚡ BROWSER HACK ⚡</h1>
+  <p>JavaScript Object Explorer · Object Sort Base</p>
+  <p><b>Browser Hack by _____________</b></p>
+</header>
+
+<main class="container">
+
+<section class="panel">
+<h2>01 — Instructions</h2>
+
+<div class="instructions">
+<b>Welcome to Browser Hack!</b><br>
+Use the first 15 buttons to explore browser objects.
+The last five buttons explore additional JavaScript objects
+and browser capabilities.
+
+Click a button to inspect its object's properties and methods.
+Results are displayed below and can be searched, sorted,
+copied, and edited.
+
+Different browsers may expose different properties.
+Some properties are restricted for security reasons.
+
+<b>Experiment, compare, and learn!</b>
+</div>
+
+<div class="status" id="myStatus">
+SYSTEM READY · WAITING FOR OBJECT SELECTION
+</div>
+</section>
+
+<section class="panel">
+<h2>02 — Animated Object</h2>
+<p>Click the animated object to inspect its properties.</p>
+
+<div class="sample-stage">
+<div id="myOrb" title="Click to inspect this object"></div>
+</div>
+</section>
+
+<section class="panel">
+<h2>03 — Browser Object Controls</h2>
+
+<div class="buttons">
+<button onclick="myInspect('window')">1 Window</button>
+<button onclick="myInspect('document')">2 Document</button>
+<button onclick="myInspect('form')">3 Document Form</button>
+<button onclick="myInspect('textarea')">4 Textarea</button>
+<button onclick="myInspect('location')">5 Window Location</button>
+
+<button onclick="myInspect('parent')">6 Window Parent</button>
+<button onclick="myInspect('navigator')">7 Navigator</button>
+<button onclick="myInspect('style')">8 Element Style</button>
+<button onclick="myInspect('computed')">9 Computed Style</button>
+<button onclick="myInspect('element')">10 HTML Element</button>
+
+<button onclick="myInspect('localStorage')">11 Local Storage</button>
+<button onclick="myInspect('style2')">12 getElementById Style</button>
+<button onclick="myInspect('input')">13 Text Input</button>
+<button onclick="myInspect('inputElement')">14 Input Element</button>
+<button onclick="myInspect('undefined')">15 Undefined Object</button>
+
+<button onclick="myInspect('screen')">16 Screen</button>
+<button onclick="myInspect('history')">17 History</button>
+<button onclick="myInspect('performance')">18 Performance</button>
+<button onclick="myInspect('crypto')">19 Crypto</button>
+<button onclick="myInspect('sessionStorage')">20 Session Storage</button>
+</div>
+</section>
+
+<section class="panel">
+<h2>04 — Selected Object</h2>
+
+<p><b>Object name:</b></p>
+<input id="myObjectName" readonly value="No object selected">
+
+<p><b>Search properties and methods:</b></p>
+<input id="mySearch" placeholder="Type to filter results..." oninput="myFilterResults()">
+
+<div class="controls">
+<button onclick="mySortResults()">Sort A–Z</button>
+<button onclick="mySortDescending()">Sort Z–A</button>
+<button onclick="myCopyResults()">Copy Results</button>
+<button class="secondary" onclick="myClearResults()">Clear</button>
+</div>
+
+<div class="object-display" id="myObjectDisplay">
+<strong>OBJECT INSPECTOR</strong><br><br>
+Select one of the 20 buttons above to begin exploring.
+</div>
+</section>
+
+<section class="panel">
+<h2>05 — Object Data / Editable Results</h2>
+
+<p>
+The following area displays the selected object's information.
+You can also edit the text yourself.
+</p>
+
+<textarea id="myTextarea" spellcheck="false"
+placeholder="Object properties and methods will appear here..."></textarea>
+
+<div class="controls">
+<button onclick="mySortText()">Sort Text A–Z</button>
+<button onclick="myCopyText()">Copy Text</button>
+<button class="secondary" onclick="myDownloadText()">Download TXT</button>
+</div>
+</section>
+
+<section class="panel">
+<h2>06 — Text Editor Experiment</h2>
+
+<p>Enter your own JavaScript object name or experiment with text.</p>
+
+<input id="myEditorInput" placeholder="Enter a label...">
+
+<textarea id="myEditor" placeholder="Write or paste your own text here..."></textarea>
+
+<div class="controls">
+<button onclick="myAddText()">Add Label</button>
+<button onclick="myClearEditor()">Clear Editor</button>
+</div>
+</section>
+
+<section class="panel">
+<h2>07 — Navigation</h2>
+<p>Return to the previous page or reload this experiment.</p>
+
+<div class="controls">
+<button onclick="window.history.back()">← Back</button>
+<button onclick="location.reload()">↻ Refresh Browser</button>
+</div>
+</section>
+
+</main>
+
+<footer>
+  BROWSER HACK · JAVASCRIPT OBJECT EXPLORER<br>
+  <small>Educational JavaScript experiment · HTML5 compatible</small>
+</footer>
+
+<script>
+
+// ==========================================
+// BROWSER HACK — OBJECT EXPLORER
+// ==========================================
+
+let myCurrentObject = null;
+let myCurrentObjectName = "";
+let myResults = [];
+
+// ==========================================
+// OBJECT DIRECTORY
+// ==========================================
+
+function myGetObject(myName){
+
+  const myObjects = {
+
+    window: window,
+
+    document: document,
+
+    form: document.getElementById("myFormPlaceholder") ||
+          document.querySelector(".panel form") ||
+          document.getElementById("myEditor"),
+
+    textarea: document.getElementById("myTextarea"),
+
+    location: window.location,
+
+    parent: window.parent,
+
+    navigator: window.navigator,
+
+    style: document.getElementById("myOrb").style,
+
+    computed: window.getComputedStyle(
+      document.getElementById("myOrb")
+    ),
+
+    element: document.getElementById("myOrb"),
+
+    localStorage: window.localStorage,
+
+    style2: document.getElementById("myOrb").style,
+
+    input: document.getElementById("myEditorInput"),
+
+    inputElement: document.getElementById("myEditorInput"),
+
+    undefined: undefined,
+
+    screen: window.screen,
+
+    history: window.history,
+
+    performance: window.performance,
+
+    crypto: window.crypto,
+
+    sessionStorage: window.sessionStorage
+
+  };
+
+  return myObjects[myName];
+}
+
+// ==========================================
+// SAFE VALUE CONVERSION
+// ==========================================
+
+function myDescribeValue(myValue){
+
+  if(myValue === null) return "null";
+
+  if(myValue === undefined) return "undefined";
+
+  if(typeof myValue === "function"){
+    return "[Function: " + (myValue.name || "anonymous") + "]";
+  }
+
+  if(typeof myValue === "string"){
+    return JSON.stringify(myValue);
+  }
+
+  if(typeof myValue === "symbol"){
+    return myValue.toString();
+  }
+
+  if(typeof myValue === "bigint"){
+    return myValue.toString() + "n";
+  }
+
+  if(typeof myValue === "object"){
+
+    if(myValue instanceof Element){
+      return "<" + myValue.tagName.toLowerCase() + ">";
+    }
+
+    if(myValue instanceof Date){
+      return myValue.toISOString();
+    }
+
+    if(Array.isArray(myValue)){
+      return "Array(" + myValue.length + ")";
+    }
+
+    return Object.prototype.toString.call(myValue);
+  }
+
+  return String(myValue);
+}
+
+// ==========================================
+// PROPERTY INSPECTOR
+// ==========================================
+
+function myInspect(myName){
+
+  let myObject;
+
+  try{
+    myObject = myGetObject(myName);
+  }catch(myError){
+    myDisplayError(myError);
+    return;
+  }
+
+  myCurrentObject = myObject;
+  myCurrentObjectName = myName;
+  myResults = [];
+
+  document.getElementById("myObjectName").value =
+    myName;
+
+  document.getElementById("mySearch").value = "";
+
+  if(myObject === undefined || myObject === null){
+    myResults.push("Object is undefined or unavailable.");
+    myRenderResults();
+
+    document.getElementById("myStatus").textContent =
+      "INSPECTED · " + myName.toUpperCase();
+
+    return;
+  }
+
+  let myCurrent = myObject;
+  let myDepth = 0;
+  let mySeen = new Set();
+
+  while(myCurrent && myDepth < 3){
+
+    let myKeys = [];
+
+    try{
+      myKeys = Reflect.ownKeys(myCurrent);
+    }catch(myError){
+      myResults.push("Prototype inspection restricted: " + myError.message);
+      break;
+    }
+
+    for(let myKey of myKeys){
+
+      const myLabel = typeof myKey === "symbol"
+        ? myKey.toString()
+        : String(myKey);
+
+      if(mySeen.has(myLabel)) continue;
+
+      mySeen.add(myLabel);
+
+      let myValue = "[Unavailable]";
+      let myType = "unknown";
+
+      try{
+
+        const myDescriptor =
+          Object.getOwnPropertyDescriptor(myCurrent,myKey);
+
+        if(myDescriptor){
+
+          if(myDescriptor.get || myDescriptor.set){
+
+            myValue = "[Getter/Setter]";
+
+            if(myDescriptor.get){
+              try{
+                myValue = myDescribeValue(
+                  Reflect.get(myObject,myKey)
+                );
+              }catch(myError){
+                myValue = "[Getter threw an error]";
+              }
+            }
+
+          }else{
+            myValue = myDescribeValue(myDescriptor.value);
+          }
+
+          myType = myDescriptor.get || myDescriptor.set
+            ? "accessor"
+            : typeof myDescriptor.value;
+
+        }
+
+      }catch(myError){
+        myValue = "[Access denied]";
+      }
+
+      myResults.push(
+        myLabel + " | " + myType + " | " + myValue
+      );
+    }
+
+    try{
+      myCurrent = Object.getPrototypeOf(myCurrent);
+    }catch(myError){
+      break;
+    }
+
+    myDepth++;
+  }
+
+  myResults.sort((myA,myB)=>
+    myA.localeCompare(myB)
+  );
+
+  myRenderResults();
+
+  document.getElementById("myStatus").textContent =
+    "OBJECT LOADED · " + myName.toUpperCase() +
+    " · " + myResults.length + " ENTRIES";
+
+}
+
+// ==========================================
+// RENDER RESULTS
+// ==========================================
+
+function myRenderResults(){
+
+  const myOutput = document.getElementById("myObjectDisplay");
+  const myTextarea = document.getElementById("myTextarea");
+
+  myOutput.innerHTML = "";
+
+  const myHeading = document.createElement("strong");
+
+  myHeading.textContent =
+    "OBJECT: " + myCurrentObjectName.toUpperCase();
+
+  myOutput.appendChild(myHeading);
+
+  const myVisibleResults = myGetFilteredResults();
+
+  for(let myLine of myVisibleResults){
+
+    const myRow = document.createElement("div");
+
+    const myParts = myLine.split(" | ");
+
+    myRow.className =
+      myParts[1] === "function" ? "method" : "property";
+
+    myRow.textContent = myLine;
+
+    myOutput.appendChild(myRow);
+  }
+
+  myTextarea.value = myResults.join("\n");
+
+}
+
+// ==========================================
+// SEARCH
+// ==========================================
+
+function myGetFilteredResults(){
+
+  const mySearch = document.getElementById("mySearch")
+    .value.toLowerCase();
+
+  return myResults.filter(myLine =>
+    myLine.toLowerCase().includes(mySearch)
+  );
+
+}
+
+function myFilterResults(){
+  myRenderResults();
+}
+
+// ==========================================
+// SORTING
+// ==========================================
+
+function mySortResults(){
+
+  myResults.sort((myA,myB)=>
+    myA.localeCompare(myB)
+  );
+
+  myRenderResults();
+
+  document.getElementById("myStatus").textContent =
+    "RESULTS SORTED A–Z";
+
+}
+
+function mySortDescending(){
+
+  myResults.sort((myA,myB)=>
+    myB.localeCompare(myA)
+  );
+
+  myRenderResults();
+
+  document.getElementById("myStatus").textContent =
+    "RESULTS SORTED Z–A";
+
+}
+
+function mySortText(){
+
+  const myTextarea = document.getElementById("myTextarea");
+
+  myTextarea.value = myTextarea.value
+    .split(/\r?\n/)
+    .sort((myA,myB)=>myA.localeCompare(myB))
+    .join("\n");
+
+}
+
+// ==========================================
+// CLEAR RESULTS
+// ==========================================
+
+function myClearResults(){
+
+  myResults = [];
+  myCurrentObject = null;
+  myCurrentObjectName = "";
+
+  document.getElementById("myObjectName").value = "";
+  document.getElementById("myObjectDisplay").textContent =
+    "OBJECT INSPECTOR CLEARED";
+
+  document.getElementById("myTextarea").value = "";
+  document.getElementById("myStatus").textContent =
+    "READY FOR NEXT OBJECT";
+
+}
+
+// ==========================================
+// COPY RESULTS
+// ==========================================
+
+async function myCopyResults(){
+
+  try{
+
+    await navigator.clipboard.writeText(
+      myResults.join("\n")
+    );
+
+    document.getElementById("myStatus").textContent =
+      "RESULTS COPIED TO CLIPBOARD";
+
+  }catch(myError){
+
+    document.getElementById("myStatus").textContent =
+      "CLIPBOARD ACCESS UNAVAILABLE";
+
+  }
+
+}
+
+async function myCopyText(){
+
+  try{
+
+    await navigator.clipboard.writeText(
+      document.getElementById("myTextarea").value
+    );
+
+    document.getElementById("myStatus").textContent =
+      "TEXT COPIED";
+
+  }catch(myError){
+
+    document.getElementById("myStatus").textContent =
+      "CLIPBOARD ACCESS UNAVAILABLE";
+
+  }
+
+}
+
+// ==========================================
+// DOWNLOAD RESULTS
+// ==========================================
+
+function myDownloadText(){
+
+  const myText =
+    document.getElementById("myTextarea").value;
+
+  const myBlob = new Blob(
+    [myText],
+    {type:"text/plain"}
+  );
+
+  const myURL = URL.createObjectURL(myBlob);
+
+  const myLink = document.createElement("a");
+
+  myLink.href = myURL;
+  myLink.download = "browser-hack-results.txt";
+
+  myLink.click();
+
+  URL.revokeObjectURL(myURL);
+
+}
+
+// ==========================================
+// TEXT EDITOR
+// ==========================================
+
+function myAddText(){
+
+  const myLabel =
+    document.getElementById("myEditorInput").value;
+
+  const myEditor =
+    document.getElementById("myEditor");
+
+  if(!myLabel.trim()) return;
+
+  myEditor.value += myLabel + "\n";
+
+  document.getElementById("myEditorInput").value = "";
+
+}
+
+function myClearEditor(){
+
+  document.getElementById("myEditor").value = "";
+
+}
+
+// ==========================================
+// SAMPLE OBJECT
+// ==========================================
+
+document.getElementById("myOrb").onclick = function(){
+
+  myInspect("element");
+
+};
+
+// ==========================================
+// ERROR DISPLAY
+// ==========================================
+
+function myDisplayError(myError){
+
+  document.getElementById("myStatus").textContent =
+    "ERROR · " + myError.message;
+
+  document.getElementById("myObjectDisplay").textContent =
+    "Unable to inspect this object.";
+
+}
+
+// ==========================================
+// INITIALIZATION
+// ==========================================
+
+document.getElementById("myStatus").textContent =
+  "SYSTEM ONLINE · 20 OBJECT EXPLORERS READY";
+
+</script>
+
+</body>
+</html>
