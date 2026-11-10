@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>t2a19 JSON Explorer</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:#07111f;
+  color:#eaf4ff;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+header{
+  text-align:center;
+  padding:35px 15px;
+  background:linear-gradient(135deg,#101f3c,#174c70,#087e91);
+  border-bottom:3px solid #00e5ff;
+}
+
+header h1{
+  margin:0;
+  font-size:clamp(25px,5vw,42px);
+  letter-spacing:2px;
+  color:#fff;
+  text-shadow:0 0 15px #00e5ff88;
+}
+
+header p{
+  color:#c8eaff;
+  margin-bottom:0;
+}
+
+.container{
+  width:min(1000px,94%);
+  margin:30px auto;
+}
+
+.panel{
+  background:#101e30;
+  border:1px solid #29465f;
+  border-radius:15px;
+  padding:22px;
+  margin-bottom:22px;
+  box-shadow:0 8px 30px #0005;
+}
+
+h2{
+  color:#42dfff;
+  margin-top:0;
+}
+
+.description{
+  color:#b9cce0;
+  line-height:1.7;
+}
+
+select{
+  width:100%;
+  padding:14px;
+  border:1px solid #3c6d8c;
+  border-radius:8px;
+  background:#071522;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+
+button{
+  padding:12px 18px;
+  border:0;
+  border-radius:8px;
+  background:#00bcd4;
+  color:#061522;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:hover{
+  background:#63edff;
+  transform:translateY(-2px);
+  box-shadow:0 4px 15px #00e5ff44;
+}
+
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:15px;
+}
+
+#myStatus{
+  margin-top:15px;
+  padding:12px;
+  border-radius:8px;
+  background:#071522;
+  color:#55e8ff;
+  font-family:Consolas,monospace;
+}
+
+#myImage{
+  display:none;
+  width:100%;
+  max-height:450px;
+  object-fit:contain;
+  background:#071522;
+  border-radius:12px;
+  margin-top:15px;
+  border:1px solid #29465f;
+}
+
+#myJson{
+  padding:18px;
+  background:#050d18;
+  color:#a9f5d0;
+  border-radius:10px;
+  border:1px solid #29465f;
+  overflow:auto;
+  max-height:500px;
+  font-family:Consolas,monospace;
+  font-size:13px;
+  line-height:1.6;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+#myPlaceholder{
+  color:#8da8c0;
+  text-align:center;
+  padding:35px 10px;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#7796b1;
+  font-size:13px;
+}
+
+.loader{
+  display:inline-block;
+  width:17px;
+  height:17px;
+  border:3px solid #ffffff33;
+  border-top-color:#42dfff;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+  vertical-align:middle;
+  margin-right:8px;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+@media(max-width:600px){
+  .panel{padding:15px}
+  .controls button{width:100%}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>⚡ JSON API EXPLORER</h1>
+  <p>Explore APIs · Fetch Data · Display JSON · Discover Images</p>
+  <p><b>Created by: Jaxon</b></p>
+</header>
+
+<main class="container">
+
+  <section class="panel">
+    <h2>01 — Welcome to JSON Explorer</h2>
+
+    <p class="description">
+      This webpage connects to an online API and retrieves information
+      in JSON (JavaScript Object Notation) format.
+      Select an API below to retrieve its data.
+      The information will be displayed as formatted JSON,
+      and any returned image will appear in the image preview.
+    </p>
+  </section>
+
+  <section class="panel">
+    <h2>02 — Select an API</h2>
+
+    <label for="myselect">Choose an API:</label>
+    <br><br>
+
+    <select id="myselect" onchange="myHandleSelection()">
+      <option value="">-- Select an API --</option>
+      <option value="https://randomfox.ca/floof/">Random Fox API</option>
+    </select>
+
+    <div class="controls">
+      <button onclick="myFetchSelected()">Fetch JSON Data</button>
+      <button onclick="myFetchSelected()">↻ Get Another Fox</button>
+      <button onclick="myClearData()">Clear Results</button>
+    </div>
+
+    <div id="myStatus">READY · Select an API to begin.</div>
+  </section>
+
+  <section class="panel">
+    <h2>03 — Image Preview</h2>
+
+    <div id="myPlaceholder">
+      <div style="font-size:45px">🦊</div>
+      <p>Your random fox image will appear here!</p>
+    </div>
+
+    <img id="myImage" alt="Random fox returned by the API">
+
+    <p id="myImageInfo" class="description"></p>
+  </section>
+
+  <section class="panel">
+    <h2>04 — JSON Data</h2>
+
+    <p class="description">
+      The API response is converted into readable,
+      properly formatted JSON below.
+    </p>
+
+    <pre id="myJson">Waiting for API data...</pre>
+
+    <div class="controls">
+      <button onclick="myCopyJson()">Copy JSON</button>
+      <button onclick="myDownloadJson()">Download JSON</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>05 — About JSON</h2>
+
+    <p class="description">
+      JSON stands for JavaScript Object Notation.
+      It is a lightweight format used to exchange information
+      between websites, applications, and servers.
+    </p>
+
+    <p class="description">
+      This project uses JavaScript's <b>fetch()</b> function
+      to request information from an API.
+      The <b>response.json()</b> method converts the response
+      into a JavaScript object.
+      Finally, <b>JSON.stringify()</b> formats the information
+      so it can be displayed on the webpage.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  t2a19-json-jaxon.html<br>
+  JSON API EXPLORER · HTML · CSS · JAVASCRIPT
+</footer>
+
+<script>
+
+// ======================================
+// JSON API EXPLORER
+// Created by Jaxon
+// ======================================
+
+let myJsonData = null;
+let myCurrentImage = "";
+
+// Get webpage elements
+
+const mySelect = document.getElementById("myselect");
+const myStatus = document.getElementById("myStatus");
+const myJson = document.getElementById("myJson");
+const myImage = document.getElementById("myImage");
+const myPlaceholder = document.getElementById("myPlaceholder");
+const myImageInfo = document.getElementById("myImageInfo");
+
+// ======================================
+// HANDLE API SELECTION
+// ======================================
+
+function myHandleSelection(){
+
+  if(mySelect.value){
+    myStatus.textContent = "API SELECTED · READY TO FETCH";
+  }else{
+    myStatus.textContent = "READY · Select an API to begin.";
+  }
+
+}
+
+// ======================================
+// FETCH API DATA
+// ======================================
+
+async function fetchdata(myUrl){
+
+  if(!myUrl){
+    myStatus.textContent = "ERROR · Please select an API first.";
+    return;
+  }
+
+  myStatus.innerHTML =
+    '<span class="loader"></span> FETCHING API DATA...';
+
+  myJson.textContent = "Loading JSON data...";
+  myImage.style.display = "none";
+  myPlaceholder.style.display = "block";
+  myImageInfo.textContent = "";
+
+  try{
+
+    // Request information from the API
+
+    const myResponse = await fetch(myUrl);
+
+    // Check if the request was successful
+
+    if(!myResponse.ok){
+      throw new Error(
+        "HTTP Error: " + myResponse.status
+      );
+    }
+
+    // Convert the response into JSON
+
+    const myData = await myResponse.json();
+
+    myJsonData = myData;
+
+    // Format JSON with indentation
+
+    const myFormattedJson =
+      JSON.stringify(myData,null,2);
+
+    // Display JSON on the webpage
+
+    myJson.textContent = myFormattedJson;
+
+    // Check whether the API returned an image
+
+    if(
+      myData.image &&
+      typeof myData.image === "string"
+    ){
+
+      const myImageUrl = new URL(myData.image);
+
+      if(myImageUrl.protocol !== "https:" &&
+         myImageUrl.protocol !== "http:"){
+        throw new Error("Invalid image URL.");
+      }
+
+      myCurrentImage = myImageUrl.href;
+
+      myImage.onload = function(){
+        myImage.style.display = "block";
+        myPlaceholder.style.display = "none";
+
+        myImageInfo.textContent =
+          "Image successfully loaded from the Random Fox API.";
+      };
+
+      myImage.onerror = function(){
+        myImage.style.display = "none";
+        myPlaceholder.style.display = "block";
+
+        myImageInfo.textContent =
+          "JSON loaded, but the image could not be displayed.";
+      };
+
+      myImage.src = myCurrentImage;
+
+    }else{
+
+      myCurrentImage = "";
+      myPlaceholder.style.display = "block";
+
+      myPlaceholder.innerHTML =
+        "<p>No image was returned by this API.</p>";
+
+    }
+
+    myStatus.textContent =
+      "SUCCESS · API DATA LOADED";
+
+  }catch(myError){
+
+    myJson.textContent =
+      "Unable to retrieve API data.\n\n" +
+      "Error: " + myError.message +
+      "\n\nCheck your internet connection and try again.";
+
+    myStatus.textContent =
+      "ERROR · " + myError.message;
+
+    myImage.style.display = "none";
+    myPlaceholder.style.display = "block";
+
+  }
+
+}
+
+// ======================================
+// FETCH SELECTED API
+// ======================================
+
+function myFetchSelected(){
+
+  const myUrl = mySelect.value;
+
+  if(!myUrl){
+    myStatus.textContent =
+      "ERROR · Choose an API from the dropdown.";
+    return;
+  }
+
+  fetchdata(myUrl);
+
+}
+
+// ======================================
+// COPY JSON
+// ======================================
+
+async function myCopyJson(){
+
+  if(myJsonData === null){
+    myStatus.textContent =
+      "NOTHING TO COPY · FETCH DATA FIRST.";
+    return;
+  }
+
+  try{
+
+    await navigator.clipboard.writeText(
+      JSON.stringify(myJsonData,null,2)
+    );
+
+    myStatus.textContent =
+      "SUCCESS · JSON COPIED TO CLIPBOARD";
+
+  }catch(myError){
+
+    myStatus.textContent =
+      "ERROR · Clipboard permission unavailable.";
+
+  }
+
+}
+
+// ======================================
+// DOWNLOAD JSON
+// ======================================
+
+function myDownloadJson(){
+
+  if(myJsonData === null){
+    myStatus.textContent =
+      "NOTHING TO DOWNLOAD · FETCH DATA FIRST.";
+    return;
+  }
+
+  const myBlob = new Blob(
+    [JSON.stringify(myJsonData,null,2)],
+    {type:"application/json"}
+  );
+
+  const myDownloadUrl =
+    URL.createObjectURL(myBlob);
+
+  const myLink = document.createElement("a");
+
+  myLink.href = myDownloadUrl;
+  myLink.download = "my-json-data.json";
+
+  document.body.appendChild(myLink);
+  myLink.click();
+  myLink.remove();
+
+  URL.revokeObjectURL(myDownloadUrl);
+
+  myStatus.textContent =
+    "SUCCESS · JSON FILE DOWNLOADED";
+
+}
+
+// ======================================
+// CLEAR RESULTS
+// ======================================
+
+function myClearData(){
+
+  myJsonData = null;
+  myCurrentImage = "";
+
+  myJson.textContent = "Waiting for API data...";
+
+  myImage.removeAttribute("src");
+  myImage.style.display = "none";
+
+  myPlaceholder.style.display = "block";
+  myPlaceholder.innerHTML =
+    '<div style="font-size:45px">🦊</div>' +
+    '<p>Your random fox image will appear here!</p>';
+
+  myImageInfo.textContent = "";
+
+  myStatus.textContent =
+    "CLEARED · READY FOR ANOTHER API REQUEST";
+
+}
+
+// ======================================
+// INITIALIZE PAGE
+// ======================================
+
+myStatus.textContent =
+  "SYSTEM READY · JSON EXPLORER ONLINE";
+
+</script>
+
+</body>
+</html>
