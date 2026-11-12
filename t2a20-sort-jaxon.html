@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jaxon's Sorting Program</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #eaf2f8;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #1a5276;
+        }
+
+        button {
+            padding: 12px 22px;
+            margin: 8px;
+            border: none;
+            border-radius: 8px;
+            background-color: #2874a6;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #154360;
+        }
+
+        #mydiv01 {
+            margin: 25px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            max-width: 500px;
+            min-height: 80px;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>t2a20-sort-jaxon.html</h1>
+    <h2>Array Sorting Program</h2>
+
+    <script>
+        let mymax = 10;
+        let mycards = new Array(mymax);
+    </script>
+
+    <button onclick="setRandom()">Set Random</button>
+    <button onclick="showCards()">Show</button>
+    <button onclick="sortCards()">Sort</button>
+    <button onclick="clearCards()">Clear</button>
+
+    <div id="mydiv01">
+        Click Set Random to begin!
+    </div>
+
+    <script>
+        function setRandom() {
+            for (let myloop = 0; myloop < mymax; myloop++) {
+                mycards[myloop] = Math.floor(Math.random() * 100);
+            }
+
+            showCards();
+        }
+
+        function showCards() {
+            let mytemp = "<b>Current Numbers:</b><br>";
+
+            for (let myloop = 0; myloop < mymax; myloop++) {
+                mytemp += myloop + " = " + mycards[myloop] + "<br>";
+            }
+
+            document.getElementById('mydiv01').innerHTML = mytemp;
+        }
+
+        function sortCards() {
+            // Bubble Sort
+            for (let i = 0; i < mymax - 1; i++) {
+                for (let j = 0; j < mymax - i - 1; j++) {
+
+                    if (mycards[j] > mycards[j + 1]) {
+                        let mytemp = mycards[j];
+
+                        mycards[j] = mycards[j + 1];
+                        mycards[j + 1] = mytemp;
+                    }
+                }
+            }
+
+            let mytemp = "<b>Sorted Numbers (Smallest to Largest):</b><br>";
+
+            for (let myloop = 0; myloop < mymax; myloop++) {
+                mytemp += myloop + " = " + mycards[myloop] + "<br>";
+            }
+
+            document.getElementById('mydiv01').innerHTML = mytemp;
+        }
+
+        function clearCards() {
+            mycards = new Array(mymax);
+            document.getElementById('mydiv01').innerHTML =
+                "Array cleared! Click Set Random to begin again.";
+        }
+    </script>
+
+</body>
+</html>
