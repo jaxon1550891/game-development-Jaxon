@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>t2a18 - Arcade Game</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  overflow:hidden;
+  background:#071326;
+  color:white;
+  font-family:Arial,sans-serif;
+  user-select:none;
+}
+
+#myGame{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 50% 110%,#174a72 0%,transparent 65%),
+    linear-gradient(#071326,#102d4b 65%,#071326);
+}
+
+/* Animated background */
+
+#myStars{
+  position:absolute;
+  inset:-1000px 0 0;
+  width:100%;
+  height:calc(100% + 1000px);
+  background-image:
+    radial-gradient(2px 2px at 30px 40px,#fff,transparent),
+    radial-gradient(2px 2px at 120px 180px,#80eaff,transparent),
+    radial-gradient(1px 1px at 220px 90px,#fff,transparent),
+    radial-gradient(2px 2px at 300px 260px,#fff,transparent),
+    radial-gradient(1px 1px at 400px 120px,#80eaff,transparent);
+  background-size:450px 350px;
+  opacity:.65;
+  pointer-events:none;
+  animation:stars 18s linear infinite;
+}
+
+@keyframes stars{
+  from{transform:translateY(0)}
+  to{transform:translateY(350px)}
+}
+
+/* Header */
+
+#myHeader{
+  position:absolute;
+  top:15px;
+  width:100%;
+  text-align:center;
+  z-index:5;
+  pointer-events:none;
+}
+
+#myHeader h1{
+  margin:0;
+  font-size:clamp(20px,4vw,34px);
+  letter-spacing:4px;
+  color:#5ceaff;
+  text-shadow:0 0 15px #00cfff;
+}
+
+/* HUD */
+
+#myHud{
+  position:absolute;
+  top:70px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  z-index:5;
+  width:95%;
+  flex-wrap:wrap;
+}
+
+.myStat{
+  background:#071c30dd;
+  border:1px solid #42dfff77;
+  border-radius:10px;
+  padding:10px 17px;
+  min-width:90px;
+  text-align:center;
+  box-shadow:0 0 12px #00d9ff22;
+}
+
+.myStat span{
+  display:block;
+  font-size:11px;
+  color:#8bdfff;
+}
+
+.myStat strong{
+  font-size:20px;
+  color:white;
+}
+
+/* Player and enemy */
+
+.myCharacter{
+  position:absolute;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:3;
+  font-size:55px;
+  width:65px;
+  height:65px;
+  filter:drop-shadow(0 0 12px #00eaff);
+}
+
+#myPlayer{
+  left:50%;
+  bottom:35px;
+  transform:translateX(-50%);
+}
+
+#myEnemy{
+  left:30%;
+  top:150px;
+  filter:drop-shadow(0 0 12px #ff3355);
+  animation:enemyGlow 1s infinite alternate;
+}
+
+@keyframes enemyGlow{
+  from{filter:drop-shadow(0 0 5px #ff3355)}
+  to{filter:drop-shadow(0 0 20px #ff003c)}
+}
+
+/* Game overlay */
+
+#myOverlay{
+  position:absolute;
+  inset:0;
+  z-index:10;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#020a16bb;
+  backdrop-filter:blur(5px);
+  padding:20px;
+}
+
+#myMenu{
+  width:min(430px,100%);
+  padding:30px 20px;
+  text-align:center;
+  background:linear-gradient(145deg,#102c49,#071525);
+  border:1px solid #36dfff88;
+  border-radius:20px;
+  box-shadow:0 0 50px #00bfff33;
+}
+
+#myMenu h2{
+  color:#4eeaff;
+  font-size:30px;
+  margin-top:0;
+}
+
+#myMenu p{
+  line-height:1.6;
+  color:#c4d9ee;
+}
+
+/* Buttons */
+
+button{
+  padding:12px 18px;
+  border:1px solid #52eaff;
+  border-radius:9px;
+  background:#075276;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:hover{
+  background:#00a6d4;
+  box-shadow:0 0 15px #00dfff77;
+  transform:translateY(-2px);
+}
+
+#myMenu button{
+  width:100%;
+  margin-top:10px;
+  padding:15px;
+  font-size:16px;
+}
+
+#myTopButtons{
+  position:absolute;
+  top:140px;
+  right:15px;
+  z-index:6;
+  display:flex;
+  gap:8px;
+}
+
+#myTopButtons button{
+  padding:8px 12px;
+  font-size:12px;
+}
+
+/* Mobile controls */
+
+#myControls{
+  position:absolute;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:6;
+  display:flex;
+  gap:15px;
+}
+
+.myMoveButton{
+  width:65px;
+  height:65px;
+  border-radius:50%;
+  font-size:25px;
+  padding:0;
+  touch-action:none;
+}
+
+#myInstructions{
+  position:absolute;
+  bottom:100px;
+  width:100%;
+  text-align:center;
+  color:#a7d8ed;
+  font-size:12px;
+  pointer-events:none;
+}
+
+#myPauseScreen{
+  position:absolute;
+  inset:0;
+  display:none;
+  place-items:center;
+  z-index:8;
+  background:#061426bb;
+  font-size:35px;
+  font-weight:bold;
+  color:#55eaff;
+}
+
+@media(min-width:800px){
+  #myControls{
+    bottom:20px;
+    left:25px;
+    transform:none;
+  }
+
+  #myInstructions{
+    bottom:30px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="myGame">
+
+  <div id="myStars"></div>
+
+  <header id="myHeader">
+    <h1>⚡ SPACE SURVIVOR ⚡</h1>
+  </header>
+
+  <!-- Scoreboard -->
+
+  <div id="myHud">
+    <div class="myStat">
+      <span>SCORE</span>
+      <strong id="myScore">0</strong>
+    </div>
+
+    <div class="myStat">
+      <span>LIVES</span>
+      <strong id="myLives">❤️❤️❤️</strong>
+    </div>
+
+    <div class="myStat">
+      <span>LEVEL</span>
+      <strong id="myLevel">1</strong>
+    </div>
+  </div>
+
+  <!-- Game objects -->
+
+  <div id="myPlayer" class="myCharacter">🚀</div>
+
+  <div id="myEnemy" class="myCharacter">👾</div>
+
+  <!-- Top controls -->
+
+  <div id="myTopButtons">
+    <button onclick="myPauseGame()">Ⅱ Pause</button>
+    <button onclick="myRestartGame()">↻ Restart</button>
+  </div>
+
+  <!-- Mobile controls -->
+
+  <div id="myControls">
+    <button class="myMoveButton" id="myLeftButton">◀</button>
+    <button class="myMoveButton" id="myRightButton">▶</button>
+  </div>
+
+  <div id="myInstructions">
+    USE ARROW KEYS OR BUTTONS TO MOVE · AVOID THE ENEMY!
+  </div>
+
+  <!-- Pause screen -->
+
+  <div id="myPauseScreen">
+    PAUSED
+  </div>
+
+  <!-- Start and game over screen -->
+
+  <div id="myOverlay">
+    <div id="myMenu">
+      <h2 id="myMenuTitle">SPACE SURVIVOR</h2>
+
+      <p id="myMenuText">
+        Welcome to Space Survivor!<br>
+        Dodge the alien and survive for as long as possible.
+        Your score increases as you survive.
+      </p>
+
+      <button id="myStartButton" onclick="myStartGame()">
+        🚀 START GAME
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+// =======================================
+// SPACE SURVIVOR
+// Game template by Jaxon
+// =======================================
+
+// Global variables
+
+let myGlobalX = 0;
+let myClock = null;
+let myAnimationFrame = null;
+
+let myScore = 0;
+let myLives = 3;
+let myLevel = 1;
+
+let myGameRunning = false;
+let myGamePaused = false;
+
+let myPlayerX = 0;
+let myEnemyX = 0;
+let myEnemyY = 150;
+
+let myEnemySpeed = 3;
+let myPlayerSpeed = 7;
+
+let myLastTime = 0;
+let myLastHit = 0;
+let myHitCooldown = 1200;
+
+let myKeys = {
+  left:false,
+  right:false
+};
+
+// Get HTML elements
+
+const myGame = document.getElementById("myGame");
+const myPlayer = document.getElementById("myPlayer");
+const myEnemy = document.getElementById("myEnemy");
+
+const myScoreDisplay = document.getElementById("myScore");
+const myLivesDisplay = document.getElementById("myLives");
+const myLevelDisplay = document.getElementById("myLevel");
+
+const myOverlay = document.getElementById("myOverlay");
+const myMenuTitle = document.getElementById("myMenuTitle");
+const myMenuText = document.getElementById("myMenuText");
+const myStartButton = document.getElementById("myStartButton");
+
+const myPauseScreen = document.getElementById("myPauseScreen");
+
+// =======================================
+// COLLISION DETECTION
+// =======================================
+
+function myHitOther(my1,my2){
+
+  const myObject1 = document.getElementById(my1);
+  const myObject2 = document.getElementById(my2);
+
+  const myRect1 = myObject1.getBoundingClientRect();
+  const myRect2 = myObject2.getBoundingClientRect();
+
+  return (
+    myRect1.right >= myRect2.left &&
+    myRect1.bottom >= myRect2.top &&
+    myRect1.left <= myRect2.right &&
+    myRect1.top <= myRect2.bottom
+  );
+
+}
+
+// =======================================
+// PLAYER MOVEMENT
+// =======================================
+
+function myMovePlayer(myDirection){
+
+  if(!myGameRunning || myGamePaused) return;
+
+  const myMaxX = myGame.clientWidth - myPlayer.offsetWidth;
+
+  myPlayerX += myDirection * myPlayerSpeed;
+
+  myPlayerX = Math.max(
+    0,
+    Math.min(myMaxX,myPlayerX)
+  );
+
+  myPlayer.style.left = myPlayerX + "px";
+  myPlayer.style.transform = "none";
+
+}
+
+// =======================================
+// KEYBOARD CONTROLS
+// =======================================
+
+document.onkeydown = function(myEvent){
+
+  if(myEvent.key === "ArrowLeft" || myEvent.key === "ArrowRight"){
+    myEvent.preventDefault();
+  }
+
+  if(myEvent.key === "ArrowLeft"){
+    myKeys.left = true;
+  }
+
+  if(myEvent.key === "ArrowRight"){
+    myKeys.right = true;
+  }
+
+  if(myEvent.key.toLowerCase() === "p"){
+    myPauseGame();
+  }
+
+};
+
+document.onkeyup = function(myEvent){
+
+  if(myEvent.key === "ArrowLeft"){
+    myKeys.left = false;
+  }
+
+  if(myEvent.key === "ArrowRight"){
+    myKeys.right = false;
+  }
+
+};
+
+window.onblur = function(){
+  if(myGameRunning && !myGamePaused){
+    myPauseGame();
+  }
+};
+
+// =======================================
+// MOBILE TOUCH CONTROLS
+// =======================================
+
+function mySetupTouch(myButton,myDirection){
+
+  myButton.onpointerdown = function(myEvent){
+
+    myEvent.preventDefault();
+
+    if(myDirection === -1){
+      myKeys.left = true;
+    }else{
+      myKeys.right = true;
+    }
+
+    myButton.setPointerCapture(myEvent.pointerId);
+
+  };
+
+  myButton.onpointerup = function(){
+    myKeys.left = false;
+    myKeys.right = false;
+  };
+
+  myButton.onpointercancel = function(){
+    myKeys.left = false;
+    myKeys.right = false;
+  };
+
+  myButton.onlostpointercapture = function(){
+    myKeys.left = false;
+    myKeys.right = false;
+  };
+
+}
+
+mySetupTouch(
+  document.getElementById("myLeftButton"),-1
+);
+
+mySetupTouch(
+  document.getElementById("myRightButton"),1
+);
+
+// =======================================
+// UPDATE SCORE
+// =======================================
+
+function myUpdateScore(){
+
+  myScore += 10;
+
+  myScoreDisplay.textContent = myScore;
+
+  myLevel = Math.floor(myScore / 100) + 1;
+
+  myLevelDisplay.textContent = myLevel;
+
+  myEnemySpeed = Math.min(
+    3 + myLevel * 0.5,
+    10
+  );
+
+}
+
+// =======================================
+// UPDATE LIVES
+// =======================================
+
+function myUpdateLives(){
+
+  myLivesDisplay.textContent =
+    "❤️".repeat(Math.max(0,myLives)) +
+    "🖤".repeat(Math.max(0,3-myLives));
+
+}
+
+// =======================================
+// CHECK ALL COLLISIONS
+// =======================================
+
+function myCheckHit(myNow){
+
+  if(myHitOther("myPlayer","myEnemy")){
+
+    if(myNow - myLastHit < myHitCooldown){
+      return;
+    }
+
+    myLastHit = myNow;
+
+    myLives--;
+
+    myUpdateLives();
+
+    // Reset enemy position
+
+    myEnemyY = -80;
+
+    myEnemyX = Math.random() *
+      (myGame.clientWidth - myEnemy.offsetWidth);
+
+    if(myLives <= 0){
+      myEndGame();
+    }
+
+  }
+
+}
+
+// =======================================
+// MOVE ENEMY
+// =======================================
+
+function myMoveEnemy(myDelta){
+
+  myEnemyY += myEnemySpeed * myDelta;
+
+  if(myEnemyY > myGame.clientHeight){
+
+    myEnemyY = -80;
+
+    myEnemyX = Math.random() *
+      (myGame.clientWidth - myEnemy.offsetWidth);
+
+    myEnemySpeed = Math.min(
+      myEnemySpeed + 0.15,
+      10
+    );
+
+    myUpdateScore();
+
+  }
+
+  myEnemy.style.left = myEnemyX + "px";
+  myEnemy.style.top = myEnemyY + "px";
+
+}
+
+// =======================================
+// MAIN GAME LOOP
+// =======================================
+
+function myGameLoop(myTime){
+
+  if(!myGameRunning || myGamePaused) return;
+
+  const myDelta = Math.min(
+    (myTime - myLastTime) / 16.67 || 1,
+    2
+  );
+
+  myLastTime = myTime;
+
+  // Move player
+
+  if(myKeys.left){
+    myMovePlayer(-1 * myDelta);
+  }
+
+  if(myKeys.right){
+    myMovePlayer(1 * myDelta);
+  }
+
+  // Scroll background
+
+  myGlobalX += 1.5 * myDelta;
+
+  document.getElementById("myStars").style.backgroundPosition =
+    "0px " + myGlobalX + "px";
+
+  // Move enemy
+
+  myMoveEnemy(myDelta);
+
+  // Check collisions
+
+  myCheckHit(myTime);
+
+  // Continue animation
+
+  if(myGameRunning && !myGamePaused){
+    myAnimationFrame =
+      requestAnimationFrame(myGameLoop);
+  }
+
+}
+
+// =======================================
+// START GAME
+// =======================================
+
+function myStartGame(){
+
+  myScore = 0;
+  myLives = 3;
+  myLevel = 1;
+
+  myEnemySpeed = 3;
+  myEnemyY = -80;
+
+  myPlayerX =
+    (myGame.clientWidth - myPlayer.offsetWidth) / 2;
+
+  myEnemyX = Math.random() *
+    (myGame.clientWidth - myEnemy.offsetWidth);
+
+  myLastHit = 0;
+  myLastTime = 0;
+
+  myScoreDisplay.textContent = "0";
+  myLevelDisplay.textContent = "1";
+
+  myUpdateLives();
+
+  myPlayer.style.left = myPlayerX + "px";
+  myPlayer.style.bottom = "35px";
+  myPlayer.style.top = "auto";
+  myPlayer.style.transform = "none";
+
+  myEnemy.style.left = myEnemyX + "px";
+  myEnemy.style.top = myEnemyY + "px";
+
+  myKeys.left = false;
+  myKeys.right = false;
+
+  myGamePaused = false;
+  myGameRunning = true;
+
+  myPauseScreen.style.display = "none";
+  myOverlay.style.display = "none";
+
+  cancelAnimationFrame(myAnimationFrame);
+
+  myAnimationFrame =
+    requestAnimationFrame(myGameLoop);
+
+}
+
+// =======================================
+// PAUSE GAME
+// =======================================
+
+function myPauseGame(){
+
+  if(!myGameRunning) return;
+
+  myGamePaused = !myGamePaused;
+
+  if(myGamePaused){
+
+    cancelAnimationFrame(myAnimationFrame);
+
+    myPauseScreen.style.display = "grid";
+
+    myKeys.left = false;
+    myKeys.right = false;
+
+  }else{
+
+    myPauseScreen.style.display = "none";
+
+    myLastTime = 0;
+
+    myAnimationFrame =
+      requestAnimationFrame(myGameLoop);
+
+  }
+
+}
+
+// =======================================
+// GAME OVER
+// =======================================
+
+function myEndGame(){
+
+  myGameRunning = false;
+  myGamePaused = false;
+
+  cancelAnimationFrame(myAnimationFrame);
+
+  myPauseScreen.style.display = "none";
+  myOverlay.style.display = "flex";
+
+  myMenuTitle.textContent = "💥 GAME OVER!";
+
+  myMenuText.innerHTML =
+    "You were caught by the alien!<br><br>" +
+    "FINAL SCORE: <b>" + myScore + "</b><br>" +
+    "LEVEL REACHED: <b>" + myLevel + "</b><br><br>" +
+    "Can you beat your score?";
+
+  myStartButton.textContent = "↻ PLAY AGAIN";
+
+}
+
+// =======================================
+// RESTART GAME
+// =======================================
+
+function myRestartGame(){
+
+  cancelAnimationFrame(myAnimationFrame);
+
+  myGameRunning = false;
+  myGamePaused = false;
+
+  myOverlay.style.display = "flex";
+  myPauseScreen.style.display = "none";
+
+  myMenuTitle.textContent = "SPACE SURVIVOR";
+
+  myMenuText.textContent =
+    "Ready for another adventure? Dodge the alien and beat your high score!";
+
+  myStartButton.textContent = "🚀 START GAME";
+
+}
+
+// =======================================
+// INITIALIZE
+// =======================================
+
+myRestartGame();
+
+</script>
+
+</body>
+</html>
