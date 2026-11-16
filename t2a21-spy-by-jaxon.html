@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>t2a21-spy-by-jaxon.html</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #101827;
+      color: white;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #38bdf8;
+    }
+
+    .myContainer {
+      max-width: 750px;
+      margin: auto;
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px #0008;
+    }
+
+    textarea {
+      width: 90%;
+      max-width: 650px;
+      height: 110px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #38bdf8;
+      background: #0f172a;
+      color: white;
+      font-size: 16px;
+      resize: vertical;
+    }
+
+    button {
+      padding: 12px 22px;
+      margin: 10px 5px;
+      border: none;
+      border-radius: 8px;
+      background: #0284c7;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0369a1;
+    }
+
+    .myLabel {
+      color: #7dd3fc;
+      font-weight: bold;
+      margin: 15px;
+    }
+
+    #myStatus {
+      color: #4ade80;
+      min-height: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="myContainer">
+
+    <h1>SPY ENCRYPTION</h1>
+    <p>Turn ordinary messages into secret coded messages!</p>
+
+    <h3 class="myLabel">Original Message</h3>
+
+    <textarea id="myarea01">hello how are you</textarea>
+
+    <br>
+
+    <button onclick="myEncrypt()">Encrypt</button>
+    <button onclick="myDecrypt()">Decrypt</button>
+    <button onclick="myClear()">Clear All</button>
+
+    <h3 class="myLabel">Encrypted Message</h3>
+
+    <textarea id="myarea02" placeholder="Your encrypted message appears here..."></textarea>
+
+    <br>
+
+    <button onclick="myCopy()">Copy Encrypted Message</button>
+
+    <h3 class="myLabel">Decrypted Message</h3>
+
+    <textarea id="myarea03" placeholder="Your decrypted message appears here..."></textarea>
+
+    <p id="myStatus"></p>
+
+    <hr>
+
+    <h3>How It Works</h3>
+    <p>
+      This program uses a Caesar cipher. Every letter moves
+      3 places forward in the alphabet when encrypted.
+      Decryption moves each letter 3 places backward.
+    </p>
+
+    <p>Example: A becomes D, B becomes E, and X becomes A.</p>
+
+  </div>
+
+  <script>
+
+    // Encrypt the original message
+    function myEncrypt() {
+
+      let myMessage = document.getElementById('myarea01').value.toLowerCase();
+      let myResult = '';
+
+      for (let myLoop = 0; myLoop < myMessage.length; myLoop++) {
+
+        let myLetter = myMessage[myLoop];
+
+        if (myLetter >= 'a' && myLetter <= 'z') {
+
+          let myCode = myLetter.charCodeAt(0);
+
+          myCode = ((myCode - 97 + 3) % 26) + 97;
+
+          myLetter = String.fromCharCode(myCode);
+
+        }
+
+        myResult = myResult + myLetter;
+      }
+
+      document.getElementById('myarea02').value = myResult;
+      document.getElementById('myStatus').innerText = 'Message encrypted successfully!';
+    }
+
+
+    // Decrypt the encrypted message
+    function myDecrypt() {
+
+      let myMessage = document.getElementById('myarea02').value.toLowerCase();
+      let myResult = '';
+
+      for (let myLoop = 0; myLoop < myMessage.length; myLoop++) {
+
+        let myLetter = myMessage[myLoop];
+
+        if (myLetter >= 'a' && myLetter <= 'z') {
+
+          let myCode = myLetter.charCodeAt(0);
+
+          myCode = ((myCode - 97 - 3 + 26) % 26) + 97;
+
+          myLetter = String.fromCharCode(myCode);
+
+        }
+
+        myResult = myResult + myLetter;
+      }
+
+      document.getElementById('myarea03').value = myResult;
+      document.getElementById('myStatus').innerText = 'Message decrypted successfully!';
+    }
+
+
+    // Clear all text boxes
+    function myClear() {
+
+      document.getElementById('myarea01').value = '';
+      document.getElementById('myarea02').value = '';
+      document.getElementById('myarea03').value = '';
+
+      document.getElementById('myStatus').innerText = 'All text cleared.';
+    }
+
+
+    // Copy the encrypted message
+    async function myCopy() {
+
+      let myText = document.getElementById('myarea02').value;
+
+      try {
+        await navigator.clipboard.writeText(myText);
+        document.getElementById('myStatus').innerText = 'Encrypted message copied!';
+      } catch (myError) {
+        document.getElementById('myStatus').innerText = 'Copy was not available in this browser.';
+      }
+    }
+
+  </script>
+
+</body>
+</html>
