@@ -10,22 +10,59 @@
         background-size: 80%;
         font-family: Arial;
         overflow: hidden;
+        margin: 10px;
     }
 
     h1 {
         text-align: center;
         color: blue;
+        background-color: white;
+        padding: 10px;
+        border-radius: 10px;
     }
 
     input {
-        padding: 8px;
+        padding: 10px;
         margin: 4px;
         cursor: pointer;
+        border: 2px solid #246;
+        border-radius: 6px;
+        background-color: lightblue;
+        font-weight: bold;
     }
 
-    #myScore {
-        font-size: 20px;
+    input:hover {
+        background-color: deepskyblue;
+    }
+
+    #myScore, #myTimer, #myHighScore {
+        font-size: 18px;
         font-weight: bold;
+        background-color: white;
+        padding: 8px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    #myMessage {
+        font-size: 22px;
+        font-weight: bold;
+        color: darkgreen;
+    }
+
+    #myImg01, #myImg02 {
+        object-fit: contain;
+        user-select: none;
+    }
+
+    #myControls {
+        position: relative;
+        z-index: 5;
+        margin-top: 180px;
+        background-color: rgba(255,255,255,0.9);
+        padding: 10px;
+        border-radius: 10px;
+        text-align: center;
     }
 </style>
 </head>
@@ -35,14 +72,22 @@
 <h1>t2a18-game-template-fred</h1>
 
 <p id="myScore">Score: 0</p>
+<p id="myTimer">Time: 60</p>
+<p id="myHighScore">High Score: 0</p>
+
+<p id="myMessage">Collect the target! Get 10 points to win!</p>
 
 <script>
 
 // Global variables
 let myGlobalX = 0
 let myClock
+let myTimerClock
 let myScore = 0
-let mySpeed = 10
+let myTime = 60
+let mySpeed = 15
+let myGameRunning = true
+let myHighScore = 0
 
 // Collision detection
 function myHitOther(my1,my2) {
@@ -50,96 +95,118 @@ function myHitOther(my1,my2) {
     let myObj1 = document.getElementById(my1)
     let myObj2 = document.getElementById(my2)
 
-    let left1 = parseInt(myObj1.style.left)
-    let right1 = left1 + parseInt(myObj1.style.width)
-    let top1 = parseInt(myObj1.style.top)
-    let bottom1 = top1 + parseInt(myObj1.style.height)
+    let left1 = myObj1.offsetLeft
+    let right1 = left1 + myObj1.offsetWidth
+    let top1 = myObj1.offsetTop
+    let bottom1 = top1 + myObj1.offsetHeight
 
-    let left2 = parseInt(myObj2.style.left)
-    let right2 = left2 + parseInt(myObj2.style.width)
-    let top2 = parseInt(myObj2.style.top)
-    let bottom2 = top2 + parseInt(myObj2.style.height)
+    let left2 = myObj2.offsetLeft
+    let right2 = left2 + myObj2.offsetWidth
+    let top2 = myObj2.offsetTop
+    let bottom2 = top2 + myObj2.offsetHeight
 
     return (
-        right1 >= left2 &&
-        bottom1 >= top2 &&
-        left1 <= right2 &&
-        top1 <= bottom2
+        right1 > left2 &&
+        bottom1 > top2 &&
+        left1 < right2 &&
+        top1 < bottom2
     )
+}
+
+// Update score
+function myUpdateScore() {
+
+    document.getElementById('myScore').innerHTML =
+        'Score: ' + myScore
+
+    if (myScore > myHighScore) {
+        myHighScore = myScore
+
+        document.getElementById('myHighScore').innerHTML =
+            'High Score: ' + myHighScore
+    }
+}
+
+// Move target to random position
+function myMoveTarget() {
+
+    let myTarget = document.getElementById('myImg02')
+
+    let myMaxX = window.innerWidth - myTarget.offsetWidth
+    let myMaxY = window.innerHeight - myTarget.offsetHeight
+
+    myTarget.style.left = Math.random() * myMaxX + 'px'
+    myTarget.style.top = Math.random() * myMaxY + 'px'
 }
 
 // Check collisions
 function myCheckHit() {
 
+    if (!myGameRunning) return
+
     if (myHitOther('myImg01','myImg02')) {
 
-        myScore += 1
+        myScore++
 
-        document.getElementById('myScore').innerHTML =
-            'Score: ' + myScore
+        myUpdateScore()
 
-        alert('You got a point!')
+        document.getElementById('myMessage').innerHTML =
+            'Nice! You collected the target!'
 
-        // Reset player position
-        document.getElementById('myImg01').style.left = '50px'
-        document.getElementById('myImg01').style.top = '100px'
+        myMoveTarget()
 
-        // Move target
-        document.getElementById('myImg02').style.left =
-            (Math.random() * 400 + 200) + 'px'
-
-        document.getElementById('myImg02').style.top =
-            (Math.random() * 300 + 100) + 'px'
+        if (myScore >= 10) {
+            myEndGame('YOU WIN! Great job!')
+        }
     }
 }
 
 // Move player
 function myMove(myDirection) {
 
+    if (!myGameRunning) return
+
     let myPlayer = document.getElementById('myImg01')
 
-    if (myDirection == 'right') {
-        myPlayer.style.left =
-            (parseInt(myPlayer.style.left) + mySpeed) + 'px'
-    }
+    let myLeft = myPlayer.offsetLeft
+    let myTop = myPlayer.offsetTop
 
-    if (myDirection == 'left') {
-        myPlayer.style.left =
-            (parseInt(myPlayer.style.left) - mySpeed) + 'px'
-    }
+    if (myDirection == 'right') myLeft += mySpeed
+    if (myDirection == 'left') myLeft -= mySpeed
+    if (myDirection == 'up') myTop -= mySpeed
+    if (myDirection == 'down') myTop += mySpeed
 
-    if (myDirection == 'up') {
-        myPlayer.style.top =
-            (parseInt(myPlayer.style.top) - mySpeed) + 'px'
-    }
+    // Keep player inside screen
+    myLeft = Math.max(0, Math.min(
+        window.innerWidth - myPlayer.offsetWidth,
+        myLeft
+    ))
 
-    if (myDirection == 'down') {
-        myPlayer.style.top =
-            (parseInt(myPlayer.style.top) + mySpeed) + 'px'
-    }
+    myTop = Math.max(0, Math.min(
+        window.innerHeight - myPlayer.offsetHeight,
+        myTop
+    ))
+
+    myPlayer.style.left = myLeft + 'px'
+    myPlayer.style.top = myTop + 'px'
 
     myCheckHit()
 }
 
-// Move background
+// Background movement
 function myBackgroundMove(myDirection) {
 
     clearInterval(myClock)
 
     myClock = setInterval(function() {
 
-        if (myDirection == 'left') {
-            myGlobalX -= 5
-        }
-
-        if (myDirection == 'right') {
-            myGlobalX += 5
-        }
+        if (myDirection == 'left') myGlobalX -= 5
+        if (myDirection == 'right') myGlobalX += 5
 
         document.getElementById('myBody').style.backgroundPosition =
             myGlobalX + 'px 0px'
 
-    }, 100)
+    }, 50)
 }
 
 // Stop background
@@ -147,30 +214,83 @@ function myStopBackground() {
     clearInterval(myClock)
 }
 
+// Timer
+function myStartTimer() {
+
+    clearInterval(myTimerClock)
+
+    myTimerClock = setInterval(function() {
+
+        if (!myGameRunning) return
+
+        myTime--
+
+        document.getElementById('myTimer').innerHTML =
+            'Time: ' + myTime
+
+        if (myTime <= 0) {
+            myEndGame('TIME UP! Game Over!')
+        }
+
+    }, 1000)
+}
+
+// End game
+function myEndGame(myText) {
+
+    myGameRunning = false
+
+    clearInterval(myTimerClock)
+    clearInterval(myClock)
+
+    document.getElementById('myMessage').innerHTML = myText
+}
+
 // Reset game
 function myReset() {
 
     myScore = 0
-
-    document.getElementById('myScore').innerHTML = 'Score: 0'
+    myTime = 60
+    myGameRunning = true
 
     document.getElementById('myImg01').style.left = '50px'
-    document.getElementById('myImg01').style.top = '100px'
+    document.getElementById('myImg01').style.top = '150px'
 
-    document.getElementById('myImg02').style.left = '250px'
-    document.getElementById('myImg02').style.top = '100px'
+    document.getElementById('myImg02').style.left = '300px'
+    document.getElementById('myImg02').style.top = '150px'
 
-    myStopBackground()
+    document.getElementById('myMessage').innerHTML =
+        'Collect 10 targets to win!'
+
+    document.getElementById('myTimer').innerHTML = 'Time: 60'
+
+    myUpdateScore()
+    myStartTimer()
 }
 
 // Keyboard controls
 document.onkeydown = function(myEvent) {
 
-    if (myEvent.key == 'ArrowRight') myMove('right')
-    if (myEvent.key == 'ArrowLeft') myMove('left')
-    if (myEvent.key == 'ArrowUp') myMove('up')
-    if (myEvent.key == 'ArrowDown') myMove('down')
+    if (myEvent.key.startsWith('Arrow')) {
+        myEvent.preventDefault()
+    }
 
+    if (myEvent.key == 'ArrowRight' || myEvent.key == 'd')
+        myMove('right')
+
+    if (myEvent.key == 'ArrowLeft' || myEvent.key == 'a')
+        myMove('left')
+
+    if (myEvent.key == 'ArrowUp' || myEvent.key == 'w')
+        myMove('up')
+
+    if (myEvent.key == 'ArrowDown' || myEvent.key == 's')
+        myMove('down')
+}
+
+// Start timer when page loads
+window.onload = function() {
+    myStartTimer()
 }
 
 </script>
@@ -178,16 +298,18 @@ document.onkeydown = function(myEvent) {
 <!-- Game Images -->
 
 <img id="myImg01"
-style="position:absolute; width:100px; height:80px; top:100px; left:50px;"
+style="position:absolute; width:100px; height:80px; top:150px; left:50px;"
 src="myImage01.jpg">
 
 <img id="myImg02"
-style="position:absolute; width:100px; height:80px; top:100px; left:250px;"
+style="position:absolute; width:100px; height:80px; top:150px; left:300px;"
 src="myImage02.jpg">
 
-<br><br><br><br><br><br><br><br>
+<!-- Controls -->
 
-<!-- Background Controls -->
+<div id="myControls">
+
+<h3>Game Controls</h3>
 
 <input type="button"
 value="Background Left"
@@ -202,8 +324,6 @@ value="Stop Background"
 onclick="myStopBackground()">
 
 <br>
-
-<!-- Player Controls -->
 
 <input type="button"
 value="⬅ Left"
@@ -224,8 +344,10 @@ onclick="myMove('down')">
 <br>
 
 <input type="button"
-value="Reset Game"
+value="Restart Game"
 onclick="myReset()">
+
+</div>
 
 </body>
 </html>
