@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Browser Hack - Object Sort</title>
+
+    <style>
+        body {
+            background-color: #81F7F3;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #123;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+        }
+
+        .myPanel {
+            background-color: white;
+            padding: 15px;
+            border: 2px solid #159A9A;
+            border-radius: 10px;
+            margin: 15px auto;
+            max-width: 950px;
+        }
+
+        button, input[type=button] {
+            padding: 8px 12px;
+            margin: 4px;
+            border: 1px solid #087F8C;
+            border-radius: 5px;
+            background-color: #D5FFFF;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover, input[type=button]:hover {
+            background-color: #70DCDC;
+        }
+
+        textarea {
+            width: 98%;
+            padding: 8px;
+            border: 2px solid #159A9A;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+
+        input[type=text] {
+            padding: 8px;
+            width: 95%;
+            margin: 5px 0;
+        }
+
+        #move1 {
+            position: relative;
+            width: 250px;
+            height: 125px;
+            object-fit: cover;
+            border: 3px solid #087F8C;
+            border-radius: 8px;
+        }
+
+        .myButtonGroup {
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        // Main object inspector
+        function myObjectData(myObject) {
+            let myOutput = "";
+            let myCount = 0;
+
+            if (myObject === undefined || myObject === null) {
+                document.getElementById("myTitle").value =
+                    "Object not found";
+
+                document.getElementById("myOutput").value =
+                    "This object is undefined or does not exist.";
+
+                return;
+            }
+
+            try {
+                document.getElementById("myTitle").value =
+                    "Object: " +
+                    (myObject.constructor?.name || "Unknown");
+
+                for (let myProp in myObject) {
+                    try {
+                        myOutput += myProp + " = " +
+                            String(myObject[myProp]) + "\n";
+                        myCount++;
+                    } catch (myError) {
+                        myOutput += myProp + " = [Not accessible]\n";
+                    }
+                }
+
+                myOutput += "\nTotal properties: " + myCount;
+
+                document.getElementById("myOutput").value =
+                    myOutput;
+
+                document.getElementById("myStatus").innerText =
+                    "Loaded " + myCount + " properties successfully.";
+
+            } catch (myError) {
+                document.getElementById("myOutput").value =
+                    "Error: " + myError.message;
+            }
+        }
+
+        // Sort text alphabetically
+        function mySortText() {
+            let myText =
+                document.getElementById("myOutput").value;
+
+            let myLines = myText.split("\n");
+
+            myLines.sort(function(myA, myB) {
+                return myA.localeCompare(myB);
+            });
+
+            document.getElementById("myOutput").value =
+                myLines.join("\n");
+
+            document.getElementById("myStatus").innerText =
+                "Properties sorted alphabetically.";
+        }
+
+        // Clear output
+        function myClear() {
+            document.getElementById("myOutput").value = "";
+            document.getElementById("myTitle").value = "";
+            document.getElementById("myStatus").innerText =
+                "Output cleared.";
+        }
+
+        // Show browser information
+        function myBrowserInfo() {
+            myObjectData({
+                browser: navigator.userAgent,
+                language: navigator.language,
+                platform: navigator.platform,
+                online: navigator.onLine,
+                cookiesEnabled: navigator.cookieEnabled
+            });
+        }
+
+        // Animation
+        let myPosition = 0;
+        let myDirection = 2;
+
+        function myMoveImage() {
+            let myImage = document.getElementById("move1");
+
+            myPosition += myDirection;
+
+            if (myPosition > 300 || myPosition < 0) {
+                myDirection *= -1;
+            }
+
+            myImage.style.left = myPosition + "px";
+        }
+
+        // Reset image position
+        function myResetImage() {
+            myPosition = 0;
+            document.getElementById("move1").style.left = "0px";
+        }
+    </script>
+</head>
+
+<body>
+
+    <h1>Browser Hack by _____________</h1>
+    <h2>Object Sort - Browser Explorer</h2>
+
+    <div class="myPanel">
+        <h3>Instructions</h3>
+
+        Use the first 15 buttons to explore different browser
+        objects and their properties. Use the last 5 buttons
+        to experiment with your own objects.
+
+        <p>
+            Different browsers may show different results.
+            Some properties may not be available for security
+            or compatibility reasons.
+        </p>
+    </div>
+
+    <div class="myPanel">
+        <h3>Moving Object</h3>
+
+        <img id="move1"
+             src="https://placehold.co/400x200/159A9A/FFFFFF?text=Moving+Object"
+             alt="Moving object">
+
+        <br><br>
+
+        <button onclick="myMoveImage()">
+            Move Image
+        </button>
+
+        <button onclick="myResetImage()">
+            Reset Image
+        </button>
+    </div>
+
+    <div class="myPanel">
+        <h3>Browser Object Explorer</h3>
+
+        <div class="myButtonGroup">
+
+            <input type="button" value="1 Window"
+                onclick="myObjectData(window)">
+
+            <input type="button" value="2 Document"
+                onclick="myObjectData(document)">
+
+            <input type="button" value="3 Navigator"
+                onclick="myObjectData(navigator)">
+
+            <input type="button" value="4 Screen"
+                onclick="myObjectData(screen)">
+
+            <input type="button" value="5 Location"
+                onclick="myObjectData(location)">
+
+            <input type="button" value="6 History"
+                onclick="myObjectData(history)">
+
+            <input type="button" value="7 Console"
+                onclick="myObjectData(console)">
+
+            <input type="button" value="8 Image Style"
+                onclick="myObjectData(document.getElementById('move1').style)">
+
+            <input type="button" value="9 Image"
+                onclick="myObjectData(document.getElementById('move1'))">
+
+            <input type="button" value="10 Body"
+                onclick="myObjectData(document.body)">
+
+            <input type="button" value="11 Local Storage"
+                onclick="myObjectData(localStorage)">
+
+            <input type="button" value="12 Session Storage"
+                onclick="myObjectData(sessionStorage)">
+
+            <input type="button" value="13 My Form"
+                onclick="myObjectData(document.getElementById('myForm'))">
+
+            <input type="button" value="14 My Text"
+                onclick="myObjectData(document.getElementById('myInput'))">
+
+            <input type="button" value="15 Browser Info"
+                onclick="myBrowserInfo()">
+
+            <br><br>
+
+            <input type="button" value="16 My Custom Object"
+                onclick="myObjectData({name:'Fred', age:15, school:'My School'})">
+
+            <input type="button" value="17 Math Object"
+                onclick="myObjectData(Math)">
+
+            <input type="button" value="18 Date Object"
+                onclick="myObjectData(new Date())">
+
+            <input type="button" value="19 Array Object"
+                onclick="myObjectData([10,20,30,40,50])">
+
+            <input type="button" value="20 Clear"
+                onclick="myClear()">
+
+        </div>
+    </div>
+
+    <div class="myPanel" id="myForm">
+        <h3>Object Information</h3>
+
+        <input type="text" id="myTitle"
+               placeholder="Selected object appears here">
+
+        <br>
+
+        <input type="text" id="myInput"
+               placeholder="Type something to inspect">
+
+        <textarea id="myOutput"
+                  rows="20"
+                  placeholder="Object properties will appear here..."></textarea>
+
+        <br>
+
+        <button onclick="myObjectData({
+            customText: document.getElementById('myInput').value
+        })">
+            Inspect My Text
+        </button>
+
+        <button onclick="mySortText()">
+            Sort Output
+        </button>
+
+        <button onclick="myClear()">
+            Clear Output
+        </button>
+
+        <p id="myStatus">Ready to explore!</p>
+    </div>
+
+    <div class="myPanel" style="text-align:center">
+        <h3>Navigation</h3>
+
+        <input type="button"
+               value="Back"
+               style="font-size:20px"
+               onclick="window.history.back()">
+    </div>
+
+</body>
+</html>
